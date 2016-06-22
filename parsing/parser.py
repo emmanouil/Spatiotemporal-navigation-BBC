@@ -82,12 +82,13 @@ def main():
 		if(file_name is None):
 			exit('Wrong file extension ('+file_ext+') for file '+file_full_name[0]+file_full_name[1]+'   :  expected .txt')
 		else:
-			log('processing file: '+file_name)
+			process_file(file_name+'.txt')
+		file_in.close()
 	#default case when check for every file in current folder with .txt extension
 	else:
 		file_list = get_file_list('.txt')
-		for file_str in file_list:
-			process_file(file_str)
+		for file_name in file_list:
+			process_file(file_name)
 
 
 
@@ -97,12 +98,7 @@ def main():
 	input('continue?')
 
 
-
-
-
-
-	file_in.close()
-
+#That's All Folks!
 	exit(0)
 
 if __name__ == '__main__':
