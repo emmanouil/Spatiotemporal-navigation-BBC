@@ -3,6 +3,10 @@ import json
 import os
 import datetime
 
+LOGFILE = 'python_script.log'
+OUTPUTDIR = 'script_out'
+
+#TODO: clarify w,w/o extension & file , filestring
 
 ##	Log
 #
@@ -13,7 +17,8 @@ import datetime
 def log(msg, lvl):
 	now = datetime.datetime.now()
 	str_now = '\n'+str(now.day)+'/'+str(now.month)+'/'+str(now.year)+' '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)+' '
-	with open('python_script.log', 'a') as logfile:
+	str_now = str_now.ljust(19)
+	with open(LOGFILE, 'a') as logfile:
 		if(lvl is None):#normal
 			print(msg)
 		elif(lvl < 0):	#error
@@ -25,8 +30,16 @@ def log(msg, lvl):
 		elif(lvl == 0):	#dbg
 			print('\033[35;1m'+'[DEBUG]\t'+'\033[0m'+msg)
 			logfile.write(str_now+'[DEBUG]\t'+msg)
-	logfile.closed
 
+## Create output file and flush 
+#
+#  like: OUTPUTDIR/OUT_<file_in>.txt
+def flush_json_ to_file_out(filename, data):
+	if not os.path.exists(OUTPUTDIR):
+		print(os.mkdir(OUTPUTDIR))
+	with open(os.getcwd()+'/'+OUTPUTDIR+'/OUT_'+filename, 'w+') as f:
+		json.dump(data, f)
+#		f.write(json.dumps(data))
 
 
 
@@ -61,15 +74,63 @@ def get_file_name(file_in, extension):
 	else:
 		return file_name
 
+## Calculate Distance
+#
+#  From: http://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r
+
+
 ##	Processes file
 #
 #	void
 def process_file(filename):
 	log('Processing file: '+filename, 1)
+	latestOrient = None
+	latestLoc = None
+	json_out = {}
+	json_full = []
+	id = 0
+	flushed = True
+#	create_file_out(filename)
 	with open(filename, 'r') as file_in:
 		for line in file_in:
 			json_line = json.loads(line)
-			print (json.dumps(json_line, sort_keys=True, indent=4))
+			if 'Type' in json_line:
+				if json_line['Type'] == "ORIENTATION":
+					latestOrient = json_line
+					print (json.dumps(json_line['Type'], sort_keys=True, indent=4))
+				else:
+					for key, item in json_line.items():
+						print(key.ljust(19)+" "+str(type(item)))
+			elif 'Provider' in json_line:
+				id+=1;
+				json_out['id'] = id;
+				if latestOrient is not None:
+					json_out['Sensor'] = latestOrient
+				json_out['Location'] = json_line
+				json_full.append(json_out)
+				json_out = {}
+				latestOrient = None
+				latestLoc = None
+				print (json.dumps(json_line['Provider'], sort_keys=True, indent=4))
+			else:
+				log('Not Found', 0)
+		flush_json_to_file_out(filename, json_full)
+		json_full = []
 	file_in.closed
 
 
@@ -79,7 +140,7 @@ def main():
 	if(len(sys.argv)>1):
 		file_in = open(sys.argv[1], 'r')
 		file_name = get_file_name(file_in, '.txt')
-		if(file_name is None):
+		if file_name is None:
 			exit('Wrong file extension ('+file_ext+') for file '+file_full_name[0]+file_full_name[1]+'   :  expected .txt')
 		else:
 			process_file(file_name+'.txt')
