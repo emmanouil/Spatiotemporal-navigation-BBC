@@ -2,9 +2,11 @@ import sys
 import json
 import os
 import datetime
+import re
 
 LOGFILE = 'python_script.log'
 OUTPUTDIR = 'script_out'
+PLAYLIST = 'playlist.txt'
 
 #TODO: clarify w,w/o extension & file , filestring
 
@@ -31,15 +33,28 @@ def log(msg, lvl):
 			print('\033[35;1m'+'[DEBUG]\t'+'\033[0m'+msg)
 			logfile.write(str_now+'[DEBUG]\t'+msg)
 
+
+## Checks if item exists in PLAYLIST file and appends it
+def append_to_playlist(item):
+	if os.path.isfile(os.getcwd()+'/'+OUTPUTDIR+'/'+PLAYLIST):
+		with open(os.getcwd()+'/'+OUTPUTDIR+'/'+PLAYLIST, 'r') as f:
+			for line in f:
+				res = re.match(item, line)
+				if res is not None:
+					return
+	with open(os.getcwd()+'/'+OUTPUTDIR+'/'+PLAYLIST, 'a') as f:
+		f.write(item+'\n')
+
 ## Create output file and flush 
 #
 #  like: OUTPUTDIR/OUT_<file_in>.txt
-def flush_json_ to_file_out(filename, data):
+def flush_json_to_file_out(filename, data):
 	if not os.path.exists(OUTPUTDIR):
 		print(os.mkdir(OUTPUTDIR))
 	with open(os.getcwd()+'/'+OUTPUTDIR+'/OUT_'+filename, 'w+') as f:
 		json.dump(data, f)
 #		f.write(json.dumps(data))
+	append_to_playlist('OUT_'+filename)
 
 
 
