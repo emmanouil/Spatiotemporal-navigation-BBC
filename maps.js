@@ -6,7 +6,7 @@ function initMap() {
             lat: -34.397,
             lng: 150.644
         },
-        zoom: 8
+        zoom: 10
 		/**
 		 Zoom levels (approx.)
 		 
@@ -18,4 +18,17 @@ function initMap() {
 		
 		 */
     });
+}
+
+function centerMap( latitude, longitude, zoom ) {
+	if( !latitude || !longitude ) {
+		console.log( "Lat and/or Lng not set" );
+		return;
+	} else {
+		map.setCenter( { lat: latitude, lng: longitude });
+	}
+
+	if( zoom )
+		if( zoom > 0 && zoom < 21 )
+			map.setZoom( zoom )
 }
