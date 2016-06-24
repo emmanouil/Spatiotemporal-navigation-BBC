@@ -1,0 +1,67 @@
+var input_dir = 'parsing';
+var playlist_file = 'playlist.txt';
+var pl_element_prefix = 'OUT_';
+var pl_video_prefix = 'VID_';
+var pl_element_extension = '.txt';
+var pl_video_extension = '.mp4';
+var mediaSource = new MediaSource();
+var skeleton_worker = new Worker('parser.js');
+
+//after window loads do the init
+window.onload = function() {
+	video = document.getElementById('v');
+	mediaSource.video = video;
+	video.ms = mediaSource;
+	
+	fetch('/'+input_dir+'/'+playlist_file, parse_playlist);
+	
+//	fetch(input_dir+'/'+sample_in, parse_sample, "json");
+	
+	
+//	video.src = window.URL.createObjectURL(mediaSource);
+//	initMSE();
+//	if (withReverb) fetch(reverbFile, initReverb, "arraybuffer");
+}
+
+//Content-loading functions
+function fetch(what, where, resp_type) {
+	console.log("fetching " + what);
+	if (what.length < 2) {
+		console.log("erroneous request");
+	}
+	var req = new XMLHttpRequest();
+	req.addEventListener("load", where);
+	req.open("GET", what);
+	if (typeof(resp_type) != 'undefined') {
+		req.responseType = resp_type;
+	}
+	req.send();
+}
+
+function parse_sample(resp) {
+	console.log("got it");
+	sampleData = resp.target.response;
+}
+
+function parse_playlist() {
+	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
+	req_status = this.status;
+	if(req_status == 200 && playlist.length>0){
+		console.log("[NOTE] Fetching "+playlist_file+" OK  - total received elements: "+playlist.length);
+		console.log("[NOTE] Fetching playlist elements...")
+		for (i=0; i<playlist.length; i++){
+			fetch(input_dir+'/'+pl_element_prefix+playlist[0]+pl_element_extension, parse_pl_element, 'json');
+		}
+	}else if(req_status == 200){
+		console.log("[NOTE] Fetching "+playlist_file+" returned with an empty file");
+	}else{
+		console.log("[NOTE] Fetching "+playlist_file+" unsuccessful");
+	}
+}
+
+function parse_pl_element(){
+	if(this.status==200){
+		console.log("[NOTE] Received "+this.response.length+" entries ")
+	}
+	console.log(this)
+}
