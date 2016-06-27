@@ -71,12 +71,11 @@ function parse_pl_element() {
 
 function addMarkers(loc_set){
 	tmp = loc_set[ 0 ].Location;
-	centerMap( tmp.Latitude, tmp.Longitude, 20 );
+	centerMap( tmp.Latitude, tmp.Longitude, 19 );
 	for(i =0; i<loc_set.length; i++){
 		if(loc_set[i].Location){
 			lllo = loc_set[i]
-			console.log(new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude))
-			console.log(loc_set[i].Location.Langtitude +'   '+loc_set[i].Location.Longtitude)
+//			console.log(new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude))
 			marker = new google.maps.Marker({
 				position: new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude),
 				title: "Marker "+i

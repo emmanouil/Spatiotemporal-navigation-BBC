@@ -6,6 +6,17 @@ function initMap() {
             lat: -34.397,
             lng: 150.644
         },
+		mapTypeControl: true,
+		mapTypeControlOptions: {
+		  style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+		  mapTypeIds: [
+			google.maps.MapTypeId.ROADMAP,
+			google.maps.MapTypeId.TERRAIN,
+			google.maps.MapTypeId.HYBRID,
+			google.maps.MapTypeId.SATELLITE,
+		  ]
+		},
+		scaleControl: true,
         zoom: 10
 		/**
 		 Zoom levels (approx.)
