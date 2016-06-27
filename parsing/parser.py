@@ -7,6 +7,11 @@ import re
 LOGFILE = 'python_script.log'
 OUTPUTDIR = 'script_out'
 PLAYLIST = 'playlist.txt'
+USE_ORIENTATION_AVERAGE = True;	#else use latest orientation
+orient_count = 0;
+orient_start = 0;
+orient_dur = 0;
+orient_obj = None;
 
 #TODO: clarify w,w/o extension & file , filestring
 
@@ -109,6 +114,34 @@ def haversine(lon1, lat1, lon2, lat2):
     return c * r
 
 
+def push_orient(orientation):
+	global orient_count
+	global orient_obj
+	global orient_start
+	global orient_dur
+	orient_count+=1;
+	if orient_count == 1:
+		orient_obj = orientation
+		orient_start = orientation['LocalTimestamp']
+		orient_dur = 0;
+	else:
+		orient_dur = orientation['LocalTimestamp'] - orient_start
+	orient_obj['Z'] += orientation['Z']
+	orient_obj['X'] += orientation['X']
+	orient_obj['Y'] += orientation['Y']
+	orient_obj['LocalTimestamp'] = orientation['LocalTimestamp']
+
+def pop_orient():
+	global orient_count
+	global orient_obj
+	orient_obj['Duration'] = orient_dur
+	orient_obj['Z'] = orient_obj['Z'] / orient_count
+	orient_obj['X'] = orient_obj['X'] / orient_count
+	orient_obj['Y'] = orient_obj['Y'] / orient_count
+	print(orient_count)
+	return orient_obj
+
+
 ##	Processes file
 #
 #	void
@@ -120,28 +153,39 @@ def process_file(filename):
 	json_full = []
 	id = 0
 	flushed = True
+	global orient_obj
+	global orient_count
 #	create_file_out(filename)
 	with open(filename, 'r') as file_in:
 		for line in file_in:
 			json_line = json.loads(line)
 			if 'Type' in json_line:
 				if json_line['Type'] == "ORIENTATION":
-					latestOrient = json_line
-					print (json.dumps(json_line['Type'], sort_keys=True, indent=4))
-				else:
-					for key, item in json_line.items():
-						print(key.ljust(19)+" "+str(type(item)))
+					if USE_ORIENTATION_AVERAGE:
+						push_orient(json_line)
+					else:
+						latestOrient = json_line
+#					print (json.dumps(json_line['Type'], sort_keys=True, indent=4))
+				# We do not use ACC or MAGN for now
+#				else:
+#					for key, item in json_line.items():
+#						print(key.ljust(19)+" "+str(type(item)))
 			elif 'Provider' in json_line:
 				id+=1;
 				json_out['id'] = id;
-				if latestOrient is not None:
-					json_out['Sensor'] = latestOrient
+				if latestOrient is not None or orient_count > 0:
+					if USE_ORIENTATION_AVERAGE:
+						json_out['Sensor'] = pop_orient()
+						orient_obj = None;
+						orient_count = 0;
+					else:
+						json_out['Sensor'] = latestOrient
 				json_out['Location'] = json_line
 				json_full.append(json_out)
 				json_out = {}
 				latestOrient = None
 				latestLoc = None
-				print (json.dumps(json_line['Provider'], sort_keys=True, indent=4))
+#				print (json.dumps(json_line['Provider'], sort_keys=True, indent=4))
 			else:
 				log('Not Found', 0)
 		flush_json_to_file_out(filename, json_full)
