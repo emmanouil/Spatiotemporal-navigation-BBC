@@ -6,6 +6,7 @@ var pl_element_extension = '.txt';
 var pl_video_extension = '.mp4';
 var mediaSource = new MediaSource();
 var skeleton_worker = new Worker( 'parser.js' );
+var pointSets = [];
 
 //after window loads do the init
 window.onload = function() {
@@ -62,6 +63,8 @@ function parse_playlist() {
 function parse_pl_element() {
 	if( this.status == 200 ) {
 		addMarkers(this.response);
+		pointSets.push(this.response);
+		
 //		console.log( "[NOTE] Received " + this.response.length + " entries " )
 //		tmp = this.response[ 0 ].Location;
 //		centerMap( tmp.Latitude, tmp.Longitude, 34 );
