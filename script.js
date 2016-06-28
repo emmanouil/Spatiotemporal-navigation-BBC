@@ -79,7 +79,7 @@ function addMarkers(loc_set){
 		if(loc_set[i].Location){
 			lllo = loc_set[i]
 //			console.log(new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude))
-			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, "Marker "+i, 5);
+			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);
 		}
 	}
 }
