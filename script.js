@@ -79,11 +79,7 @@ function addMarkers(loc_set){
 		if(loc_set[i].Location){
 			lllo = loc_set[i]
 //			console.log(new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude))
-			marker = new google.maps.Marker({
-				position: new google.maps.LatLng(loc_set[i].Location.Latitude,loc_set[i].Location.Longitude),
-				title: "Marker "+i
-			});
-			marker.setMap(map);
+			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, "Marker "+i, 5);
 		}
 	}
 }

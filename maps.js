@@ -1,4 +1,11 @@
 var map;
+var marker_icon = 'assets/icon_48px.svg'
+var test_icon={
+	path: 'm 5,22 h 14 v 2 H 5 z M 12,10 5.33,20 h 13.34 z',
+//    strokeColor: '#F00',
+    fillColor: '#000',
+    fillOpacity: 1
+};
 
 function initMap() {
     map = new google.maps.Map( document.getElementById( 'map' ), {
@@ -42,4 +49,28 @@ function centerMap( latitude, longitude, zoom ) {
 	if( zoom )
 		if( zoom > 0 && zoom < 21 )
 			map.setZoom( zoom )
+}
+
+function addMarker(lat, lng, label, bearing){
+	if(!lat || !lng){
+		return;
+	}else if(!label){
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+		});
+	}else if(!bearing){
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label
+		});
+	}else{
+		var local_icon = test_icon;
+		local_icon.rotation = bearing;
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label,
+			icon: local_icon
+		});
+	}
+	marker.setMap(map);
 }
