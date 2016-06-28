@@ -6,3 +6,11 @@ function calcBearing(lat1, lng1, lat2, lng2){
 	var brngDgr = brng / (Math.PI / 180);
 	return brngDgr;
 }
+
+function radToDeg(rad_in){
+	return rad_in/(Math.PI/180);
+}
+
+function degToRad(rad_in){
+	return rad_in*(Math.PI/180);
+}
