@@ -4,13 +4,15 @@ var pl_element_prefix = 'OUT_';
 var pl_video_prefix = 'VID_';
 var pl_element_extension = '.txt';
 var pl_video_extension = '.mp4';
-var mediaSource = new MediaSource();
-var skeleton_worker = new Worker( 'parser.js' );
+var mediaSource = new MediaSource();	//Not used for now
+//var skeleton_worker = new Worker( 'parser.js' );
 var pointSets = [];
+var selector;
 
 //after window loads do the init
 window.onload = function() {
 	video = document.getElementById( 'v' );
+	selector = document.getElementsByName( 'select' )[0];
 	mediaSource.video = video;
 	video.ms = mediaSource;
 
@@ -52,6 +54,7 @@ function parse_playlist() {
 		console.log( "[NOTE] Fetching playlist elements..." )
 		for( i = 0;i < playlist.length;i++ ) {
 			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
+			addOption(input_dir + '/' + pl_video_prefix + playlist[ i ] + pl_video_extension, playlist[ i ]);
 		}
 	} else if( req_status == 200 ) {
 		console.log( "[NOTE] Fetching " + playlist_file + " returned with an empty file" );

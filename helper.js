@@ -14,3 +14,15 @@ function radToDeg(rad_in){
 function degToRad(rad_in){
 	return rad_in*(Math.PI/180);
 }
+
+function addOption(value, text){
+	var option = document.createElement("option");
+	if(text)
+		option.text = text;
+	option.value = value;
+	selector.add(option);
+}
+
+function selectFile(){
+	video.src = selector[selector.selectedIndex].value;
+}
