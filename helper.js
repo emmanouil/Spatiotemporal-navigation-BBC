@@ -23,14 +23,23 @@ function degToRad(rad_in){
 
 function addOption(value, text){
 	var option = document.createElement("option");
-	if(text)
+	if(text){
 		option.text = text;
+		if(!selector.length){
+			active_video_id = text;
+		}
+	}else{
+		logERR("text required - used as video id");
+	}
 	option.value = value;
 	selector.add(option);
 }
 
 function selectFile(){
 	video.src = selector[selector.selectedIndex].value;
+	active_video_id = selector[selector.selectedIndex].text;
+	if(loc = getSetByIndex(selector.selectedIndex).set[0].Location)
+		centerMap(loc.Latitude, loc.Longitude);
 }
 
 function addToIndex(XMLHttpRequest_in){
