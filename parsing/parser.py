@@ -7,11 +7,13 @@ import re
 LOGFILE = 'python_script.log'
 OUTPUTDIR = 'script_out'
 PLAYLIST = 'playlist.txt'
-USE_ORIENTATION_AVERAGE = True;	#else use latest orientation
-orient_count = 0;
-orient_start = 0;
-orient_dur = 0;
-orient_obj = None;
+USE_ORIENTATION_AVERAGE = True	#else use latest orientation
+USE_FULL_FILENAME_IN_PLAYLIST = False	#otherwise use only ID (without the OUT_ and .txt)
+orient_count = 0
+orient_start = 0
+orient_dur = 0
+orient_dur_tot = 0
+orient_obj = None
 
 #TODO: clarify w,w/o extension & file , filestring
 
@@ -59,9 +61,23 @@ def flush_json_to_file_out(filename, data):
 	with open(os.getcwd()+'/'+OUTPUTDIR+'/OUT_'+filename, 'w+') as f:
 		json.dump(data, f)
 #		f.write(json.dumps(data))
-	append_to_playlist('OUT_'+filename)
+	if USE_FULL_FILENAME_IN_PLAYLIST:
+		append_to_playlist('OUT_'+filename)
+	else:
+		append_to_playlist(os.path.splitext(os.path.split(filename)[1])[0])
+	reset_vars()
 
-
+def reset_vars():
+	global orient_count
+	global orient_start
+	global orient_dur
+	global orient_obj
+	global orient_dur_tot
+	orient_count = 0
+	orient_start = 0
+	orient_dur = 0
+	orient_obj = None
+	orient_dur_tot = 0
 
 ##	Returns a list of FILES of the defined extension
 #
@@ -119,11 +135,11 @@ def push_orient(orientation):
 	global orient_obj
 	global orient_start
 	global orient_dur
-	orient_count+=1;
+	orient_count+=1
 	if orient_count == 1:
 		orient_obj = orientation
 		orient_start = orientation['LocalTimestamp']
-		orient_dur = 0;
+		orient_dur = 0
 	else:
 		orient_dur = orientation['LocalTimestamp'] - orient_start
 	orient_obj['Z'] += orientation['Z']
@@ -134,7 +150,10 @@ def push_orient(orientation):
 def pop_orient():
 	global orient_count
 	global orient_obj
+	global orient_dur_tot
+	orient_dur_tot += orient_dur
 	orient_obj['Duration'] = orient_dur
+	orient_obj['DurationTotal'] = orient_dur_tot
 	orient_obj['Z'] = orient_obj['Z'] / orient_count
 	orient_obj['X'] = orient_obj['X'] / orient_count
 	orient_obj['Y'] = orient_obj['Y'] / orient_count
@@ -171,13 +190,13 @@ def process_file(filename):
 #					for key, item in json_line.items():
 #						print(key.ljust(19)+" "+str(type(item)))
 			elif 'Provider' in json_line:
-				id+=1;
-				json_out['id'] = id;
+				id+=1
+				json_out['id'] = id
 				if latestOrient is not None or orient_count > 0:
 					if USE_ORIENTATION_AVERAGE:
 						json_out['Sensor'] = pop_orient()
-						orient_obj = None;
-						orient_count = 0;
+						orient_obj = None
+						orient_count = 0
 					else:
 						json_out['Sensor'] = latestOrient
 				json_out['Location'] = json_line
