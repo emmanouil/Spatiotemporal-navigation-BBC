@@ -12,6 +12,7 @@ orient_count = 0;
 orient_start = 0;
 orient_dur = 0;
 orient_obj = None;
+USE_FULL_FILENAME_IN_PLAYLIST = False	#otherwise use only ID (without the OUT_ and .txt)
 
 #TODO: clarify w,w/o extension & file , filestring
 
@@ -59,8 +60,11 @@ def flush_json_to_file_out(filename, data):
 	with open(os.getcwd()+'/'+OUTPUTDIR+'/OUT_'+filename, 'w+') as f:
 		json.dump(data, f)
 #		f.write(json.dumps(data))
-	append_to_playlist('OUT_'+filename)
-
+	if USE_FULL_FILENAME_IN_PLAYLIST:
+		append_to_playlist('OUT_'+filename)
+	else:
+		append_to_playlist(os.path.splitext(os.path.split(filename)[1])[0])
+	reset_vars()
 
 
 ##	Returns a list of FILES of the defined extension
