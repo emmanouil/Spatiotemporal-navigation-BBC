@@ -1,5 +1,6 @@
 var map;
 var marker_icon = 'assets/icon_48px.svg'
+
 var test_icon={
 	path: 'm 5,22 h 14 v 2 H 5 z M 12,10 5.33,20 h 13.34 z',
 //    strokeColor: '#F00',
@@ -43,7 +44,7 @@ function centerMap( latitude, longitude, zoom ) {
 		console.log( "Lat and/or Lng not set" );
 		return;
 	} else {
-		map.setCenter( { lat: latitude, lng: longitude });
+		map.panTo( { lat: latitude, lng: longitude });
 	}
 
 	if( zoom )
