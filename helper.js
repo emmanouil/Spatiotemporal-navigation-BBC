@@ -1,5 +1,9 @@
 var globalSetIndex = [];
 
+function logERR(msg){
+	console.log("[ERROR] "+msg);
+}
+
 function calcBearing(lat1, lng1, lat2, lng2){
 	var y = Math.sin(lat2-lat1) * Math.cos(lng2);
 	var x = Math.cos(lng1)*Math.sin(lng2) -
