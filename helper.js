@@ -57,13 +57,6 @@ function addToIndex(XMLHttpRequest_in){
 	globalSetIndex.push(loc_obj);
 }
 
-function getSetByIndex(index_in){
-	for (item in globalSetIndex){
-		if(globalSetIndex[item].index === index_in)
-			return globalSetIndex[item];
-	}
-}
-
 function getSetByVideoId(id_in){
 	for (item in globalSetIndex){
 		if(globalSetIndex[item].id === id_in.toString())
