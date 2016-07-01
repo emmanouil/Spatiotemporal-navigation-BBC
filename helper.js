@@ -36,10 +36,14 @@ function addOption(value, text){
 }
 
 function selectFile(){
+	resetCheckPoints();
 	video.src = selector[selector.selectedIndex].value;
 	active_video_id = selector[selector.selectedIndex].text;
-	if(loc = getSetByIndex(selector.selectedIndex).set[0].Location)
+	if(loc = getSetByVideoId(active_video_id).set[0].Location){
 		centerMap(loc.Latitude, loc.Longitude);
+	}else{
+		logERR(selector.selectedIndex+"  not found");
+	}
 }
 
 function addToIndex(XMLHttpRequest_in){
