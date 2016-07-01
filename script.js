@@ -1,9 +1,13 @@
+//var globalSetIndex = [];	//in helper.js holds EVERYTHING parsed
+//var map;	//in maps.js holds MAP
+
 var input_dir = 'parsing';
 var playlist_file = 'playlist.txt';
 var pl_element_prefix = 'OUT_';
 var pl_video_prefix = 'VID_';
 var pl_element_extension = '.txt';
 var pl_video_extension = '.mp4';
+var active_video_id;
 var mediaSource = new MediaSource();	//Not used for now
 //var skeleton_worker = new Worker( 'parser.js' );
 var selector;
@@ -11,6 +15,7 @@ var selector;
 //after window loads do the init
 window.onload = function() {
 	video = document.getElementById( 'v' );
+	initVideo();	//in video.js
 	selector = document.getElementsByName( 'select' )[0];
 	mediaSource.video = video;
 	video.ms = mediaSource;
