@@ -16,17 +16,17 @@ function initVideo(){
 	 }, false);
 }
 
-function addCheckPoint(){
+function nextCheckPoint(){
 	var local = curr_set.set[curr_set_index].Location;
 	centerMap(local.Latitude, local.Longitude, 19);
 	console.log(video.currentTime+'    '+curr_set.set[curr_set_index].Sensor.DurationTotal/1000)
 	curr_set_index++;
-	window.setTimeout(addCheckPoint, curr_set.set[curr_set_index].Sensor.Duration)
+	window.setTimeout(nextCheckPoint, curr_set.set[curr_set_index].Sensor.Duration)
 }
 
 function firstCheckPoint(id){
 	curr_set = getSetByVideoId(id);
-	addCheckPoint();
+	nextCheckPoint();
 }
 
 function resetCheckPoints(){
