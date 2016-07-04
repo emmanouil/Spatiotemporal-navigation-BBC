@@ -3,8 +3,12 @@ var USE_DEBUG_MARKERS = false;
 var map;
 var marker_icon = 'assets/icon_48px.svg'
 
+//we use this for now
 var test_icon={
-	path: 'm 5,22 h 14 v 2 H 5 z M 12,10 5.33,20 h 13.34 z',
+	path: 'm 0,12 h 14 v 2 H 0 z M 7,0 0.33,10 h 13.34 z',
+//  d="m 0,17 h 14 v 2 H 0 z M 7,5 0.33,15 h 13.34 z"	//left
+//	d="m 0,12 h 14 v 2 H 0 z M 7,0 0.33,10 h 13.34 z"	//top left
+//	path: 'm 5,22 h 14 v 2 H 5 z M 12,10 5.33,20 h 13.34 z',	//original
 //    strokeColor: '#F00',
     fillColor: '#000',
     fillOpacity: 1
