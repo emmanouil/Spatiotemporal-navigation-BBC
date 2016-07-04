@@ -1,3 +1,5 @@
+var USE_DEBUG_MARKERS = false;
+
 var map;
 var marker_icon = 'assets/icon_48px.svg'
 
@@ -72,6 +74,13 @@ function addMarker(lat, lng, label, bearing){
 			title: label,
 			icon: local_icon
 		});
+if(USE_DEBUG_MARKERS){
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label
+		});
+		marker1.setMap(map);
+}
 	}
 	marker.setMap(map);
 }
