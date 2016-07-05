@@ -4,7 +4,22 @@ html, body {
 	padding: 1vh;
 }
 
+
 #map {
+	top: 0px;
+	left: 0px;
 	height: 50%;
 	width: 50%;
+	z-index: 53;
+}
+
+#user-svg{
+	position:absolute;
+	z-index: 55;
+	margin: 0;
+	padding: 0;
+	top: 50%;
+	left:50%;
+	transform:translatex(-90px);
+	transform:translatey(-32px);
 }

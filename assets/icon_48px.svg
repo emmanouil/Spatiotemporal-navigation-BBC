@@ -1,9 +1,8 @@
-<svg fill="#000000" height="48" viewBox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+<svg fill="#000000" xmlns="http://www.w3.org/2000/svg">
   <path
-     d="M0 24V0h24v24H0z"
      fill="none"
      id="path2999" />
       <path
-     d="m 5,22 h 14 v 2 H 5 z M 12,10 5.33,20 h 13.34 z"
+     d="m 0,12 h 14 v 2 H 0 z M 7,0 0.33,10 h 13.34 z"
      id="path3001"/>
 </svg>

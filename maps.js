@@ -1,5 +1,3 @@
-var USE_DEBUG_MARKERS = false;
-
 var map;
 var marker_icon = 'assets/icon_48px.svg'
 
@@ -43,6 +41,11 @@ function initMap() {
 		
 		 */
     });
+    if(ENABLE_HIGHLIGHTER){
+    	map.getDiv().appendChild(document.getElementById('user-svg'))
+    }else{
+    	document.getElementById('user-svg').style.visibility = "hidden"
+    }
 }
 
 function centerMap( latitude, longitude, zoom ) {
@@ -78,7 +81,7 @@ function addMarker(lat, lng, label, bearing){
 			title: label,
 			icon: local_icon
 		});
-if(USE_DEBUG_MARKERS){
+if(USE_DEFAULT_MARKERS){
 		var marker1 = new google.maps.Marker({
 			position: new google.maps.LatLng(lat,lng),
 			title: label

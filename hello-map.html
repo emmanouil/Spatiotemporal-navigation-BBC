@@ -8,12 +8,16 @@
 	<link rel="stylesheet" type="text/css" href="style.css"> </head>
 
 <body>
-	<div id="map"></div>
+	 <svg id="user-svg">
+	  <circle cx="32" cy="32" r="30" stroke="black" stroke-width="3" fill="red" fill-opacity="0.4"/>
+	</svg>
+	<div id="map">
+	</div>
+	<script src="parameters.js"></script>
 	<script src="maps.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"
 		async defer></script>
 	<script src="helper.js"></script>
-	<script src="objects.js"></script>
 	<script src="script.js"></script>
 	<script src="video.js"></script>
 	<!-- For synchronous load (blocking) -->

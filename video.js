@@ -44,7 +44,7 @@ function initVideo() {
 
 function nextCheckPoint() {
 	var local = curr_set.set[ curr_set_index ].Location;
-	centerMap( local.Latitude, local.Longitude, 19 );
+	centerMap( local.Latitude, local.Longitude, DEFAULT_ZOOM );
 	console.log( video.currentTime + '    ' + curr_set.set[ curr_set_index ].Sensor.DurationTotal / 1000 );
 	curr_set_index++;
 	if( curr_set.set[ curr_set_index ] == null ) {
@@ -63,7 +63,7 @@ function firstCheckPoint( id ) {
 function resumeCheckPoint() {
 	seekCheckPoint();
 	var local = curr_set.set[ curr_set_index ].Location;
-	centerMap( local.Latitude, local.Longitude, 19 );
+	centerMap( local.Latitude, local.Longitude, DEFAULT_ZOOM );
 	curr_timeout = window.setTimeout( nextCheckPoint, curr_set.set[ curr_set_index ].Sensor.Duration );
 }
 
@@ -100,7 +100,7 @@ function seekCheckPoint() {
 		}
 	}
 	var local = curr_set.set[ curr_set_index ].Location;
-	centerMap( local.Latitude, local.Longitude, 19 );
+	centerMap( local.Latitude, local.Longitude, DEFAULT_ZOOM );
 	console.log( "seeked checkpoint " + curr_set_index );
 	/*	if(video.paused)return;
 		var local = curr_set.set[ curr_set_index ].Location;
