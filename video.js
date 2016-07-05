@@ -71,14 +71,16 @@ function seekCheckPoint() {
 	console.log( "seek checkpoint " + curr_set_index );
 	var seekUP;
 	var seekDiff;
+	var prevDiff;
 
 	if( video.currentTime == 0 ) {
 		resetCheckPoints();
 		return;
 	}
-
-	if( curr_set.set[ curr_set_index ] == null )
-		curr_set_index = 0;
+	
+	if(curr_set == null){ curr_set = getSetByVideoId( active_video_id );
+	}else if( curr_set.set[ curr_set_index ] == null ){
+		curr_set_index = 0;}
 
 	seekDiff = video.currentTime - ( curr_set.set[ curr_set_index ].Sensor.DurationTotal / 1000 );
 	if( seekDiff > 0 ) {
@@ -93,11 +95,15 @@ function seekCheckPoint() {
 			curr_set_index++;
 			seekDiff = video.currentTime - curr_set.set[ curr_set_index ].Sensor.DurationTotal / 1000;
 		}
+		prevDiff = video.currentTime - curr_set.set[ curr_set_index-1 ].Sensor.DurationTotal / 1000;
+		if(Math.abs(seekDiff)>Math.abs(prevDiff))curr_set_index--;
 	} else {
 		while( ( curr_set.set[ curr_set_index ] != null ) && seekDiff < 0 ) {
 			curr_set_index--;
 			seekDiff = video.currentTime - curr_set.set[ curr_set_index ].Sensor.DurationTotal / 1000;
 		}
+		prevDiff = video.currentTime - curr_set.set[ curr_set_index-1 ].Sensor.DurationTotal / 1000;
+		if(Math.abs(seekDiff)>Math.abs(prevDiff))curr_set_index--;
 	}
 	var local = curr_set.set[ curr_set_index ].Location;
 	centerMap( local.Latitude, local.Longitude, DEFAULT_ZOOM );
