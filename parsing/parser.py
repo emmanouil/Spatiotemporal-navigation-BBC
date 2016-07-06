@@ -9,7 +9,9 @@ OUTPUTDIR = 'script_out'
 PLAYLIST = 'playlist.txt'
 USE_ORIENTATION_AVERAGE = True	#else use latest orientation
 USE_FULL_FILENAME_IN_PLAYLIST = False	#otherwise use only ID (without the OUT_ and .txt)
-orient_count = 0
+LOG_STATISTICS = True
+CLEAR_LOG = True  	#When init log - delete previous logfile
+orient_count = 0		
 orient_start = 0
 orient_dur = 0
 orient_dur_tot = 0
@@ -39,6 +41,55 @@ def log(msg, lvl):
 		elif(lvl == 0):	#dbg
 			print('\033[35;1m'+'[DEBUG]\t'+'\033[0m'+msg)
 			logfile.write(str_now+'[DEBUG]\t'+msg)
+
+def log_blankline():
+	with open(LOGFILE, 'a') as logfile:
+		print('\n')
+		logfile.write('\n')
+
+log_location_dict = dict()
+
+## initialize log_location_dict
+def log_location_init():
+	global log_location_dict
+	log_location_dict['minDiff'] = 0;
+	log_location_dict['maxDiff'] = 0;
+	log_location_dict['avgDiff'] = 0;
+	log_location_dict['sum'] = 0;
+	log_location_dict['count'] = 0;
+	log_location_dict['baseNano'] = 0;
+	log_location_dict['baseTime'] = 0;
+
+
+## Process location for analysis
+def log_location(json_loc):
+	global log_location_dict
+	diff = json_loc['Time']-(json_loc['LocalNanostamp']/1000000)
+	if log_location_dict['count'] == 0:
+		log_location_dict['minDiff'] = diff
+		log_location_dict['baseNano'] = json_loc['LocalNanostamp']
+		log_location_dict['baseTime'] = json_loc['Time']
+	else:
+		log("nano diff: "+str((json_loc['LocalNanostamp'] - log_location_dict['baseNano'])/1000000)+"    time diff: "+str(json_loc['Time']-log_location_dict['baseTime']), 1)
+		log_location_dict['baseNano'] = json_loc['LocalNanostamp']
+		log_location_dict['baseTime'] = json_loc['Time']
+	if(log_location_dict['minDiff'] > diff):
+		log_location_dict['minDiff'] = diff
+	if(log_location_dict['maxDiff']<diff):
+		log_location_dict['maxDiff'] = diff
+	log_location_dict['count']+=1
+	log_location_dict['sum']+=diff
+
+
+## flush to logfile
+def log_location_flush():
+	global log_location_dict
+	if log_location_dict['count'] > 0:
+		log("minDiff: "+str(log_location_dict['minDiff']), 1)
+		log("maxDiff: "+str(log_location_dict['maxDiff']), 1)
+		log("avgDiff: "+str(log_location_dict['sum']/log_location_dict['count']), 1)
+	log_blankline()
+	log_location_init()
 
 
 ## Checks if item exists in PLAYLIST file and appends it
@@ -157,6 +208,8 @@ def process_file(filename):
 	global orient_count
 #	create_file_out(filename)
 	with open(filename, 'r') as file_in:
+		if LOG_STATISTICS:
+			log_location_init()
 		for line in file_in:
 			json_line = json.loads(line)
 			if 'Type' in json_line:
@@ -171,6 +224,8 @@ def process_file(filename):
 #					for key, item in json_line.items():
 #						print(key.ljust(19)+" "+str(type(item)))
 			elif 'Provider' in json_line:
+				if LOG_STATISTICS:
+					log_location(json_line)
 				id+=1
 				json_out['id'] = id
 				if latestOrient is not None or orient_count > 0:
@@ -190,10 +245,15 @@ def process_file(filename):
 				log('Not Found', 0)
 		flush_json_to_file_out(filename, json_full)
 		json_full = []
+		if LOG_STATISTICS:
+			log_location_flush()
 	file_in.closed
 
 
 def main():
+	if(CLEAR_LOG):
+		if os.path.isfile(LOGFILE):
+			os.remove(LOGFILE)
 	#check if called for specific file
 	#check this instead: https://docs.python.org/3/library/fileinput.html#module-fileinput
 	if(len(sys.argv)>1):
