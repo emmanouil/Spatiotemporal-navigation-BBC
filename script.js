@@ -16,7 +16,6 @@ var selector, video, playlist;
 window.onload = function() {
 	video = document.getElementById( 'v' );
 	initVideo();	//in video.js
-	selector = document.getElementsByName( 'select' )[0];
 	mediaSource.video = video;
 	video.ms = mediaSource;
 

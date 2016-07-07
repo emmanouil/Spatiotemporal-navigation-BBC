@@ -73,6 +73,8 @@ function seekCheckPoint() {
 	var seekDiff;
 	var prevDiff;
 
+	if(LOCK_ZOOM)current_zoom = DEFAULT_ZOOM;
+
 	if( video.currentTime == 0 ) {
 		resetCheckPoints();
 		return;

@@ -5,7 +5,7 @@ var USE_DEFAULT_MARKERS = true;
 var DEFAULT_ZOOM = 20;
 
 /* Reset zoom level to default when viewing a video */
-var LOCK_ZOOM = false;
+var LOCK_ZOOM = true;
 
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
@@ -36,13 +36,19 @@ var ENABLE_HIGHLIGHTER = false;
  **/
 
 /**
+ *  in events.j
+ *
+ *  selector        (Element)   The "Select File"
+ *  toggleZoom      (Element)   
+ **/
+ 
+/**
  *  in script.js
  *
  *  active_video_id (String)    The id of selected file
  *  mediaSource                 Not used for now
  *  playlist        (Array of Strings)  Holds IDs
  *  video           (Element)   The video
- *  selector        (Element)   The "Select File"
  *
  * File-in related vars:
  * input_dir = 'parsing'

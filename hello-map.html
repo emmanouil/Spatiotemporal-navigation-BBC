@@ -23,10 +23,17 @@
 	<script src="events.js"></script>
 	<!-- For synchronous load (blocking) -->
 	<!--     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"></script> -->
-	<video src="parsing/VID_20160617_201834.mp4" id="v" controls width="320" height="240">
-    </video>
-	<select name="select" onchange="selectFile()">
-	</select>
+	<div id="container">
+		<video src="parsing/VID_20160617_201834.mp4" id="v" controls width="320" height="240">
+		</video>
+		<div>
+			Select File: 
+			<select name="select" onchange="selectFile()">
+			</select>
+		</div>
+		<label><input name ="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);"/>Reset to Default Zoom on playback</label>
+		<br/>
+	</div>
 </body>
 
 </html>

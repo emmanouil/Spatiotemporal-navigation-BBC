@@ -49,6 +49,7 @@ function initMap() {
     }
 
     activateMapEvents();	//in events.js
+    activateUI();	//in events.js
 }
 
 function centerMap( latitude, longitude, zoom ) {
