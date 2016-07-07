@@ -65,10 +65,14 @@ function centerMap( latitude, longitude, zoom ) {
 			map.setZoom( zoom )
 }
 
-function addMarker(lat, lng, label, bearing){
+function addMarker(lat, lng, index, timestamp, label, bearing){
 	if(!lat || !lng){
 		return;
-	}else if(!label){
+	}else if(timestamp){
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+		});
+	}if(!label){
 		marker = new google.maps.Marker({
 			position: new google.maps.LatLng(lat,lng),
 		});
@@ -91,6 +95,7 @@ if(USE_DEFAULT_MARKERS){
 			title: label
 		});
 		marker1.setMap(map);
+		marker1.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
 }
 	}
 	marker.setMap(map);

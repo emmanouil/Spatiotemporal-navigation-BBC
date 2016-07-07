@@ -35,6 +35,7 @@ function addOption(value, text) {
     selector.add(option);
 }
 
+//returns loc_obj
 function addToIndex(XMLHttpRequest_in) {
     var loc_obj = new Object();
     loc_obj.index = globalSetIndex.length;
@@ -44,6 +45,7 @@ function addToIndex(XMLHttpRequest_in) {
     loc_obj.videoFile = pl_video_prefix + loc_obj.id + pl_video_extension;
     loc_obj.set = XMLHttpRequest_in.response;
     globalSetIndex.push(loc_obj);
+    return loc_obj;
 }
 
 function getSetByVideoId(id_in) {

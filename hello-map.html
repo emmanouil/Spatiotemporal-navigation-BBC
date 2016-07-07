@@ -28,7 +28,7 @@
 		</video>
 		<div id="menu">
 			Select File: 
-			<select name="select" onchange="selectFile()">
+			<select name="select" onchange="selectFile(this.selectedIndex)">
 			</select>
 			<br/>
 			<label><input name ="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);"/>Reset to Default Zoom on playback</label>

@@ -57,7 +57,6 @@ function parse_playlist() {
 		console.log( "[NOTE] Fetching playlist elements..." )
 		for(var i = 0;i < playlist.length;i++ ) {
 			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
-			addOption(input_dir + '/' + pl_video_prefix + playlist[ i ] + pl_video_extension, playlist[ i ]);
 		}
 	} else if( req_status == 200 ) {
 		console.log( "[NOTE] Fetching " + playlist_file + " returned with an empty file" );
@@ -68,18 +67,19 @@ function parse_playlist() {
 
 function parse_pl_element() {
 	if( this.status == 200 ) {
-		addMarkers(this.response);
-		addToIndex(this);		
+		var tmp_obj = addToIndex(this);	//add to globalSetIndex
+		addOption(input_dir + '/'+tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
+		addMarkers(tmp_obj.set, tmp_obj.index);
 	}
 	console.log( this )
 }
 
-function addMarkers(loc_set){
+function addMarkers(loc_set, index){
 	var tmp = loc_set[ 0 ].Location;
 	centerMap( tmp.Latitude, tmp.Longitude, current_zoom );
 	for(var i =0; i<loc_set.length; i++){
 		if(loc_set[i].Location){
-			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);
+			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, index, loc_set[i].Sensor.DurationTotal-loc_set[i].Sensor.Duration, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);
 		}
 	}
 }
