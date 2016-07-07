@@ -2,6 +2,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 1vh;
+/*	background-color: rgb(220, 250, 220)*/
 }
 
 
@@ -22,4 +23,14 @@ html, body {
 	left:50%;
 	transform:translatex(-90px);
 	transform:translatey(-32px);
+}
+
+#container{
+	position:absolute;
+	top: 50%;
+}
+
+#menu{
+	padding: 0.5em;
+	line-height: 25px;
 }

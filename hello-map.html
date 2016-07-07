@@ -26,16 +26,17 @@
 	<div id="container">
 		<video src="parsing/VID_20160617_201834.mp4" id="v" controls width="320" height="240">
 		</video>
-		<div>
+		<div id="menu">
 			Select File: 
 			<select name="select" onchange="selectFile()">
 			</select>
-		</div>
-		<label><input name ="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);"/>Reset to Default Zoom on playback</label>
-		<br/>
-		<button name="zoom_but" onclick="setDefaultZoom(this);">Set Current Zoom to Default</button>
-		<br/>
+			<br/>
+			<label><input name ="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);"/>Reset to Default Zoom on playback</label>
+			<br/>
+			<button name="zoom_but" onclick="setDefaultZoom(this);">Set Current Zoom to Default</button>
+			<br/>
 <!-- <label>0<input name ="zoomLevel" type='range' onchange="setDefaultZoom();" min="0" max="21" step="1"/>21 Set value of Default Zoom level</label> -->
+		</div>
 	</div>
 </body>
 
