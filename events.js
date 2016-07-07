@@ -1,10 +1,11 @@
-var selector, toggleZoom, zoomLvl;
+var selector, toggleZoom, zoomLvl, tmpZoom;
 
 function activateMapEvents(){
 
 	map.addListener('zoom_changed', function() {
+	    tmpZoom = map.getZoom();
 		if(!LOCK_ZOOM){
-			current_zoom = map.getZoom();
+			current_zoom = tmpZoom;
 		}
 	});
 
@@ -18,11 +19,10 @@ function activateMapEvents(){
 }
 
 function activateUI(){
-    toggleZoom = document.getElementsByName("toggleZoom")[0];
-    selector = document.getElementsByName( 'select' )[0];
+    toggleZoom = document.getElementsByName('toggleZoom')[0];
+    selector = document.getElementsByName( 'select')[0];
 
     toggleZoom.checked = LOCK_ZOOM;
-
 
 }
 
@@ -42,4 +42,6 @@ function toggleDefaultZoom(e) {
     LOCK_ZOOM = e.checked;
 }
 
+function setDefaultZoom(e){
+    DEFAULT_ZOOM = current_zoom = tmpZoom;
 }
