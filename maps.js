@@ -1,5 +1,6 @@
 var map;
-var marker_icon = 'assets/icon_48px.svg'
+var marker_icon = 'assets/icon_48px.svg';
+var current_zoom = DEFAULT_ZOOM;
 
 //we use this for now
 var test_icon={
@@ -46,6 +47,8 @@ function initMap() {
     }else{
     	document.getElementById('user-svg').style.visibility = "hidden"
     }
+
+    activateMapEvents();	//in events.js
 }
 
 function centerMap( latitude, longitude, zoom ) {

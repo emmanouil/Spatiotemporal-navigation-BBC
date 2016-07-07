@@ -77,7 +77,7 @@ function parse_pl_element() {
 
 function addMarkers(loc_set){
 	var tmp = loc_set[ 0 ].Location;
-	centerMap( tmp.Latitude, tmp.Longitude, DEFAULT_ZOOM );
+	centerMap( tmp.Latitude, tmp.Longitude, current_zoom );
 	for(var i =0; i<loc_set.length; i++){
 		if(loc_set[i].Location){
 			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);

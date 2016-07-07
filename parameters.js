@@ -4,6 +4,9 @@ var USE_DEFAULT_MARKERS = true;
 /* Zoom Level [0,20] when viewing videos */
 var DEFAULT_ZOOM = 20;
 
+/* Reset zoom level to default when viewing a video */
+var LOCK_ZOOM = false;
+
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
 
@@ -15,6 +18,7 @@ var ENABLE_HIGHLIGHTER = false;
  *
  *  map         (Object) Holds Google Map
  *  test_icon   (Object) Holds SVG icon for camera markers
+ *  current_zoom (int)   Holds current zoom level
  **/
 
 /**
