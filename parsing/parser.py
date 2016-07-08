@@ -52,13 +52,15 @@ log_location_dict = dict()
 ## initialize log_location_dict
 def log_location_init():
 	global log_location_dict
-	log_location_dict['minDiff'] = 0;
-	log_location_dict['maxDiff'] = 0;
-	log_location_dict['avgDiff'] = 0;
-	log_location_dict['sum'] = 0;
-	log_location_dict['count'] = 0;
-	log_location_dict['baseNano'] = 0;
-	log_location_dict['baseTime'] = 0;
+	log_location_dict['minDiff'] = 0
+	log_location_dict['maxDiff'] = 0
+	log_location_dict['avgDiff'] = 0
+	log_location_dict['sum'] = 0
+	log_location_dict['count'] = 0
+	log_location_dict['baseNano'] = 0
+	log_location_dict['baseTime'] = 0
+	log_location_dict['nanoDiffSum'] = 0
+	log_location_dict['timeDiffSum'] = 0
 
 
 ## Process location for analysis
@@ -70,6 +72,8 @@ def log_location(json_loc):
 		log_location_dict['baseNano'] = json_loc['LocalNanostamp']
 		log_location_dict['baseTime'] = json_loc['Time']
 	else:
+		log_location_dict['nanoDiffSum'] += (json_loc['LocalNanostamp'] - log_location_dict['baseNano'])/1000000
+		log_location_dict['timeDiffSum'] += (json_loc['Time']-log_location_dict['baseTime'])
 		log("nano diff: "+str((json_loc['LocalNanostamp'] - log_location_dict['baseNano'])/1000000)+"    time diff: "+str(json_loc['Time']-log_location_dict['baseTime']), 1)
 		log_location_dict['baseNano'] = json_loc['LocalNanostamp']
 		log_location_dict['baseTime'] = json_loc['Time']
@@ -85,6 +89,7 @@ def log_location(json_loc):
 def log_location_flush():
 	global log_location_dict
 	if log_location_dict['count'] > 0:
+		log("nano diff sum: "+str(log_location_dict['nanoDiffSum'])+"    time diff sum: "+str(log_location_dict['timeDiffSum']), 1)
 		log("minDiff: "+str(log_location_dict['minDiff']), 1)
 		log("maxDiff: "+str(log_location_dict['maxDiff']), 1)
 		log("avgDiff: "+str(log_location_dict['sum']/log_location_dict['count']), 1)
