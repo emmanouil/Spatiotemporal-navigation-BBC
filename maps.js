@@ -99,4 +99,5 @@ if(USE_DEFAULT_MARKERS){
 }
 	}
 	marker.setMap(map);
+	marker.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
 }

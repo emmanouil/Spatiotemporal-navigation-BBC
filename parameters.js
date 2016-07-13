@@ -1,5 +1,5 @@
 /* Display Default Google Maps Marker for each Location Point */
-var USE_DEFAULT_MARKERS = true;
+var USE_DEFAULT_MARKERS = false;
 
 /* Zoom Level [0,20] when viewing videos */
 var DEFAULT_ZOOM = 20;
