@@ -6,9 +6,29 @@ A `playlist.txt` located in a top-level subfolder named `parsing` with names of 
 For each _NAMEOFFILE_ there should exist (in the same folder as `playlist.txt`) a:
 
 1. `VID_NAMEOFFILE.mp4` video file
-2. `OUT_NAMEOFFILE.txt` data file (output of the parser), that contains an array of JSON Object as follows:
+2. `OUT_NAMEOFFILE.txt` data file (output of the parser), that contains an array of JSON Object [like this](#Location-and-Sensor-Pairs)
 
+=====
+
+###Data In Use
+####Global Pairs Holder
+global variable name: ```globalSetIndex```
+decription: an Array of recordings - the Location/Sensor Pair Objects of each recording are stored in the ```set``` field)
+```JSON
+    {
+        id: "1234567_12345"
+        index: 0
+        set: Array[12]
+        textFile: "OUT_1234567_12345.txt"
+        textFileURL: "http://137.194.232.162:8080/parsing/OUT_1234567_12345.txt"
+        videoFile: "OUT_1234567_12345.mp4"
+    }
 ```
+
+
+####Location and Sensor Pairs
+decription: An Object holding Orientation and Location information for a POI
+```JSON
     {
         "id": 1,
         "Sensor": {
