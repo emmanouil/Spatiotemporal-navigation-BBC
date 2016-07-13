@@ -6,7 +6,7 @@ A `playlist.txt` located in a top-level subfolder named `parsing` with names of 
 For each _NAMEOFFILE_ there should exist (in the same folder as `playlist.txt`) a:
 
 1. `VID_NAMEOFFILE.mp4` video file
-2. `OUT_NAMEOFFILE.txt` data file (output of the parser), that contains an array of JSON Object [like this](#Location-and-Sensor-Pairs)
+2. `OUT_NAMEOFFILE.txt` data file (output of the parser), that contains an array of JSON Object [like this](#location-and-sensor-pairs)
 
 =====
 
