@@ -1,17 +1,17 @@
 html, body {
 	height: 100%;
+	width: 100%;
 	margin: 0;
-	padding: 1vh;
 /*	background-color: rgb(220, 250, 220)*/
 }
 
 
 #map {
-	top: 0px;
-	left: 0px;
 	height: 50%;
 	width: 50%;
 	z-index: 53;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 #user-svg{
@@ -21,13 +21,15 @@ html, body {
 	padding: 0;
 	top: 50%;
 	left:50%;
-	transform:translatex(-90px);
-	transform:translatey(-32px);
+	transform: translateY(-32px) translateX(-16px);
 }
 
 #container{
-	position:absolute;
-	top: 50%;
+	width: 320px;
+	top: auto;
+	/* text-align: center; */
+	margin-left:auto;
+	margin-right:auto;
 }
 
 #menu{
