@@ -1,4 +1,5 @@
 var globalSetIndex = [];
+var globalMarkerIndex = [];
 
 function logERR(msg) {
     console.log("[ERROR] " + msg);

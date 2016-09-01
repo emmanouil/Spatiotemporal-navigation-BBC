@@ -7,6 +7,8 @@ var DEFAULT_ZOOM = 20;
 /* Reset zoom level to default when viewing a video */
 var LOCK_ZOOM = true;
 
+var HIGHLIGHT_CURRENT_MARKER = false;
+
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
 

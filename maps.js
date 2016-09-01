@@ -99,5 +99,11 @@ if(USE_DEFAULT_MARKERS){
 }
 	}
 	marker.setMap(map);
-	marker.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
+	marker.addListener('click', function(){
+		console.log("click");
+		goToVideoAndTime(index, timestamp);
+	});
+	if(HIGHLIGHT_CURRENT_MARKER){
+		globalMarkerIndex.push(marker);	//TODO: no need to expose this
+	}
 }

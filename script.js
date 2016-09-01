@@ -70,6 +70,9 @@ function parse_pl_element() {
 		var tmp_obj = addToIndex(this);	//add to globalSetIndex
 		addOption(input_dir + '/'+tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
 		addMarkers(tmp_obj.set, tmp_obj.index, tmp_obj.id);
+		if(HIGHLIGHT_CURRENT_MARKER){
+			addMarkersToIndex();
+		}
 	}
 	console.log( this )
 }
@@ -109,4 +112,19 @@ function addToIndex(XMLHttpRequest_in) {
     loc_obj.set = XMLHttpRequest_in.response;
     globalSetIndex.push(loc_obj);
     return loc_obj;
+}
+
+function addMarkersToIndex(){
+	return; //TODO
+	var tmp_set = globalSetIndex[globalSetIndex.length-1];
+	var tmp_marker = globalMarkerIndex;
+	var tmp_icon;
+	for(var i=0; i<tmp_set.set.length; i++){
+		if(tmp_marker[i]!=null){
+			globalSetIndex[globalSetIndex.length-1].set[i].Marker = tmp_marker[i];
+			tmp_icon = tmp_marker[i].icon;
+			tmp_icon.fillColor = "#458B73";
+			globalSetIndex[globalSetIndex.length-1].set[i].HiIcon = tmp_icon;
+		}
+	}
 }
