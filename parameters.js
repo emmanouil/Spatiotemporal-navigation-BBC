@@ -1,6 +1,9 @@
 /* Display Default Google Maps Marker for each Location Point */
 var USE_DEFAULT_MARKERS = false;
 
+/* Display Default Google Maps Marker for each Location Point that does not have bearing information*/
+var USE_NO_BEARING_MARKERS = true;
+
 /* Zoom Level [0,20] when viewing videos */
 var DEFAULT_ZOOM = 20;
 

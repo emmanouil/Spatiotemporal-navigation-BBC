@@ -85,7 +85,9 @@ function addMarkers(loc_set, index, file_id){
 	}
 	for(var i =0; i<loc_set.length; i++){
 		if(loc_set[i].Location){
-			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, index, loc_set[i].Sensor.DurationTotal-loc_set[i].Sensor.Duration, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);
+			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, index, loc_set[i].Sensor.DurationTotal-loc_set[i].Sensor.Duration, i, radToDeg(loc_set[i].Sensor.X)-90);
+// OLD: with label instead of marker number
+//			addMarker(loc_set[i].Location.Latitude, loc_set[i].Location.Longitude, index, loc_set[i].Sensor.DurationTotal-loc_set[i].Sensor.Duration, "Marker "+i, radToDeg(loc_set[i].Sensor.X)-90);
 		}
 	}
 }

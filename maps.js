@@ -65,6 +65,67 @@ function centerMap( latitude, longitude, zoom ) {
 			map.setZoom( zoom )
 }
 
+function addMarker(lat, lng, index, timestamp, marker_n, bearing){
+
+	/*
+	 * if no coordinates, or timestamp, skip the marker
+	 */
+	if(!lat || !lng || !timestamp){
+		return;
+	}
+
+	/*
+	 * if no bearing information, use default markers
+	 */
+	if(!bearing && USE_NO_BEARING_MARKERS){
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label
+		});
+		marker1.setMap(map);
+		marker1.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
+		return;
+	}else if(bearing){
+		if(marker_n>=0){
+			var label = "Marker "+marker_n;
+		}else{
+			var label = "Marker Unlabeled";
+		}
+		var local_icon = test_icon;
+		local_icon.rotation = bearing;
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label,
+			icon: local_icon
+		});
+	}
+
+	if(USE_DEFAULT_MARKERS){
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(lat,lng),
+			title: label
+		});
+		marker1.setMap(map);
+		marker1.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
+	}
+
+	marker.setMap(map);
+	marker.addListener('click', function(){
+		console.log("click");
+		goToVideoAndTime(index, timestamp);
+	});
+	
+	/*
+	}
+
+	if(HIGHLIGHT_CURRENT_MARKER){
+		globalMarkerIndex.push(marker);	//TODO: no need to expose this
+	}
+	*/
+}
+
+//OLD (with label instead of marker number)
+/*
 function addMarker(lat, lng, index, timestamp, label, bearing){
 	if(!lat || !lng){
 		return;
@@ -103,7 +164,5 @@ if(USE_DEFAULT_MARKERS){
 		console.log("click");
 		goToVideoAndTime(index, timestamp);
 	});
-	if(HIGHLIGHT_CURRENT_MARKER){
-		globalMarkerIndex.push(marker);	//TODO: no need to expose this
-	}
 }
+*/
