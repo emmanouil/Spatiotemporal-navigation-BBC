@@ -10,7 +10,7 @@ var pl_video_extension = '.mp4';
 var active_video_id = null;
 var mediaSource = new MediaSource();	//Not used for now
 //var skeleton_worker = new Worker( 'parser.js' );
-var selector, video, playlist;
+var selector, video, playlist, items_fetched = 0;
 
 //after window loads do the init
 window.onload = function() {
@@ -75,6 +75,10 @@ function parse_pl_element() {
 		}
 	}
 	console.log( this )
+	items_fetched++;	//count playlist entries fetched
+	if(items_fetched==playlist.length){	//when everything's loaded go to first video
+		goToVideoAndTime(0,0);
+	}
 }
 
 function addMarkers(loc_set, index, file_id){

@@ -54,6 +54,7 @@ var ENABLE_HIGHLIGHTER = false;
  *  mediaSource                 Not used for now
  *  playlist        (Array of Strings)  Holds IDs
  *  video           (Element)   The video
+ *  items_fetched   (int)       Number of playlist elements fetched
  *
  * File-in related vars:
  * input_dir = 'parsing'
