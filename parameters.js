@@ -1,3 +1,4 @@
+"use strict";
 /* Display Default Google Maps Marker for each Location Point */
 var USE_DEFAULT_MARKERS = false;
 

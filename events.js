@@ -1,3 +1,4 @@
+"use strict";
 var selector, toggleZoom, zoomLvl, tmpZoom;
 
 function activateMapEvents(){
@@ -29,10 +30,12 @@ function activateUI(){
 //called when file is selected from the dropdown
 //arg: selected index
 function selectFile(index_in) {
+	var loc;
     resetCheckPoints();
     video.src = selector[index_in].value;
     active_video_id = selector[index_in].text;
-    if (loc = getSetByVideoId(active_video_id).set[0].Location) {
+    loc = getSetByVideoId(active_video_id).set[0].Location;
+    if (loc) {
         centerMap(loc.Latitude, loc.Longitude);
     } else {
         logERR(selector.selectedIndex + "  not found");

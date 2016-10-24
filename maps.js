@@ -1,3 +1,4 @@
+"use strict";
 var map;
 var marker_icon = 'assets/icon_48px.svg';
 var current_zoom = DEFAULT_ZOOM;
@@ -74,6 +75,8 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing){
 		return;
 	}
 
+	var marker;
+
 	/*
 	 * if no bearing information, use default markers
 	 */
@@ -115,13 +118,6 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing){
 		goToVideoAndTime(index, timestamp);
 	});
 	
-	/*
-	}
-
-	if(HIGHLIGHT_CURRENT_MARKER){
-		globalMarkerIndex.push(marker);	//TODO: no need to expose this
-	}
-	*/
 }
 
 //OLD (with label instead of marker number)

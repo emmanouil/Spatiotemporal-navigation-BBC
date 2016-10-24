@@ -1,3 +1,4 @@
+"use strict";
 var globalSetIndex = [];
 var globalMarkerIndex = [];
 
@@ -23,7 +24,7 @@ function degToRad(rad_in) {
 }
 
 function getSetByVideoId(id_in) {
-    for (item in globalSetIndex) {
+    for (let item in globalSetIndex) {
         if (globalSetIndex[item].id === id_in.toString())
             return globalSetIndex[item];
     }

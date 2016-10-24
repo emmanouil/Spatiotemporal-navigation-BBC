@@ -1,3 +1,4 @@
+"use strict";
 var curr_set;
 var curr_set_index = 0;
 var curr_timeout;
