@@ -1,3 +1,4 @@
+"use strict";
 //var globalSetIndex = [];	//in helper.js holds EVERYTHING parsed
 //var map;	//in maps.js holds MAP
 
@@ -12,21 +13,17 @@ var mediaSource = new MediaSource();	//Not used for now
 //var skeleton_worker = new Worker( 'parser.js' );
 var selector, video, playlist, items_fetched = 0;
 
+//entryPoint
 //after window loads do the init
-window.onload = function() {
+window.onload = init;
+
+//start initing
+function init(){
 	video = document.getElementById( 'v' );
 	initVideo();	//in video.js
 	mediaSource.video = video;
 	video.ms = mediaSource;
-
 	fetch( '/' + input_dir + '/' + playlist_file, parse_playlist );
-
-	//	fetch(input_dir+'/'+sample_in, parse_sample, "json");
-
-
-	//	video.src = window.URL.createObjectURL(mediaSource);
-	//	initMSE();
-	//	if (withReverb) fetch(reverbFile, initReverb, "arraybuffer");
 }
 
 //Content-loading functions
@@ -122,15 +119,27 @@ function addToIndex(XMLHttpRequest_in) {
 
 function addMarkersToIndex(){
 	return; //TODO
+
+	var tmp_marker;
+
+
+
 	var tmp_set = globalSetIndex[globalSetIndex.length-1];
 	var tmp_marker = globalMarkerIndex;
 	var tmp_icon;
 	for(var i=0; i<tmp_set.set.length; i++){
 		if(tmp_marker[i]!=null){
-			globalSetIndex[globalSetIndex.length-1].set[i].Marker = tmp_marker[i];
-			tmp_icon = tmp_marker[i].icon;
+			var tmp_icon = tmp_marker[i].getIcon();
 			tmp_icon.fillColor = "#458B73";
-			globalSetIndex[globalSetIndex.length-1].set[i].HiIcon = tmp_icon;
+
+			tmp_marker = new google.maps.Marker({
+				position: new google.maps.LatLng(globalSetIndex[globalSetIndex.length-1].set[i].Latitude,globalSetIndex[globalSetIndex.length-1].set[i].Longitude),
+				title: tmp_marker[i].title+" hi",
+				icon: tmp_icon
+			});
+
+//			globalSetIndex[globalSetIndex.length-1].set[i].Marker = tmp_marker[i];			
+			globalSetIndex[globalSetIndex.length-1].set[i].HiMarker = tmp_marker;
 		}
 	}
 }
