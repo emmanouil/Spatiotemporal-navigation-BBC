@@ -1,3 +1,24 @@
+# Spatiotemporal-Navigation
+
+Start the server on top domain, and navigate to hello-map.html
+
+###Input:
+A `playlist.txt` located in a top-level subfolder named `parsing` with names of files.
+
+For each _NAMEOFFILE_ there should exist (in the same folder as `playlist.txt`) a:
+
+1. `VID_NAMEOFFILE.mp4` video file
+2. `OUT_NAMEOFFILE_SENSORDATA.xml` data file, that contains the timed sensors data
+
+
+
+
+
+=====
+=====
+The following description is for the original repository https://github.com/emmanouil/Beta-App-Client 
+=====
+
 # Beta-App-Client
 
 ###Input:
