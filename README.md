@@ -15,8 +15,11 @@ For each _NAMEOFFILE_ there should exist (in the same folder as `playlist.txt`) 
 
 
 =====
+
 =====
+
 The following description is for the original repository https://github.com/emmanouil/Beta-App-Client 
+
 =====
 
 # Beta-App-Client
