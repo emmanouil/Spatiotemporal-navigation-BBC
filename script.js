@@ -41,9 +41,9 @@ function init(){
  * Content loading function
  */
 function fetch( what, where, resp_type ) {
-	console.log( "fetching " + what );
+	logINFO( "fetching " + what );
 	if( what.length < 2 ) {
-		console.log( "erroneous request" );
+		logERR( "erroneous request" );
 	}
 	var req = new XMLHttpRequest();
 	req.addEventListener( "load", where );
@@ -58,16 +58,16 @@ function parse_playlist() {
 	playlist = this.responseText.split( /\r\n|\r|\n/ ); //split on break-line
 	var req_status = this.status;
 	if( req_status == 200 && playlist.length > 0 ) {
-		console.log( "[NOTE] Fetching " + playlist_file + " OK  - total received elements: " + playlist.length );
-		console.log( "[NOTE] Fetching playlist elements..." )
+		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length );
+		logNOTE("Fetching playlist elements..." )
 		for(var i = 0;i < playlist.length;i++ ) {
 			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
 			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
 		}
 	} else if( req_status == 200 ) {
-		console.log( "[NOTE] Fetching " + playlist_file + " returned with an empty file" );
+		logNOTE("Fetching " + playlist_file + " returned with an empty file" );
 	} else {
-		console.log( "[NOTE] Fetching " + playlist_file + " unsuccessful" );
+		logNOTE("Fetching " + playlist_file + " unsuccessful" );
 	}
 }
 
@@ -80,7 +80,7 @@ function parse_pl_element() {
 			addMarkersToIndex();
 		}
 	}
-	console.log( this )
+	logINFO( this )
 	items_fetched++;	//count playlist entries fetched
 	if(items_fetched==playlist.length){	//when everything's loaded go to first video
 		goToVideoAndTime(0,0);
