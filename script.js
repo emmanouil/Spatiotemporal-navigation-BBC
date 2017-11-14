@@ -29,60 +29,62 @@ window.onload = init;
 /**
  * Initialize
  */
-function init(){
-	video = document.getElementById( 'v' );
+function init() {
+	video = document.getElementById('v');
 	initVideo();	//in video.js
 	mediaSource.video = video;
 	video.ms = mediaSource;
-	fetch( '/' + input_dir + '/' + playlist_file, parse_playlist );
+	fetch('/' + input_dir + '/' + playlist_file, parse_playlist);
 }
 
 /**
  * Content loading function
  */
-function fetch( what, where, resp_type ) {
-	logINFO( "fetching " + what );
-	if( what.length < 2 ) {
-		logERR( "erroneous request" );
+function fetch(what, where, resp_type) {
+	logINFO("fetching " + what);
+	if (what.length < 2) {
+		logERR("erroneous request");
 	}
 	var req = new XMLHttpRequest();
-	req.addEventListener( "load", where );
-	req.open( "GET", what );
-	if( typeof ( resp_type ) != 'undefined' ) {
+	req.addEventListener("load", where);
+	req.open("GET", what);
+	if (typeof (resp_type) != 'undefined') {
 		req.responseType = resp_type;
 	}
+	console.log(where)
+	logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
 	req.send();
 }
 
 function parse_playlist() {
-	playlist = this.responseText.split( /\r\n|\r|\n/ ); //split on break-line
+	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
 	var req_status = this.status;
-	if( req_status == 200 && playlist.length > 0 ) {
-		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length );
-		logNOTE("Fetching playlist elements..." )
-		for(var i = 0;i < playlist.length;i++ ) {
-			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
-			fetch( input_dir + '/' + pl_element_prefix + playlist[ i ] + pl_element_extension, parse_pl_element, 'json' );
+	if (req_status == 200 && playlist.length > 0) {
+		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length);
+		logNOTE("Fetching playlist elements...")
+		for (var i = 0; i < playlist.length; i++) {
+			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');
+			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');
 		}
-	} else if( req_status == 200 ) {
-		logNOTE("Fetching " + playlist_file + " returned with an empty file" );
+	} else if (req_status == 200) {
+		logNOTE("Fetching " + playlist_file + " returned with an empty file");
 	} else {
-		logNOTE("Fetching " + playlist_file + " unsuccessful" );
+		logNOTE("Fetching " + playlist_file + " unsuccessful");
 	}
 }
 
 function parse_pl_element() {
-	if( this.status == 200 ) {
+	if (this.status == 200) {
 		var tmp_obj = addToIndex(this);	//add to globalSetIndex
-		addOption(input_dir + '/'+tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
+		addOption(input_dir + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
 		addMarkers(tmp_obj.set, tmp_obj.index, tmp_obj.id);
-		if(HIGHLIGHT_CURRENT_MARKER){
+		if (HIGHLIGHT_CURRENT_MARKER) {
 			addMarkersToIndex();
 		}
 	}
-	logINFO( this )
+	logINFO(this)
 	items_fetched++;	//count playlist entries fetched
-	if(items_fetched==playlist.length){	//when everything's loaded go to first video
-		goToVideoAndTime(0,0);
+	if (items_fetched == playlist.length) {	//when everything's loaded go to first video
+		goToVideoAndTime(0, 0);
 	}
 }
