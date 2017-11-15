@@ -10,7 +10,8 @@ var playlist_file = 'playlist.txt';
 var pl_sensors_suffix = '_SENSOR_DATA';
 var pl_sensors_extension = '.xml';
 var pl_video_suffix = '';
-var pl_video_extension = '.mp4';
+//var pl_video_extension = '.mp4';
+var pl_video_extension = '.webm';
 
 /**
  * Script Parameters & Objs
@@ -51,7 +52,6 @@ function fetch(what, where, resp_type) {
 	if (typeof (resp_type) != 'undefined') {
 		req.responseType = resp_type;
 	}
-	console.log(where)
 	logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
 	req.send();
 }
@@ -63,8 +63,9 @@ function parse_playlist() {
 		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length);
 		logNOTE("Fetching playlist elements...")
 		for (var i = 0; i < playlist.length; i++) {
-			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');
-			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');
+			//fetch video file
+			fetch(input_dir + '/' + playlist[i] + pl_video_suffix + pl_video_extension, parse_pl_element);
+			//			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');	//Original - using json generated from the parser
 		}
 	} else if (req_status == 200) {
 		logNOTE("Fetching " + playlist_file + " returned with an empty file");
@@ -75,7 +76,7 @@ function parse_playlist() {
 
 function parse_pl_element() {
 	if (this.status == 200) {
-		var tmp_obj = addToIndex(this);	//add to globalSetIndex
+		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
 		addOption(input_dir + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
 		addMarkers(tmp_obj.set, tmp_obj.index, tmp_obj.id);
 		if (HIGHLIGHT_CURRENT_MARKER) {
@@ -88,3 +89,39 @@ function parse_pl_element() {
 		goToVideoAndTime(0, 0);
 	}
 }
+
+
+/**
+ * Revised version of the function - only for video files
+ * @param {*Object} XMLHttpRequest_in 
+ */
+//returns recording id
+function addVideoToIndex(XMLHttpRequest_in) {
+	var loc_obj = new Object();
+	loc_obj.index = globalSetIndex.length;
+	loc_obj.videoFileURL = XMLHttpRequest_in.responseURL;
+	loc_obj.id = loc_obj.videoFileURL.slice(loc_obj.videoFileURL.indexOf(input_dir) + input_dir.length + 1, loc_obj.videoFileURL.indexOf(pl_video_extension));
+	loc_obj.videoFile = loc_obj.id + pl_video_extension;
+	loc_obj.set = XMLHttpRequest_in.response;
+	globalSetIndex.push(loc_obj);
+	return loc_obj;
+}
+
+/**
+ * Original version of the function for adding video and sensor files - using the generated jsons
+ * @param {*Object} XMLHttpRequest_in 
+ */
+/*
+//returns loc_obj
+function addToIndex(XMLHttpRequest_in) {
+    var loc_obj = new Object();
+    loc_obj.index = globalSetIndex.length;
+    loc_obj.textFileURL = XMLHttpRequest_in.responseURL;
+    loc_obj.id = loc_obj.textFileURL.slice(loc_obj.textFileURL.indexOf(pl_element_prefix) + pl_element_prefix.length, loc_obj.textFileURL.indexOf(pl_element_extension));
+    loc_obj.textFile = pl_element_prefix + loc_obj.id + pl_element_extension;
+    loc_obj.videoFile = pl_video_prefix + loc_obj.id + pl_video_extension;
+    loc_obj.set = XMLHttpRequest_in.response;
+    globalSetIndex.push(loc_obj);
+    return loc_obj;
+}
+*/
