@@ -125,3 +125,14 @@ function addToIndex(XMLHttpRequest_in) {
     return loc_obj;
 }
 */
+
+function addOption(value, file_id) {
+    var option = document.createElement("option");
+    if (file_id) {
+        option.text = file_id;
+    } else {
+        logERR("text required - used as video id");
+    }
+    option.value = value;
+    selector.add(option);
+}
