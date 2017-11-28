@@ -4,20 +4,22 @@ import os
 import datetime
 import re
 
-LOGFILE = 'python_script.log'
+#Parameters
+FILE_IN_DIR = 'parsing'	#dir with files to be parsed
+LOGFILE = 'python_script.log'	#logfile
 OUTPUTDIR = 'script_out'
-PLAYLIST = 'playlist.txt'
+PLAYLIST = 'playlist.txt'	#generated playlist containing formated files
 USE_ORIENTATION_AVERAGE = True	#else use latest orientation
 USE_FULL_FILENAME_IN_PLAYLIST = False	#otherwise use only ID (without the OUT_ and .txt)
 LOG_STATISTICS = True
 CLEAR_LOG = True  	#When init log - delete previous logfile
+
+#Global vars
 orient_count = 0		
 orient_start = 0
 orient_dur = 0
 orient_dur_tot = 0
 orient_obj = None
-
-#TODO: clarify w,w/o extension & file , filestring
 
 ##	Log
 #
