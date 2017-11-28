@@ -3,3 +3,6 @@
 
 #test webserver files
 mongoose*
+
+#python script generated log
+python_script.log
