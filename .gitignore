@@ -1,1 +1,5 @@
+#folder for putting files to be parsed
 /parsing/
+
+#test webserver files
+mongoose*
