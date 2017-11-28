@@ -5,14 +5,25 @@ import datetime
 import re
 
 #Parameters
+#Paremeters for input files
 FILE_IN_DIR = 'parsing'	#dir with files to be parsed
+TIMING_FILE_EXTENSION = 'xml'
+TIMINIG_XML_SUFFIX = '_EbuCore'
+SENSOR_FILE_EXTENSION = 'xml'
+SENSOR_XML_SUFFIX = '_SENSORDATA'
+
+#Paremeters for output files
 LOGFILE = 'python_script.log'	#logfile
 OUTPUTDIR = 'script_out'
 PLAYLIST = 'playlist.txt'	#generated playlist containing formated files
+
+#Parameters for parser
 USE_ORIENTATION_AVERAGE = True	#else use latest orientation
 USE_FULL_FILENAME_IN_PLAYLIST = False	#otherwise use only ID (without the OUT_ and .txt)
 LOG_STATISTICS = True
 CLEAR_LOG = True  	#When init log - delete previous logfile
+
+
 
 #Global vars
 orient_count = 0		
@@ -264,7 +275,7 @@ def main():
 	if(CLEAR_LOG):
 		if os.path.isfile(LOGFILE):
 			os.remove(LOGFILE)
-	#check if called for specific file
+	#check if called for specific file	- TODO for new dataset
 	#check this instead: https://docs.python.org/3/library/fileinput.html#module-fileinput
 	if(len(sys.argv)>1):
 		file_in = open(sys.argv[1], 'r')
