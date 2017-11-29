@@ -8,10 +8,11 @@ import xml.etree.ElementTree as ET
 #Parameters
 #Paremeters for input files
 FILE_IN_DIR = 'parsing'    #dir with files to be parsed
-TIMING_FILE_EXTENSION = 'xml'
+TIMING_FILE_EXTENSION = '.xml'
 TIMINIG_XML_SUFFIX = '_EbuCore'
-SENSOR_FILE_EXTENSION = 'xml'
+SENSOR_FILE_EXTENSION = '.xml'
 SENSOR_XML_SUFFIX = '_SENSORDATA'
+VIDEO_FILE_EXTENSION = '.webm'
 
 #Paremeters for output files
 LOGFILE = 'python_script.log'    #logfile
