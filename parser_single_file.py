@@ -51,13 +51,13 @@ def log(msg, lvl):
         if(lvl is None):#normal
             print(msg)
         elif(lvl < 0):    #error
-            print('\033[31;1m'+'[ERROR]\t'+'\033[0m'+msg)
+            print('\033[31m'+'[ERROR]\t'+'\033[0m'+msg)
             logfile.write(str_now+'[ERROR]\t'+msg)
         elif(lvl > 0):    #info
             print('\033[32m'+'[INFO]\t'+'\033[0m'+msg)
             logfile.write(str_now+'[INFO]\t'+msg)
         elif(lvl == 0):    #dbg
-            print('\033[35;1m'+'[DEBUG]\t'+'\033[0m'+msg)
+            print('\033[35m'+'[DEBUG]\t'+'\033[0m'+msg)
             logfile.write(str_now+'[DEBUG]\t'+msg)
 
 def log_blankline():
