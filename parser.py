@@ -157,24 +157,17 @@ def reset_vars():
 #
 #    returns only the file NAME (without the extension)
 #    of files in current folder having that extension
-def get_file_list_no_extension(extension, directory = FILE_IN_DIR):
+def get_file_list(extension, directory = FILE_IN_DIR, with_extension = True):
     all_files = os.listdir(directory)
     file_list = []
     for file in all_files:
         tmp_file = get_file_name(directory+'/'+file, extension)
         if(tmp_file is not None):
             log(tmp_file,0)
-            file_list.append(tmp_file)
-    return file_list
-
-def get_file_list(extension, directory = FILE_IN_DIR):
-    all_files = os.listdir(directory)
-    file_list = []
-    for file in all_files:
-        tmp_file = get_file_name(directory+'/'+file, extension)
-        if(tmp_file is not None):
-            log(tmp_file,0)
-            file_list.append(file)
+            if(with_extension):
+                file_list.append(file)
+            else:
+                file_list.append(tmp_file)
     return file_list
 
 ##    Checks a file (or filename) for extension
@@ -298,9 +291,9 @@ def main():
         file_in.close()
     #default case when check for every file in current folder with .txt extension
     else:
-        file_list = get_file_list_no_extension(VIDEO_FILE_EXTENSION, FILE_IN_DIR)
-        file_list_video = get_file_list(VIDEO_FILE_EXTENSION)
-        file_list_xml = get_file_list(VIDEO_FILE_EXTENSION)
+        file_list = get_file_list(VIDEO_FILE_EXTENSION, FILE_IN_DIR, False)
+        file_list_video = get_file_list(VIDEO_FILE_EXTENSION, FILE_IN_DIR, True)
+        file_list_xml = get_file_list('.xml', FILE_IN_DIR, True)
         for file_name in file_list:
             process_file(file_name)
 
