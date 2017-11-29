@@ -1,8 +1,9 @@
-import sys
+import datetime
 import json
 import os
-import datetime
 import re
+import sys
+import xml.etree.ElementTree as ET
 
 #Parameters
 #Paremeters for input files
