@@ -119,21 +119,29 @@ def log_location_flush():
 
 
 def main():
-    if(CLEAR_LOG):
+    if (CLEAR_LOG):
         if os.path.isfile(LOGFILE):
             os.remove(LOGFILE)
     #check if called for specific file    - TODO for new dataset
     #check this instead: https://docs.python.org/3/library/fileinput.html#module-fileinput
-    if(len(sys.argv)>1):
+    if (len(sys.argv) > 1):
         file_in = sys.argv[1]
-        log('PROCESSING FILE: '+file_in,LOG_LVL_INFO)
-        file_in_video = open(sys.argv[1]+VIDEO_FILE_EXTENSION, 'r')
-        file_in_timing = open(sys.argv[1]+TIMINIG_XML_SUFFIX+TIMING_FILE_EXTENSION, 'r')
+        log('PROCESSING FILE: ' + file_in, LOG_LVL_INFO)
+        try:
+            file_in_video = open(file_in + VIDEO_FILE_EXTENSION, 'r')
+        except:
+            log('INVALID FILE NAME', LOG_LVL_ERROR)
+            raise
+        try:
+            file_in_timing = open(file_in + TIMINIG_XML_SUFFIX + TIMING_FILE_EXTENSION, 'r')
+        except:
+            log('video file found, but without associated timing file. Aborting', LOG_LVL_ERROR)
+            raise
         file_name = get_file_name(file_in, '.txt')
         if file_name is None:
-            exit('Wrong file extension ('+file_ext+') for file '+file_full_name[0]+file_full_name[1]+'   :  expected .txt')
+            exit('Wrong file extension (' + file_ext + ') for file ' + file_full_name[0] + file_full_name[1] + '   :  expected .txt')
         else:
-            process_file(file_name+'.txt')
+            process_file(file_name + '.txt')
         file_in.close()
     #default case when check for every file in current folder with .txt extension
     else:
@@ -147,7 +155,7 @@ def main():
     input('continue?')
 
 
-#That's All Folks!
+    #That's All Folks!
     exit(0)
 
 if __name__ == '__main__':
