@@ -6,3 +6,6 @@ mongoose*
 
 #python script generated log
 python_script.log
+
+#vscode launch configs
+.vscode
