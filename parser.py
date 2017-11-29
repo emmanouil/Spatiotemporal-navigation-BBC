@@ -34,6 +34,11 @@ orient_dur = 0
 orient_dur_tot = 0
 orient_obj = None
 
+#constants
+LOG_LVL_ERROR = -1
+LOG_LVL_DEBUG = 0
+LOG_LVL_INFO = 1
+
 ##    Log
 #
 #    lvl = None log to console
