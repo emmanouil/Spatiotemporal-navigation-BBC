@@ -139,6 +139,23 @@ def open_video_file(filename):
         log('INVALID FILE NAME', LOG_LVL_ERROR)
         raise
 
+
+def get_timing(file_in):
+    timing_xml_tree = ET.parse(file_in.name)
+    for child in timing_xml_tree.iter():
+        if (child.tag == '{urn:ebu:metadata-schema:ebuCore_2014}partStartTime'):
+            for kid in child.iter():
+                if (kid.tag == '{urn:ebu:metadata-schema:ebuCore_2014}timecode'):
+                    startTime = kid.text
+                    print('startTime ' + kid.text)
+        if (child.tag == '{urn:ebu:metadata-schema:ebuCore_2014}partDuration'):
+            for kid in child.iter():
+                if (kid.tag == '{urn:ebu:metadata-schema:ebuCore_2014}timecode'):
+                    duration = kid.text
+                    print('duration ' + kid.text)
+    return {'startTime': startTime, 'duration': duration}
+
+
 def main():
     if (CLEAR_LOG):
         if os.path.isfile(LOGFILE):
