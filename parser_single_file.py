@@ -37,6 +37,19 @@ LOG_LVL_ERROR = -1
 LOG_LVL_DEBUG = 0
 LOG_LVL_INFO = 1
 
+#recording class
+class RecordingClass:
+    """class for maintaining the recordings"""
+    def __init__(self, r_recordingID, r_videoFilename, r_startTime, r_duration):
+        self.recordingID = r_recordingID
+        self.videoFilename = r_videoFilename
+        self.startTime = r_startTime
+        self.duration = r_duration
+
+
+
+
+
 ##    Log
 #
 #    lvl = None log to console
