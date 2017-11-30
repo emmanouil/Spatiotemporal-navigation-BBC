@@ -2,6 +2,27 @@
 
 Start the server on top domain, and navigate to hello-map.html
 
+## Parsers
+Parsers format the data as it is from the dataset, in a form suitable for consumption from the map visualization engine. 
+There are two parsers:
+
+### Input
+
+1. `parser_single_file` run with the name _NAMEOFFILE_ as an argument (without extension). For example, for a file ABC123.mp4 in the folder 'parsing', it should be executed as `python3 parser_single_file.py parsing/ABC123`. Each entry should have at least a video file and an associated EbuCore timing file (in xml)
+2. parser.py runing using a playlist [TODO]
+
+### Output
+
+TBD
+
+=====
+
+=====
+
+The following part is still under development 
+
+=====
+
 ###Input:
 A `playlist.txt` located in a top-level subfolder named `parsing` with names of files.
 
