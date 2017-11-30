@@ -157,24 +157,28 @@ def get_timing(file_in):
 
 
 def main():
+    #ENTRY POINT
     if (CLEAR_LOG):
         if os.path.isfile(LOGFILE):
             os.remove(LOGFILE)
-    #check if called for specific file    - TODO for new dataset
-    #check this instead: https://docs.python.org/3/library/fileinput.html#module-fileinput
+#CHECK IF WE HAVE ARGUMENT AND IT'S A VALID FILENAME
+#check if called for specific file    - TODO for new dataset
+#check this instead: https://docs.python.org/3/library/fileinput.html#module-fileinput
     if (len(sys.argv) > 1):
-        file_in = sys.argv[1]
-        log('PROCESSING FILE: ' + file_in, LOG_LVL_INFO)
+        recordingID = sys.argv[1]
+        filepath = FILE_IN_DIR + '/' + recordingID
+        log('PROCESSING FILE: ' + recordingID, LOG_LVL_INFO)
+        videoFilename = open_video_file(filepath + VIDEO_FILE_EXTENSION)
         try:
-            file_in_video = open(file_in + VIDEO_FILE_EXTENSION, 'r')
-        except:
-            log('INVALID FILE NAME', LOG_LVL_ERROR)
-            raise
-        try:
-            file_in_timing = open(file_in + TIMINIG_XML_SUFFIX + TIMING_FILE_EXTENSION, 'r')
+            file_in_timing = open(filepath + TIMINIG_XML_SUFFIX + TIMING_FILE_EXTENSION, 'r')
         except:
             log('video file found, but without associated timing file. Aborting', LOG_LVL_ERROR)
             raise
+
+        timing_info = get_timing(file_in_timing)
+
+        recording = RecordingClass(recordingID, videoFilename, timing_info['startTime'], timing_info['duration'])
+
         file_name = get_file_name(file_in, '.txt')
         if file_name is None:
             exit('Wrong file extension (' + file_ext + ') for file ' + file_full_name[0] + file_full_name[1] + '   :  expected .txt')
