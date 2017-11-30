@@ -131,6 +131,14 @@ def log_location_flush():
     log_location_init()
 
 
+def open_video_file(filename):
+    try:
+        tmp_file = open(filename, 'r')
+        return tmp_file.name
+    except:
+        log('INVALID FILE NAME', LOG_LVL_ERROR)
+        raise
+
 def main():
     if (CLEAR_LOG):
         if os.path.isfile(LOGFILE):
