@@ -46,6 +46,9 @@ class RecordingClass:
         self.startTime = r_startTime
         self.duration = r_duration
 
+    def addSensors(self, measurements, descriptor):
+        self.sensorValues = measurements
+        self.sensorDescriptor = descriptor
 
 
 
