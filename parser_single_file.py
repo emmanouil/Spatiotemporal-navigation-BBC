@@ -143,6 +143,8 @@ def open_video_file(filename):
         raise
 
 
+#get timing information from the EbuCore xml file
+#argument: filename, returns: {'startTime': startTime, 'duration': duration}
 def get_timing(file_in):
     timing_xml_tree = ET.parse(file_in.name)
     for child in timing_xml_tree.iter():
@@ -159,6 +161,9 @@ def get_timing(file_in):
     return {'startTime': startTime, 'duration': duration}
 
 
+#get sensor values
+#argument: filename, returns: {'measurements': measurements, 'descriptor':descriptor}
+#TODO: Optimize: we do unecessary iterations (the first iter() should iterate through the subsequent segments and children)
 def get_sensors(file_in):
     timing_xml_tree = ET.parse(file_in.name)
     measurements = []
@@ -185,6 +190,8 @@ def get_sensors(file_in):
     if (measurements == []):
         log('unknown error while parsing sensor file ' + file_in, LOG_LVL_ERROR)
     return {'measurements': measurements, 'descriptor': descriptor}
+
+
 def main():
     #ENTRY POINT
     if (CLEAR_LOG):
@@ -198,6 +205,8 @@ def main():
         filepath = FILE_IN_DIR + '/' + recordingID
         log('PROCESSING FILE: ' + recordingID, LOG_LVL_INFO)
         videoFilename = open_video_file(filepath + VIDEO_FILE_EXTENSION)
+
+        #From here is for extracting the timing xml
         try:
             file_in_timing = open(filepath + TIMINIG_XML_SUFFIX + TIMING_FILE_EXTENSION, 'r')
         except:
@@ -205,8 +214,10 @@ def main():
             raise
 
         timing_info = get_timing(file_in_timing)
-
         recording = RecordingClass(recordingID, videoFilename, timing_info['startTime'], timing_info['duration'])
+        #Until here
+
+        #From here is for extracting the sensor data xml
         try:
             file_in_sensors = open(filepath + SENSOR_XML_SUFFIX + SENSOR_FILE_EXTENSION, 'r')
         except:
