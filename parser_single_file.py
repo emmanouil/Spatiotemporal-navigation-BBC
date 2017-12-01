@@ -159,6 +159,32 @@ def get_timing(file_in):
     return {'startTime': startTime, 'duration': duration}
 
 
+def get_sensors(file_in):
+    timing_xml_tree = ET.parse(file_in.name)
+    measurements = []
+    for child in timing_xml_tree.iter():
+        if (child.tag == 'header'):
+            descriptor = child.text
+        elif (child.tag == 'segment'):
+            measurement = {}
+            for kid in child.iter():
+                if (kid.tag == 'segment'):
+                    continue
+                elif (kid.tag == 'sensorID'):
+                    measurement['sensorID'] = kid.text
+                elif (kid.tag == 'time'):
+                    measurement['time'] = kid.text
+                elif (kid.tag == 'values'):
+                    measurement['value'] = kid.text
+                else:
+                    log('unkown entry in sensor file', LOG_LVL_ERROR)
+            if (measurement != {}):
+                measurements.append(measurement)
+            else:
+                log('unkown entry with tag: ' + child.tag + ' in sensor file', LOG_LVL_ERROR)
+    if (measurements == []):
+        log('unknown error while parsing sensor file ' + file_in, LOG_LVL_ERROR)
+    return {'measurements': measurements, 'descriptor': descriptor}
 def main():
     #ENTRY POINT
     if (CLEAR_LOG):
