@@ -180,7 +180,8 @@ def get_sensors(file_in):
                 elif (kid.tag == 'time'):
                     measurement['time'] = kid.text
                 elif (kid.tag == 'values'):
-                    measurement['value'] = kid.text
+                    measurement['values'] = kid.text.split()
+                    measurement['values'] = [float(i) for i in measurement['values']]
                 else:
                     log('unkown entry in sensor file', LOG_LVL_ERROR)
             if (measurement != {}):
