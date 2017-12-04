@@ -162,12 +162,13 @@ def calculate_orientation(item_in):
 
 
 #put the result in 'orientations' obj
-def extract_orientation(r_set, fID):
+def extract_measurements(r_set, fID):
     for item in r_set.sensorValues:
         if(item['sensorID']!= fID):
             continue
         else:
-            orientations.append(calculate_orientation(item))
+            if(fID == ORIENTATION_FIELD):
+                orientations.append(calculate_orientation(item))
 
 
 def main():
@@ -204,6 +205,13 @@ def main():
         #get sensor recordings
         sensor_info = get_sensors(file_in_sensors)
         recording.addSensors(sensor_info['measurements'], sensor_info['descriptor'])
+        #until here
+
+        #From here is for extracting the orientation measurements (pushed in orientations list)
+        #find orientation items and push them in 'orientations' object
+        extract_measurements(recording, ORIENTATION_FIELD)
+        #until here
+
         #find orientation items and push them in 'orientations' object
         extract_orientation(recording, ORIENTATION_FIELD)
         #until here
