@@ -29,9 +29,9 @@ CLEAR_LOG = True      #When init log - delete previous logfile
 #Global vars
 orient_count = 0
 orient_start = 0
-orient_dur = 0
 orient_dur_tot = 0
 orientations = []
+locations = []
 
 #constants
 LOG_LVL_ERROR = -1
@@ -147,9 +147,8 @@ def get_sensors(file_in):
 
 def calculate_orientation(item_in):
     global orient_count
-    orient_obj = {'X':0,'Y':0,'Z':0,'LocalTimestamp':0,'PresentationTime':0,'Type':"ORIENTATION"}
+    orient_obj = {'X': 0,'Y': 0,'Z': 0,'LocalTimestamp': 0,'PresentationTime': 0,'Type': "ORIENTATION"}
     global orient_start
-    global orient_dur
     orient_count+=1
     if (orient_count == 1):
         orient_start = item_in['time']
@@ -161,6 +160,17 @@ def calculate_orientation(item_in):
     return orient_obj
 
 
+def calculate_location(item_in):
+    loc_obj = {'Latitude': 0, 'Longitude': 0, 'Altitude': 0, 'Accuracy': 0, 'LocalTimestamp': 0, 'PresentationTime': 0, 'Provider': "undefined"}
+    loc_obj['Latitude'] += item_in['values'][0]
+    loc_obj['Longitude'] += item_in['values'][1]
+    loc_obj['Altitude'] += item_in['values'][2]
+    loc_obj['Accuracy'] += item_in['values'][3]
+    loc_obj['LocalTimestamp'] = item_in['time']
+    return loc_obj
+
+
+
 #put the result in 'orientations' obj
 def extract_measurements(r_set, fID):
     for item in r_set.sensorValues:
@@ -169,6 +179,10 @@ def extract_measurements(r_set, fID):
         else:
             if(fID == ORIENTATION_FIELD):
                 orientations.append(calculate_orientation(item))
+            elif(fID == LOCATION_FIELD):
+                locations.append(calculate_location(item))
+            else:
+                log('ID unknown', LOG_LVL_ERROR)
 
 
 def main():
@@ -211,6 +225,12 @@ def main():
         #find orientation items and push them in 'orientations' object
         extract_measurements(recording, ORIENTATION_FIELD)
         #until here
+
+        #From here is for extracting the location measurements (pushed in locations list)
+        #find location items and push them in 'locations' object
+        extract_measurements(recording, LOCATION_FIELD)
+        #until here
+
 
         #find orientation items and push them in 'orientations' object
         extract_orientation(recording, ORIENTATION_FIELD)
