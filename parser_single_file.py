@@ -7,24 +7,25 @@ import xml.etree.ElementTree as ET
 
 #Parameters
 #Paremeters for input files
-FILE_IN_DIR = 'parsing'    #dir with files to be parsed
+FILE_IN_DIR = 'parsing'  #dir with files to be parsed
 TIMING_FILE_EXTENSION = '.xml'
 TIMINIG_XML_SUFFIX = '_EbuCore'
 SENSOR_FILE_EXTENSION = '.xml'
 SENSOR_XML_SUFFIX = '_SENSORDATA'
 VIDEO_FILE_EXTENSION = '.webm'
 ORIENTATION_FIELD = '2'
+LOCATION_FIELD = '0'
 
 #Paremeters for output files
-LOGFILE = 'python_script.log'    #logfile
+LOGFILE = 'python_script.log'  #logfile
 OUTPUTDIR = 'script_out'
-PLAYLIST = 'playlist.txt'    #generated playlist containing formated files
+PLAYLIST = 'playlist.txt'  #generated playlist containing formated files
 
 #Parameters for parser
-USE_ORIENTATION_AVERAGE = True    #else use latest orientation
-USE_FULL_FILENAME_IN_PLAYLIST = False    #otherwise use only ID (without the OUT_ and .txt)
+USE_ORIENTATION_AVERAGE = True  #else use latest orientation
+USE_FULL_FILENAME_IN_PLAYLIST = False  #otherwise use only ID (without the OUT_ and .txt)
 LOG_STATISTICS = True
-CLEAR_LOG = True      #When init log - delete previous logfile
+CLEAR_LOG = True  #When init log - delete previous logfile
 
 #Global vars
 orient_count = 0
@@ -38,9 +39,11 @@ LOG_LVL_ERROR = -1
 LOG_LVL_DEBUG = 0
 LOG_LVL_INFO = 1
 
+
 #recording class
 class RecordingClass:
     """class for maintaining the recordings"""
+
     def __init__(self, r_recordingID, r_videoFilename, r_startTime, r_duration):
         self.recordingID = r_recordingID
         self.videoFilename = r_videoFilename
@@ -52,8 +55,6 @@ class RecordingClass:
         self.sensorDescriptor = descriptor
 
 
-
-
 ##    Log
 #
 #    lvl = None log to console
@@ -62,25 +63,27 @@ class RecordingClass:
 #        = 0 Debug
 def log(msg, lvl):
     now = datetime.datetime.now()
-    str_now = '\n'+str(now.day)+'/'+str(now.month)+'/'+str(now.year)+' '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)+' '
+    str_now = '\n' + str(now.day) + '/' + str(now.month) + '/' + str(now.year) + ' ' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second) + ' '
     str_now = str_now.ljust(19)
     with open(LOGFILE, 'a') as logfile:
-        if(lvl is None):#normal
+        if (lvl is None):  #normal
             print(msg)
-        elif(lvl < 0):    #error
-            print('\033[31m'+'[ERROR]\t'+'\033[0m'+msg)
-            logfile.write(str_now+'[ERROR]\t'+msg)
-        elif(lvl > 0):    #info
-            print('\033[32m'+'[INFO]\t'+'\033[0m'+msg)
-            logfile.write(str_now+'[INFO]\t'+msg)
-        elif(lvl == 0):    #dbg
-            print('\033[35m'+'[DEBUG]\t'+'\033[0m'+msg)
-            logfile.write(str_now+'[DEBUG]\t'+msg)
+        elif (lvl < 0):  #error
+            print('\033[31m' + '[ERROR]\t' + '\033[0m' + msg)
+            logfile.write(str_now + '[ERROR]\t' + msg)
+        elif (lvl > 0):  #info
+            print('\033[32m' + '[INFO]\t' + '\033[0m' + msg)
+            logfile.write(str_now + '[INFO]\t' + msg)
+        elif (lvl == 0):  #dbg
+            print('\033[35m' + '[DEBUG]\t' + '\033[0m' + msg)
+            logfile.write(str_now + '[DEBUG]\t' + msg)
+
 
 def log_blankline():
     with open(LOGFILE, 'a') as logfile:
         print('\n')
         logfile.write('\n')
+
 
 def open_video_file(filename):
     try:
@@ -141,15 +144,11 @@ def get_sensors(file_in):
     return {'measurements': measurements, 'descriptor': descriptor}
 
 
-
-
-
-
 def calculate_orientation(item_in):
     global orient_count
-    orient_obj = {'X': 0,'Y': 0,'Z': 0,'LocalTimestamp': 0,'PresentationTime': 0,'Type': "ORIENTATION"}
+    orient_obj = {'X': 0, 'Y': 0, 'Z': 0, 'LocalTimestamp': 0, 'PresentationTime': 0, 'Type': "ORIENTATION"}
     global orient_start
-    orient_count+=1
+    orient_count += 1
     if (orient_count == 1):
         orient_start = item_in['time']
     orient_obj['Z'] += item_in['values'][2]
@@ -170,16 +169,15 @@ def calculate_location(item_in):
     return loc_obj
 
 
-
 #put the result in 'orientations' obj
 def extract_measurements(r_set, fID):
     for item in r_set.sensorValues:
-        if(item['sensorID']!= fID):
+        if (item['sensorID'] != fID):
             continue
         else:
-            if(fID == ORIENTATION_FIELD):
+            if (fID == ORIENTATION_FIELD):
                 orientations.append(calculate_orientation(item))
-            elif(fID == LOCATION_FIELD):
+            elif (fID == LOCATION_FIELD):
                 locations.append(calculate_location(item))
             else:
                 log('ID unknown', LOG_LVL_ERROR)
@@ -231,12 +229,6 @@ def main():
         extract_measurements(recording, LOCATION_FIELD)
         #until here
 
-
-        #find orientation items and push them in 'orientations' object
-        extract_orientation(recording, ORIENTATION_FIELD)
-        #until here
-
-        file_name = get_file_name(file_in, '.txt')
         if file_name is None:
             exit('Wrong file extension (' + file_ext + ') for file ' + file_full_name[0] + file_full_name[1] + '   :  expected .txt')
         else:
@@ -247,12 +239,10 @@ def main():
         log('PROVIDE A FILE TO PARSE', -1)
 
 
-
 #        file_in = open(file_list[0])
 #        print(file_list)
 #        print(file_in)
     input('continue?')
-
 
     #That's All Folks!
     exit(0)
