@@ -125,7 +125,7 @@ def get_sensors(file_in):
                 elif (kid.tag == 'sensorID'):
                     measurement['sensorID'] = kid.text
                 elif (kid.tag == 'time'):
-                    measurement['time'] = kid.text
+                    measurement['time'] = int(kid.text)
                 elif (kid.tag == 'values'):
                     measurement['values'] = kid.text.split()
                     measurement['values'] = [float(i) for i in measurement['values']]
