@@ -35,7 +35,7 @@ function init() {
 	initVideo();	//in video.js
 	mediaSource.video = video;
 	video.ms = mediaSource;
-	fetch('/' + input_dir + '/' + playlist_file, parse_playlist);
+	fetch('/' + playlist_file, parse_playlist);
 }
 
 /**
