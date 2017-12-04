@@ -85,6 +85,15 @@ def log_blankline():
         logfile.write('\n')
 
 
+## Create output file and flush 
+def flush_json_to_file_out(filename, data):
+	if not os.path.exists(OUTPUTDIR):
+		print(os.mkdir(OUTPUTDIR))
+	with open(os.getcwd()+'/'+OUTPUTDIR+'/'+filename, 'w+') as f:
+		json.dump(data, f)
+
+
+
 def open_video_file(filename):
     try:
         tmp_file = open(filename, 'r')
@@ -228,6 +237,11 @@ def main():
         #find location items and push them in 'locations' object
         extract_measurements(recording, LOCATION_FIELD)
         #until here
+
+        #write to files
+        flush_json_to_file_out(recordingID+'_ORIENT.json', orientations)
+        flush_json_to_file_out(recordingID+'_LOC.json', locations)
+
 
         if file_name is None:
             exit('Wrong file extension (' + file_ext + ') for file ' + file_full_name[0] + file_full_name[1] + '   :  expected .txt')
