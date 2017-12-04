@@ -1,6 +1,9 @@
 #folder for putting files to be parsed
 /parsing/
 
+#folder where the parser-created files are located
+/script_out/
+
 #test webserver files
 mongoose*
 
