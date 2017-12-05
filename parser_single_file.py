@@ -85,12 +85,12 @@ def log_blankline():
         logfile.write('\n')
 
 
-## Create output file and flush 
+## Create output file and flush
 def flush_json_to_file_out(filename, data):
-	if not os.path.exists(OUTPUTDIR):
-		print(os.mkdir(OUTPUTDIR))
-	with open(os.getcwd()+'/'+OUTPUTDIR+'/'+filename, 'w+') as f:
-		json.dump(data, f)
+    if not os.path.exists(OUTPUTDIR):
+        print(os.mkdir(OUTPUTDIR))
+    with open(os.getcwd()+'/'+OUTPUTDIR+'/'+filename, 'w+') as f:
+        json.dump(data, f)
 
 
 
@@ -244,12 +244,14 @@ def main():
         flush_json_to_file_out(recordingID+'_ORIENT.json', orientations)
         flush_json_to_file_out(recordingID+'_LOC.json', locations)
 
-        flush_json_to_file_out(recordingID+'_DESCRIPTOR.json',
-         {'recordingID':recording.recordingID,
-         'startTime':recording.startTime, 'duration':recording.duration,
-         'videoFilename':recording.videoFilename,
-         'orientationFilename':OUTPUTDIR+'/'+recordingID+'_ORIENT.json',
-         'locationFilename':OUTPUTDIR+'/'+recordingID+'_LOC.json'})
+        flush_json_to_file_out(recordingID + '_DESCRIPTOR.json', {
+            'recordingID': recording.recordingID,
+            'startTime': recording.startTime,
+            'duration': recording.duration,
+            'videoFilename': recording.videoFilename,
+            'orientationFilename': OUTPUTDIR + '/' + recordingID + '_ORIENT.json',
+            'locationFilename': OUTPUTDIR + '/' + recordingID + '_LOC.json'
+        })
 
     else:
         log('PROVIDE A FILE TO PARSE', -1)
