@@ -214,6 +214,7 @@ def main():
             raise
 
         timing_info = get_timing(file_in_timing)
+        file_in_timing.close()
         recording = RecordingClass(recordingID, videoFilename, timing_info['startTime'], timing_info['duration'])
         #Until here
 
@@ -225,6 +226,7 @@ def main():
             raise
         #get sensor recordings
         sensor_info = get_sensors(file_in_sensors)
+        file_in_sensors.close()
         recording.addSensors(sensor_info['measurements'], sensor_info['descriptor'])
         #until here
 
