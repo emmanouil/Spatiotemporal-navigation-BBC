@@ -77,14 +77,10 @@ function parse_playlist() {
 	}
 }
 
-function parse_pl_element() {
+function parse_pl_video() {
 	if (this.status == 200) {
 		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
 		addOption(input_dir + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
-		addMarkers(tmp_obj.set, tmp_obj.index, tmp_obj.id);
-		if (HIGHLIGHT_CURRENT_MARKER) {
-			addMarkersToIndex();
-		}
 	}
 	logINFO(this)
 	items_fetched++;	//count playlist entries fetched
