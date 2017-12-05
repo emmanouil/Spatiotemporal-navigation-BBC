@@ -244,6 +244,12 @@ def main():
         flush_json_to_file_out(recordingID+'_ORIENT.json', orientations)
         flush_json_to_file_out(recordingID+'_LOC.json', locations)
 
+        flush_json_to_file_out(recordingID+'_DESCRIPTOR.json',
+         {'recordingID':recording.recordingID,
+         'startTime':recording.startTime, 'duration':recording.duration,
+         'videoFilename':recording.videoFilename,
+         'orientationFilename':OUTPUTDIR+'/'+recordingID+'_ORIENT.json',
+         'locationFilename':OUTPUTDIR+'/'+recordingID+'_LOC.json'})
 
     else:
         log('PROVIDE A FILE TO PARSE', -1)
