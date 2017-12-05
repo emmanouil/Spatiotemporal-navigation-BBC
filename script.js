@@ -5,13 +5,16 @@
 /**
  * Playlist & File Parameters
  */
-var input_dir = 'parsing';
+var input_dir = 'parsing';	//holds the video and original files
+var parser_dir = 'parsing';	//holds the parser output (location, orientation) jsons
 var playlist_file = 'playlist.txt';
 var pl_sensors_suffix = '_SENSOR_DATA';
 var pl_sensors_extension = '.xml';
 var pl_video_suffix = '';
 //var pl_video_extension = '.mp4';
 var pl_video_extension = '.webm';
+var pl_location_suffix = '_LOC';
+var pl_orientation_suffix = '_ORIENT';
 
 /**
  * Script Parameters & Objs
