@@ -6,7 +6,7 @@
  * Playlist & File Parameters
  */
 var input_dir = 'parsing';	//holds the video and original files
-var parser_dir = 'parsing';	//holds the parser output (location, orientation) jsons
+var parser_dir = 'script_out';	//holds the parser output (location, orientation) jsons
 var playlist_file = 'playlist.txt';
 var pl_sensors_suffix = '_SENSOR_DATA';
 var pl_sensors_extension = '.xml';
@@ -15,6 +15,7 @@ var pl_video_suffix = '';
 var pl_video_extension = '.webm';
 var pl_location_suffix = '_LOC';
 var pl_orientation_suffix = '_ORIENT';
+var pl_descriptor_suffix = '_DESCRIPTOR';
 
 /**
  * Script Parameters & Objs
@@ -101,8 +102,8 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	loc_obj.videoFileURL = XMLHttpRequest_in.responseURL;
 	loc_obj.id = loc_obj.videoFileURL.slice(loc_obj.videoFileURL.indexOf(input_dir) + input_dir.length + 1, loc_obj.videoFileURL.indexOf(pl_video_extension));
 	loc_obj.videoFile = loc_obj.id + pl_video_extension;
-//this used to hold the coords/orient in previous version
-//	loc_obj.set = XMLHttpRequest_in.response;
+	//this used to hold the coords/orient in previous version
+	//	loc_obj.set = XMLHttpRequest_in.response;
 	globalSetIndex.push(loc_obj);
 	return loc_obj;
 }
