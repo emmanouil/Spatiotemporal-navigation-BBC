@@ -245,12 +245,6 @@ def main():
         flush_json_to_file_out(recordingID+'_LOC.json', locations)
 
 
-        if file_name is None:
-            exit('Wrong file extension (' + file_ext + ') for file ' + file_full_name[0] + file_full_name[1] + '   :  expected .txt')
-        else:
-            process_file(file_name + '.txt')
-        file_in.close()
-    #default case when check for every file in current folder with .txt extension
     else:
         log('PROVIDE A FILE TO PARSE', -1)
 
