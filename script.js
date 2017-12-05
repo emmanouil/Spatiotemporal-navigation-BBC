@@ -46,7 +46,7 @@ function init() {
  * Content loading function
  */
 function fetch(what, where, resp_type) {
-	logINFO("fetching " + what);
+	logINFO("fetching " + what + "   for " + where.name);
 	if (what.length < 2) {
 		logERR("erroneous request");
 	}
@@ -67,9 +67,16 @@ function parse_playlist() {
 		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length);
 		logNOTE("Fetching playlist elements...")
 		for (var i = 0; i < playlist.length; i++) {
+			fetch(parser_dir + '/' + playlist[i] + pl_descriptor_suffix + '.json', parse_pl_descriptor, 'json');
+			//fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');	//Original - using json generated from the parser
+
+			//new - replaced by parce_pl_descriptor
+//			fetch(input_dir + '/' + playlist[i] + pl_video_suffix + pl_video_extension, parse_pl_video);
+//			fetch(parser_dir + '/' + playlist[i] + pl_location_suffix + '.json', parse_pl_location, 'json')
+//			fetch(parser_dir + '/' + playlist[i] + pl_orientation_suffix + '.json', parse_pl_orientation, 'json')
+			/*
 			//fetch video file
-			fetch(input_dir + '/' + playlist[i] + pl_video_suffix + pl_video_extension, parse_pl_element);
-			//			fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');	//Original - using json generated from the parser
+			*/
 		}
 	} else if (req_status == 200) {
 		logNOTE("Fetching " + playlist_file + " returned with an empty file");
@@ -78,7 +85,7 @@ function parse_playlist() {
 	}
 }
 
-function parse_pl_video() {
+function parse_pl_descriptor() {
 	if (this.status == 200) {
 		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
 		addOption(input_dir + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
@@ -89,7 +96,6 @@ function parse_pl_video() {
 		goToVideoAndTime(0, 0);
 	}
 }
-
 
 /**
  * Revised version of the function - only for video files
