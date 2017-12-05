@@ -105,7 +105,8 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	loc_obj.videoFileURL = XMLHttpRequest_in.responseURL;
 	loc_obj.id = loc_obj.videoFileURL.slice(loc_obj.videoFileURL.indexOf(input_dir) + input_dir.length + 1, loc_obj.videoFileURL.indexOf(pl_video_extension));
 	loc_obj.videoFile = loc_obj.id + pl_video_extension;
-	loc_obj.set = XMLHttpRequest_in.response;
+//this used to hold the coords/orient in previous version
+//	loc_obj.set = XMLHttpRequest_in.response;
 	globalSetIndex.push(loc_obj);
 	return loc_obj;
 }
@@ -130,12 +131,12 @@ function addToIndex(XMLHttpRequest_in) {
 */
 
 function addOption(value, file_id) {
-    var option = document.createElement("option");
-    if (file_id) {
-        option.text = file_id;
-    } else {
-        logERR("text required - used as video id");
-    }
-    option.value = value;
-    selector.add(option);
+	var option = document.createElement("option");
+	if (file_id) {
+		option.text = file_id;
+	} else {
+		logERR("text required - used as video id");
+	}
+	option.value = value;
+	selector.add(option);
 }
