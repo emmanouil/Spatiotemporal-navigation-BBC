@@ -26,6 +26,7 @@ var active_video_id = null;
 var mediaSource = new MediaSource();	//Not used for now
 //var skeleton_worker = new Worker( 'parser.js' );
 var selector, video, playlist, items_fetched = 0;
+var reference_location = [53.4724, -2.2996]
 
 /**
  * Entry point
