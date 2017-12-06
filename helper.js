@@ -41,6 +41,21 @@ function calcBearing(lat1, lng1, lat2, lng2) {
     return brngDgr;
 }
 
+function calcDistanceBetweenCoords(lat1, lng1, lat2, lng2) {
+    var earthRadiusM = 6371000;
+
+    var dLat = degToRad(lat2 - lat1);
+    var dLon = degToRad(lng2 - lng1);
+
+    lat1 = degToRad(lat1);
+    lat2 = degToRad(lat2);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthRadiusM * c;
+}
+
 function radToDeg(rad_in) {
     return rad_in / (Math.PI / 180);
 }
