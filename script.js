@@ -16,6 +16,8 @@ var pl_video_extension = '.webm';
 var pl_location_suffix = '_LOC';
 var pl_orientation_suffix = '_ORIENT';
 var pl_descriptor_suffix = '_DESCRIPTOR';
+var PORT = '8000'
+var BASE_URL ='';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 
 /**
  * Script Parameters & Objs
@@ -43,6 +45,7 @@ function init() {
 }
 
 function parse_playlist() {
+	BASE_URL = this.responseURL.slice(0, this.responseURL.indexOf(PORT)+PORT.length)
 	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
 	var req_status = this.status;
 	if (req_status == 200 && playlist.length > 0) {
@@ -85,10 +88,13 @@ function parse_pl_descriptor() {
  */
 //returns recording id
 function addVideoToIndex(XMLHttpRequest_in) {
+	var tmp_req = XMLHttpRequest_in;
 	var loc_obj = new Object();
+	loc_obj.descriptor = tmp_req.response;
 	loc_obj.index = globalSetIndex.length;
-	loc_obj.videoFileURL = XMLHttpRequest_in.responseURL;
-	loc_obj.id = loc_obj.videoFileURL.slice(loc_obj.videoFileURL.indexOf(input_dir) + input_dir.length + 1, loc_obj.videoFileURL.indexOf(pl_video_extension));
+	loc_obj.id = tmp_req.response.recordingID;
+	loc_obj.videoFile = loc_obj.id + pl_video_extension;
+	loc_obj.videoFileURL = BASE_URL + '/' + input_dir + '/' + loc_obj.videoFile;
 	loc_obj.videoFile = loc_obj.id + pl_video_extension;
 	//this used to hold the coords/orient in previous version
 	//	loc_obj.set = XMLHttpRequest_in.response;
