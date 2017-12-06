@@ -42,24 +42,6 @@ function init() {
 	fetch('/' + playlist_file, parse_playlist);
 }
 
-/**
- * Content loading function
- */
-function fetch(what, where, resp_type) {
-	logINFO("fetching " + what + "   for " + where.name);
-	if (what.length < 2) {
-		logERR("erroneous request");
-	}
-	var req = new XMLHttpRequest();
-	req.addEventListener("load", where);
-	req.open("GET", what);
-	if (typeof (resp_type) != 'undefined') {
-		req.responseType = resp_type;
-	}
-	logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
-	req.send();
-}
-
 function parse_playlist() {
 	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
 	var req_status = this.status;
