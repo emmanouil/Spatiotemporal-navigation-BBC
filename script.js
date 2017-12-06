@@ -5,19 +5,19 @@
 /**
  * Playlist & File Parameters
  */
-var input_dir = 'parsing';	//holds the video and original files
-var parser_dir = 'script_out';	//holds the parser output (location, orientation) jsons
-var playlist_file = 'playlist.txt';
-var pl_sensors_suffix = '_SENSOR_DATA';
-var pl_sensors_extension = '.xml';
-var pl_video_suffix = '';
-//var pl_video_extension = '.mp4';
-var pl_video_extension = '.webm';
-var pl_location_suffix = '_LOC';
-var pl_orientation_suffix = '_ORIENT';
-var pl_descriptor_suffix = '_DESCRIPTOR';
+var INPUT_DIR = 'parsing';	//holds the video and original files
+var PARSER_DIR = 'script_out';	//holds the parser output (location, orientation) jsons
+var PLAYLIST_FILE = 'playlist.txt';
+var PL_SENSORS_SUFFIX = '_SENSOR_DATA';
+var PL_SENSORS_EXTENSION = '.xml';
+var PL_VIDEO_SUFFIX = '';
+//var PL_VIDEO_EXTENSION = '.mp4';
+var PL_VIDEO_EXTENSION = '.webm';
+var PL_LOCATION_SUFFIX = '_LOC';
+var PL_ORIENTATION_SUFFIX = '_ORIENT';
+var PL_DESCRIPTOR_SUFFIX = '_DESCRIPTOR';
 var PORT = '8000'
-var BASE_URL ='';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
+var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 
 /**
  * Script Parameters & Objs
@@ -41,39 +41,39 @@ function init() {
 	initVideo();	//in video.js
 	mediaSource.video = video;
 	video.ms = mediaSource;
-	fetch('/' + playlist_file, parse_playlist);
+	fetch('/' + PLAYLIST_FILE, parse_playlist);
 }
 
 function parse_playlist() {
-	BASE_URL = this.responseURL.slice(0, this.responseURL.indexOf(PORT)+PORT.length)
+	BASE_URL = this.responseURL.slice(0, this.responseURL.indexOf(PORT) + PORT.length)
 	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
 	var req_status = this.status;
 	if (req_status == 200 && playlist.length > 0) {
-		logNOTE("Fetching " + playlist_file + " OK  - total received elements: " + playlist.length);
+		logNOTE("Fetching " + PLAYLIST_FILE + " OK  - total received elements: " + playlist.length);
 		logNOTE("Fetching playlist elements...")
 		for (var i = 0; i < playlist.length; i++) {
-			fetch(parser_dir + '/' + playlist[i] + pl_descriptor_suffix + '.json', parse_pl_descriptor, 'json');
+			fetch(PARSER_DIR + '/' + playlist[i] + PL_DESCRIPTOR_SUFFIX + '.json', parse_pl_descriptor, 'json');
 			//fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');	//Original - using json generated from the parser
 
 			//new - replaced by parce_pl_descriptor
-//			fetch(input_dir + '/' + playlist[i] + pl_video_suffix + pl_video_extension, parse_pl_video);
-//			fetch(parser_dir + '/' + playlist[i] + pl_location_suffix + '.json', parse_pl_location, 'json')
-//			fetch(parser_dir + '/' + playlist[i] + pl_orientation_suffix + '.json', parse_pl_orientation, 'json')
+			//			fetch(input_dir + '/' + playlist[i] + pl_video_suffix + pl_video_extension, parse_pl_video);
+			//			fetch(parser_dir + '/' + playlist[i] + pl_location_suffix + '.json', parse_pl_location, 'json')
+			//			fetch(parser_dir + '/' + playlist[i] + pl_orientation_suffix + '.json', parse_pl_orientation, 'json')
 			/*
 			//fetch video file
 			*/
 		}
 	} else if (req_status == 200) {
-		logNOTE("Fetching " + playlist_file + " returned with an empty file");
+		logNOTE("Fetching " + PLAYLIST_FILE + " returned with an empty file");
 	} else {
-		logNOTE("Fetching " + playlist_file + " unsuccessful");
+		logNOTE("Fetching " + PLAYLIST_FILE + " unsuccessful");
 	}
 }
 
 function parse_pl_descriptor() {
 	if (this.status == 200) {
 		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
-		addOption(input_dir + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
+		addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
 	}
 	logINFO(this)
 	items_fetched++;	//count playlist entries fetched
@@ -93,9 +93,9 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	loc_obj.descriptor = tmp_req.response;
 	loc_obj.index = globalSetIndex.length;
 	loc_obj.id = tmp_req.response.recordingID;
-	loc_obj.videoFile = loc_obj.id + pl_video_extension;
-	loc_obj.videoFileURL = BASE_URL + '/' + input_dir + '/' + loc_obj.videoFile;
-	loc_obj.videoFile = loc_obj.id + pl_video_extension;
+	loc_obj.videoFile = loc_obj.id + PL_VIDEO_EXTENSION;
+	loc_obj.videoFileURL = BASE_URL + '/' + INPUT_DIR + '/' + loc_obj.videoFile;
+	loc_obj.videoFile = loc_obj.id + PL_VIDEO_EXTENSION;
 	//this used to hold the coords/orient in previous version
 	//	loc_obj.set = XMLHttpRequest_in.response;
 	globalSetIndex.push(loc_obj);
