@@ -48,7 +48,9 @@ class RecordingClass:
         self.recordingID = r_recordingID
         self.videoFilename = r_videoFilename
         self.startTime = r_startTime
+        self.startTimeMs = timeStr_toMs(r_startTime)
         self.duration = r_duration
+        self.durationMs = timeStr_toMs(r_duration)
 
     def addSensors(self, measurements, descriptor):
         self.sensorValues = measurements
@@ -256,7 +258,9 @@ def main():
         flush_json_to_file_out(recordingID + '_DESCRIPTOR.json', {
             'recordingID': recording.recordingID,
             'startTime': recording.startTime,
+            'startTimeMs': recording.startTimeMs,
             'duration': recording.duration,
+            'durationMs': recording.durationMs,
             'videoFilename': recording.videoFilename,
             'orientationFilename': OUTPUTDIR + '/' + recordingID + '_ORIENT.json',
             'locationFilename': OUTPUTDIR + '/' + recordingID + '_LOC.json'
