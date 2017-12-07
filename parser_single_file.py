@@ -191,6 +191,15 @@ def extract_measurements(r_set, fID):
             else:
                 log('ID unknown', LOG_LVL_ERROR)
 
+#eg 12:22:11.70000
+def timeStr_toMs(t_str):
+    t_elems = re.split('[:.]', t_str)
+    t_elems = [ int(x[:3]) for x in t_elems ]
+    t_elems[1] += t_elems[0]*60 #H to M
+    t_elems[2] += t_elems[1]*60 #M to s
+    t_elems[3] += t_elems[2]*1000 #s to ms
+    return t_elems[3]
+
 
 def main():
     #ENTRY POINT
