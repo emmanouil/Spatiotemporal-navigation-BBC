@@ -103,6 +103,36 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	return loc_obj;
 }
 
+
+function loadCoords(XMLHttpRequest_in) {
+	loadAssets('_LOC', XMLHttpRequest_in.target)
+}
+
+function loadLocs(XMLHttpRequest_in) {
+	loadAssets('_ORIENT', XMLHttpRequest_in.target)
+}
+
+function loadAssets(type, Xreq_target) {
+	var tmp_name = Xreq_target.responseURL.split('/').pop().split('.')[0];
+	for (var i = 0; i < globalSetIndex.length; i++) {
+		if (globalSetIndex[i].descriptor.recordingID + type == tmp_name) {
+			switch (type) {
+				case '_LOC':
+					globalSetIndex[i].coordSet = Xreq_target.response;
+					break;
+				case '_ORIENT':
+					globalSetIndex[i].orientSet = Xreq_target.response;
+					break;
+				default:
+					logERR('type ' + type + ' not recognized');
+					break;
+			}
+			console.log('found coord set for ' + tmp_name);
+			return;
+		}
+	}
+}
+
 /**
  * Original version of the function for adding video and sensor files - using the generated jsons
  * @param {*Object} XMLHttpRequest_in 
