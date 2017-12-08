@@ -103,6 +103,12 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	return loc_obj;
 }
 
+function loadSpatialData() {
+	for (var i = 0; i < globalSetIndex.length; i++) {
+		fetch(globalSetIndex[i].descriptor.locationFilename, loadCoords);
+		fetch(globalSetIndex[i].descriptor.orientationFilename, loadLocs);
+	}
+}
 
 function loadCoords(XMLHttpRequest_in) {
 	loadAssets('_LOC', XMLHttpRequest_in.target)

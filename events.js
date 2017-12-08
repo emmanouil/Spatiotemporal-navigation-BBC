@@ -1,5 +1,5 @@
 "use strict";
-var selector, toggleZoom, zoomLvl, tmpZoom;
+var selector, toggleZoom, zoomLvl, tmpZoom, initiated = false;
 
 function activateMapEvents(){
 
@@ -56,4 +56,12 @@ function goToVideoAndTime(i_in, time_in){
 	selector.selectedIndex = i_in;
 	selectFile(i_in);
 	video.currentTime = time_in/1000;
+}
+
+/**
+ * Called 
+ * @param {*} e 
+ */
+function initTimeAndSpace(e){
+    loadSpatialData();
 }
