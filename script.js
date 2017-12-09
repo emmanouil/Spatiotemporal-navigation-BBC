@@ -105,8 +105,8 @@ function addVideoToIndex(XMLHttpRequest_in) {
 
 function loadSpatialData() {
 	for (var i = 0; i < globalSetIndex.length; i++) {
-		fetch(globalSetIndex[i].descriptor.locationFilename, loadCoords);
-		fetch(globalSetIndex[i].descriptor.orientationFilename, loadLocs);
+		fetch(globalSetIndex[i].descriptor.locationFilename, loadCoords, 'json');
+		fetch(globalSetIndex[i].descriptor.orientationFilename, loadLocs, 'json');
 	}
 }
 
