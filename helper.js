@@ -18,18 +18,18 @@ function logINFO(msg) {
  * Content loading function
  */
 function fetch(what, where, resp_type) {
-	logINFO("fetching " + what + "   for " + where.name);
-	if (what.length < 2) {
-		logERR("erroneous request");
-	}
-	var req = new XMLHttpRequest();
-	req.addEventListener("load", where);
-	req.open("GET", what);
-	if (typeof (resp_type) != 'undefined') {
-		req.responseType = resp_type;
-	}
-	logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
-	req.send();
+    logINFO("fetching " + what + "   for " + where.name);
+    if (what.length < 2) {
+        logERR("erroneous request");
+    }
+    var req = new XMLHttpRequest();
+    req.addEventListener("load", where);
+    req.open("GET", what);
+    if (typeof (resp_type) != 'undefined') {
+        req.responseType = resp_type;
+    }
+    logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
+    req.send();
 }
 
 function calcBearing(lat1, lng1, lat2, lng2) {
