@@ -56,6 +56,15 @@ function calcDistanceBetweenCoords(lat1, lng1, lat2, lng2) {
     return earthRadiusM * c;
 }
 
+/**
+ * The dataset has this stupid format where the time is a string,
+ * with a 5-digit ms precision at the end
+ * @param {*String} t_str 
+ */
+function timeStrToMs(t_str){
+    return (((t_str.slice(0, -2)).replace('.',':')).split(':'));
+}
+
 function radToDeg(rad_in) {
     return rad_in / (Math.PI / 180);
 }
