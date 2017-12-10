@@ -63,5 +63,9 @@ function goToVideoAndTime(i_in, time_in) {
  * @param {*} e 
  */
 function initTimeAndSpace(e) {
+    document.getElementById('init_ts_but').disabled = true;
+    document.getElementById('init_mk_but').disabled = false;
     loadSpatialData();
+}
+
 }
