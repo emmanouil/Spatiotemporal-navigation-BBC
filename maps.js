@@ -71,7 +71,8 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing) {
 	/*
 	 * if no coordinates, or timestamp, skip the marker
 	 */
-	if (!lat || !lng || !timestamp) {
+	if (!lat || !lng || typeof timestamp === 'undefined') {
+		logINFO('Marker was not placed on map (check lat, lng and timestamp args');
 		return;
 	}
 
@@ -80,7 +81,7 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing) {
 	/*
 	 * if no bearing information, use default markers
 	 */
-	if (!bearing && USE_NO_BEARING_MARKERS) {
+	if (typeof bearing === 'undefined' && USE_NO_BEARING_MARKERS) {
 		var marker1 = new google.maps.Marker({
 			position: new google.maps.LatLng(lat, lng),
 			title: label
