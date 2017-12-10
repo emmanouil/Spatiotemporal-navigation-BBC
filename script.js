@@ -85,7 +85,8 @@ function parse_pl_descriptor() {
 
 /**
  * Revised version of the function - only for video files
- * @param {*Object} XMLHttpRequest_in 
+ * TODO: we handle a lot of stuff here, refacture
+ * @param {*Object} XMLHttpRequest_in
  */
 //returns recording id
 function addVideoToIndex(XMLHttpRequest_in) {
@@ -138,6 +139,21 @@ function loadAssets(type, Xreq_target) {
 		}
 	}
 }
+
+/**
+ * TODO replace addMarker with proper coordinate handling
+ * NOTE: It adds INITIAL markers (not all markers - TODO)
+ */
+function analyzeGeospatialData() {
+	centerMap(reference_location[0], reference_location[1], 20)
+	for (var i = 0; i < globalSetIndex.length; i++) {
+		var s = globalSetIndex[i];
+		addMarker(reference_location[0] + i * 0.0001, reference_location[1], s.index, s.orientSet[0].PresentationTime, 0, radToDeg(s.orientSet[0].X) - 90);
+	}
+
+
+}
+
 
 /**
  * Original version of the function for adding video and sensor files - using the generated jsons
