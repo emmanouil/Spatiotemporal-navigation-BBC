@@ -68,4 +68,12 @@ function initTimeAndSpace(e) {
     loadSpatialData();
 }
 
+
+/**
+ * Called when Init Markers button is clicked
+ * @param {*} e 
+ */
+function initMarkers(e) {
+    document.getElementById('init_mk_but').disabled = true;
+    analyzeGeospatialData();
 }
