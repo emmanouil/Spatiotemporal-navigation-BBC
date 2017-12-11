@@ -66,7 +66,7 @@ function centerMap(latitude, longitude, zoom) {
 			map.setZoom(zoom)
 }
 
-function addMarker(lat, lng, index, timestamp, marker_n, bearing) {
+function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false) {
 
 	/*
 	 * if no coordinates, or timestamp, skip the marker
@@ -97,6 +97,9 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing) {
 		}
 		var local_icon = test_icon;
 		local_icon.rotation = bearing;
+		if (active) {
+			local_icon.fillColor = 'green';
+		}
 		marker = new google.maps.Marker({
 			position: new google.maps.LatLng(lat, lng),
 			title: label,
@@ -120,46 +123,3 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing) {
 	});
 
 }
-
-//OLD (with label instead of marker number)
-/*
-function addMarker(lat, lng, index, timestamp, label, bearing){
-	if(!lat || !lng){
-		return;
-	}else if(timestamp){
-		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(lat,lng),
-		});
-	}if(!label){
-		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(lat,lng),
-		});
-	}else if(!bearing){
-		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(lat,lng),
-			title: label
-		});
-	}else{
-		var local_icon = test_icon;
-		local_icon.rotation = bearing;
-		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(lat,lng),
-			title: label,
-			icon: local_icon
-		});
-if(USE_DEFAULT_MARKERS){
-		var marker1 = new google.maps.Marker({
-			position: new google.maps.LatLng(lat,lng),
-			title: label
-		});
-		marker1.setMap(map);
-		marker1.addListener('click', function(){ console.log("click"); goToVideoAndTime(index, timestamp);});
-}
-	}
-	marker.setMap(map);
-	marker.addListener('click', function(){
-		console.log("click");
-		goToVideoAndTime(index, timestamp);
-	});
-}
-*/
