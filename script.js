@@ -73,7 +73,11 @@ function parse_playlist() {
 function parse_pl_descriptor() {
 	if (this.status == 200) {
 		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
-		addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
+		if(tmp_obj.id != reference_recordingID){
+			addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
+		}else{
+			logINFO('We got our main view with ID '+tmp_obj.id+', skipping dropdown');
+		}
 	}
 	logINFO(this)
 	items_fetched++;	//count playlist entries fetched
@@ -100,6 +104,10 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	//this used to hold the coords/orient in previous version
 	//	loc_obj.set = XMLHttpRequest_in.response;
 	globalSetIndex.push(loc_obj);
+	//we check if it is our main view
+	if(loc_obj.id == reference_recordingID){
+		reference_recording_set = globalSetIndex[globalSetIndex.length - 1];
+	}
 	return loc_obj;
 }
 
@@ -147,9 +155,12 @@ function analyzeGeospatialData() {
 	centerMap(reference_location[0], reference_location[1], 20)
 	for (var i = 0; i < globalSetIndex.length; i++) {
 		var s = globalSetIndex[i];
-		addMarker(reference_location[0] + i * 0.0001, reference_location[1], s.index, s.orientSet[0].PresentationTime, 0, radToDeg(s.orientSet[0].X) - 90);
+		addMarker(reference_location[0] + i * 0.0001, reference_location[1], s.index,
+			 s.orientSet[0].PresentationTime, 0, radToDeg(s.orientSet[0].X) - 90, false);
 	}
+}
 
+function startPlayback(){
 
 }
 
