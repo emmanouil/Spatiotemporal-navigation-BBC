@@ -66,6 +66,69 @@ function centerMap(latitude, longitude, zoom) {
 			map.setZoom(zoom)
 }
 
+function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
+
+	/*
+	 * if no coordinates, or recording info, skip the marker
+	 */
+	if (!lat || !lng || typeof recording_id === 'undefined') {
+		logINFO('Marker was not placed on map (check lat, lng, index and recording_id args');
+		return;
+	}
+
+	var marker;
+
+	/*
+	 * if no bearing information, use default markers
+	 */
+	if (typeof bearing === 'undefined' && USE_NO_BEARING_MARKERS) {
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(lat, lng),
+			title: label
+		});
+		marker1.setMap(map);
+		marker1.addListener('click', function () {
+			console.log("click to no bearing marker");
+			switchToStream(index, recording_id);
+		});
+		return;
+	} else if (bearing) {
+		var label = "Marker " + recording_id;
+		var local_icon = test_icon;
+		local_icon.rotation = bearing;
+		if (active) {
+			local_icon.fillColor = 'green';
+		}
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(lat, lng),
+			title: label,
+			icon: local_icon
+		});
+	}
+
+	if (USE_DEFAULT_MARKERS) {
+		var marker1 = new google.maps.Marker({
+			position: new google.maps.LatLng(lat, lng),
+			title: label
+		});
+		marker1.setMap(map);
+		marker1.addListener('click', function () {
+			console.error("ERROR: not updated marker type");
+			goToVideoAndTime(index, timestamp);
+		});
+	}
+
+	marker.setMap(map);
+	marker.addListener('click', function () {
+		console.log("click");
+		switchToStream(index, recording_id);
+	});
+}
+
+
+
+
+
 function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false) {
 
 	/*
@@ -87,7 +150,10 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false
 			title: label
 		});
 		marker1.setMap(map);
-		marker1.addListener('click', function () { console.log("click"); goToVideoAndTime(index, timestamp); });
+		marker1.addListener('click', function () {
+			console.log("click");
+			goToVideoAndTime(index, timestamp);
+		});
 		return;
 	} else if (bearing) {
 		if (marker_n >= 0) {

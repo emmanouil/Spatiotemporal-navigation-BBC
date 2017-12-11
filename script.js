@@ -164,6 +164,9 @@ function startPlayback(){
 
 }
 
+function switchToStream(index, recordingID){
+	
+}
 
 /**
  * Original version of the function for adding video and sensor files - using the generated jsons
