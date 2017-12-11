@@ -1,5 +1,6 @@
 "use strict";
 var map;
+var markers = [];
 var marker_icon = 'assets/icon_48px.svg';
 var current_zoom = DEFAULT_ZOOM;
 
@@ -91,6 +92,7 @@ function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
 			console.log("click to no bearing marker");
 			switchToStream(index, recording_id);
 		});
+		markers.push(marker1);
 		return;
 	} else if (bearing) {
 		var label = "Marker " + recording_id;
@@ -119,10 +121,14 @@ function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
 	}
 
 	marker.setMap(map);
+	marker.index = index;
+	marker.recording_id = recording_id;
 	marker.addListener('click', function () {
 		console.log("click");
 		switchToStream(index, recording_id);
 	});
+	markers.push(marker);
+	globalSetIndex[index].marker = marker;
 }
 
 

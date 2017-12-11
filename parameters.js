@@ -65,6 +65,7 @@ var reference_recording_set;
  *  mediaSource                 Not used for now
  *  playlist        (Array of Strings)  Holds IDs
  *  video           (Element)   The video
+ *  main_view       (Element)   The main view video
  *  items_fetched   (int)       Number of playlist elements fetched
  *
  * File-in related vars:
