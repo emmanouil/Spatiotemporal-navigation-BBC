@@ -26,8 +26,10 @@
 	<!-- For synchronous load (blocking) -->
 	<!--     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"></script> -->
 	<div id="container">
-		<video src="parsing/default_video_holder.mp4" id="v" controls width="320" height="240">
-		</video>
+		<div id="video_container">
+			<video src="parsing/default_video_holder.mp4" id="v" controls width="320" height="240"></video>
+			<video src="parsing/A002C001_140325E3.webm" id="v_main" controls width="320" height="240"></video>
+		</div>
 		<div id="menu">
 			Select File:
 			<select name="select" onchange="selectFile(this.selectedIndex)">
