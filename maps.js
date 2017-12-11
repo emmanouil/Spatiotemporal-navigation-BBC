@@ -195,3 +195,8 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false
 	});
 
 }
+
+function updateMarker90(marker, orientation) {
+	marker.icon.rotation = orientation - 90;
+	marker.setMap(map);
+}
