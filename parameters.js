@@ -16,6 +16,15 @@ var HIGHLIGHT_CURRENT_MARKER = false;
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
 
+/**
+ * Parameters used mostly by script.js and are experiment-specific
+ */
+var reference_location = [53.4724, -2.2996]
+var reference_startTimeMs = 44531700;
+var reference_recordingID = 'A002C001_140325E3'; 
+
+
+
 
 /* Other Global vars that hold/set elements: */
 
