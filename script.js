@@ -73,10 +73,10 @@ function parse_playlist() {
 function parse_pl_descriptor() {
 	if (this.status == 200) {
 		var tmp_obj = addVideoToIndex(this);	//add to globalSetIndex
-		if(tmp_obj.id != reference_recordingID){
+		if (tmp_obj.id != reference_recordingID) {
 			addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
-		}else{
-			logINFO('We got our main view with ID '+tmp_obj.id+', skipping dropdown');
+		} else {
+			logINFO('We got our main view with ID ' + tmp_obj.id + ', skipping dropdown');
 		}
 	}
 	logINFO(this)
@@ -105,7 +105,7 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	//	loc_obj.set = XMLHttpRequest_in.response;
 	globalSetIndex.push(loc_obj);
 	//we check if it is our main view
-	if(loc_obj.id == reference_recordingID){
+	if (loc_obj.id == reference_recordingID) {
 		reference_recording_set = globalSetIndex[globalSetIndex.length - 1];
 	}
 	return loc_obj;
