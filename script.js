@@ -160,12 +160,15 @@ function analyzeGeospatialData() {
 	}
 }
 
-function startPlayback(){
 
+function startPlayback() {
+	//called when the play button is pressed
+	//TODO
 }
 
-function switchToStream(index, recordingID){
-	
+function switchToStream(index, recordingID) {
+	//called when marker is clicked
+	//TODO
 }
 
 /**
