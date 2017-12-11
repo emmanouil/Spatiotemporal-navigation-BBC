@@ -52,7 +52,7 @@ function setDefaultZoom(e) {
 
 //called when a marker is clicked
 function goToVideoAndTime(i_in, time_in) {
-    console.error('[ERROR] called depricated function goToVideoAndTime with args '+i_in+',  '+time_in);
+    console.error('[ERROR] called depricated function goToVideoAndTime with args ' + i_in + ',  ' + time_in);
     console.log("video with index: " + i_in + " seeking to time " + time_in + "ms");
     selector.selectedIndex = i_in;
     selectFile(i_in);
@@ -77,8 +77,8 @@ function initTimeAndSpace(e) {
 function initMarkers(e) {
     document.getElementById('init_mk_btn').disabled = true;
     document.getElementById('play_btn').disabled = false;
-    document.getElementById('play_btn').innerText = 'Go To '+reference_startTimeMs+', and Play';
-    logINFO('Initializing markers for reference start time (ms): '+reference_startTimeMs);
+    document.getElementById('play_btn').innerText = 'Go To ' + reference_startTimeMs + ', and Play';
+    logINFO('Initializing markers for reference start time (ms): ' + reference_startTimeMs);
     document.getElementById('start_time_input').value = reference_startTimeMs;
     analyzeGeospatialData();
 }
@@ -89,6 +89,6 @@ function initMarkers(e) {
  */
 function goToAndPlay(e) {
     document.getElementById('play_btn').disabled = true;
-    logINFO('starting playback from (ms): '+reference_startTimeMs);
+    logINFO('starting playback from (ms): ' + reference_startTimeMs);
     startPlayback();
 }
