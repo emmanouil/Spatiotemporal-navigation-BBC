@@ -67,6 +67,7 @@ function initTimeAndSpace(e) {
     document.getElementById('init_ts_btn').disabled = true;
     document.getElementById('init_mk_btn').disabled = false;
     loadSpatialData();
+    setMainViewStartTime();
 }
 
 
@@ -77,9 +78,9 @@ function initTimeAndSpace(e) {
 function initMarkers(e) {
     document.getElementById('init_mk_btn').disabled = true;
     document.getElementById('play_btn').disabled = false;
-    document.getElementById('play_btn').innerText = 'Go To ' + reference_startTimeMs + ', and Play';
-    logINFO('Initializing markers for reference start time (ms): ' + reference_startTimeMs);
-    document.getElementById('start_time_input').value = reference_startTimeMs;
+    document.getElementById('play_btn').innerText = 'Go To ' + main_view_startTime + ', and Play';
+    logINFO('Initializing markers for reference start time (ms): ' + main_view_startTime);
+    document.getElementById('start_time_input').value = main_view_startTime;
     analyzeGeospatialData();
 }
 
@@ -89,6 +90,6 @@ function initMarkers(e) {
  */
 function goToAndPlay(e) {
     document.getElementById('play_btn').disabled = true;
-    logINFO('starting playback from (ms): ' + reference_startTimeMs);
+    logINFO('starting playback from (ms): ' + main_view_startTime);
     startPlayback();
 }
