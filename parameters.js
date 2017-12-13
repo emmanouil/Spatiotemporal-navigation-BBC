@@ -22,6 +22,7 @@ var ENABLE_HIGHLIGHTER = false;
 var reference_location = [53.4724, -2.2996]
 var reference_recordingID = 'A002C001_140325E3';
 var reference_recording_set;
+var reference_start_time = 0;
 
 
 

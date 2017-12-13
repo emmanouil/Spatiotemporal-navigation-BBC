@@ -25,7 +25,7 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 var active_video_id = null;
 var mediaSource = new MediaSource();	//Not used for now
 //var skeleton_worker = new Worker( 'parser.js' );
-var selector, video, playlist, items_fetched = 0;
+var selector, video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
 
 /**
  * Entry point
@@ -116,6 +116,16 @@ function loadSpatialData() {
 		fetch(globalSetIndex[i].descriptor.locationFilename, loadCoords, 'json');
 		fetch(globalSetIndex[i].descriptor.orientationFilename, loadLocs, 'json');
 	}
+}
+
+function setMainViewStartTime() {
+	var tmp_time = globalSetIndex[0].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
+	for (var i = 1; i < globalSetIndex.length; i++) {
+		if (globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs > tmp_time && globalSetIndex[i].id != reference_recordingID) {
+			tmp_time = globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
+		}
+	}
+	main_view.currentTime = main_view_startTime = (tmp_time / 1000);	//in seconds
 }
 
 function loadCoords(XMLHttpRequest_in) {
