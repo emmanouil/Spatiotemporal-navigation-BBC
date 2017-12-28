@@ -189,7 +189,9 @@ def extract_measurements(r_set, fID):
             continue
         else:
             if (fID == ORIENTATION_FIELD):
-                orientations.append(calculate_orientation(item))
+                tmp_orient = calculate_orientation(item)
+                if (tmp_orient):
+                    orientations.append(tmp_orient)
             elif (fID == LOCATION_FIELD):
                 locations.append(calculate_location(item))
             else:
