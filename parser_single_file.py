@@ -14,6 +14,7 @@ SENSOR_FILE_EXTENSION = '.xml'
 SENSOR_XML_SUFFIX = '_SENSORDATA'
 VIDEO_FILE_EXTENSION = '.webm'
 ORIENTATION_FIELD = '4'
+IN_RAD = False
 LOCATION_FIELD = '0'
 
 #Paremeters for output files
@@ -159,15 +160,16 @@ def calculate_orientation(item_in):
     global orient_count
     orient_obj = {'X': 0, 'Y': 0, 'Z': 0, 'LocalTimestamp': 0, 'PresentationTime': 0, 'Type': "ORIENTATION"}
     global orient_start
-    orient_count += 1
-    if (orient_count == 1):
-        orient_start = item_in['time']
-    orient_obj['Z'] += item_in['values'][2]
-    orient_obj['X'] += item_in['values'][0]
-    orient_obj['Y'] += item_in['values'][1]
-    orient_obj['LocalTimestamp'] = item_in['time']
-    orient_obj['PresentationTime'] = item_in['time'] - orient_start
-    return orient_obj
+    if not (IN_RAD and ((item_in['values'][0] < 1 and item_in['values'][0] > -1) and (item_in['values'][1] < 1 and item_in['values'][1] > -1))):
+        orient_count += 1
+        if (orient_count == 1):
+            orient_start = item_in['time']
+        orient_obj['Z'] += item_in['values'][2]
+        orient_obj['X'] += item_in['values'][0]
+        orient_obj['Y'] += item_in['values'][1]
+        orient_obj['LocalTimestamp'] = item_in['time']
+        orient_obj['PresentationTime'] = item_in['time'] - orient_start
+        return orient_obj
 
 
 def calculate_location(item_in):
