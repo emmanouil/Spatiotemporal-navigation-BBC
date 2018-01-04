@@ -162,11 +162,46 @@ function loadAssets(type, Xreq_target) {
  * NOTE: It adds INITIAL markers (not all markers - TODO)
  */
 function analyzeGeospatialData() {
+	/* Setup main view */
 	centerMap(reference_location[0], reference_location[1], 20)
+	main_view.src = INPUT_DIR + '/' + reference_recording_set.videoFile;
+	main_view.id = reference_recording_set.id;
+
+	/**
+	 * Add initial markers (TODO specify initial loc and orient)
+	 */
 	for (var i = 0; i < globalSetIndex.length; i++) {
 		var s = globalSetIndex[i];
-		addMarker(reference_location[0] + i * 0.0001, reference_location[1], s.index,
-			 s.orientSet[0].PresentationTime, 0, radToDeg(s.orientSet[0].X) - 90, false);
+		if (s.id != reference_recordingID) {
+			addLiveMarker(reference_location[0] + (i + 0.5) * 0.0001, reference_location[1],
+				s.index, s.id, s.orientSet[0].Y, false);
+		} else {
+			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].Y, true);
+		}
+	}
+
+
+	/**
+	 * Add initial markers (TODO specify initial loc and orient)
+	 */
+	for (var i = 0; i < globalSetIndex.length; i++) {
+		var s = globalSetIndex[i];
+		if (s.id != reference_recordingID) {
+			var tmp_index = main_view_tracks.push(main_view.addTextTrack("metadata", s.id))
+			addMarkerUpdates(s, tmp_index - 1);
+			globalSetIndex[i].main_view_tracks_no = tmp_index - 1;
+			main_view_tracks[tmp_index - 1].oncuechange = function () {
+				for (var i = 0; i < this.activeCues.length; i++) {
+					updateMarkerByLabel(this.activeCues[i].track.label, Number(this.activeCues[i].text));
+				}
+			}
+		} else {
+			logNOTE('main view has to changes in loc/orient, skipping addMarkerUpdates for set')
+			continue;
+		}
+	}
+}
+
 	}
 }
 
