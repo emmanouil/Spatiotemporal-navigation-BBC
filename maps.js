@@ -163,7 +163,7 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false
 		return;
 	} else if (bearing) {
 		if (marker_n >= 0) {
-			var label = "Marker " + marker_n;
+			var label = marker_n + "Marker";
 		} else {
 			var label = "Marker Unlabeled";
 		}
@@ -196,7 +196,14 @@ function addMarker(lat, lng, index, timestamp, marker_n, bearing, active = false
 
 }
 
-function updateMarker90(marker, orientation) {
-	marker.icon.rotation = orientation - 90;
-	marker.setMap(map);
+function updateMarkerByLabel(marker_label, orientation) {
+	for (var m in markers) {
+		if (markers[m].title.split(' ')[1] == marker_label.split(' ')[0]) {
+			console.log(orientation)
+			markers[m].icon.rotation = orientation;
+			markers[m].setMap(map);
+			return;
+		}
+	}
+	logINFO('marker ' + marker_label + ' not found in order to be updated');
 }
