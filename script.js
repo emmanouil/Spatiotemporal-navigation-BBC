@@ -38,6 +38,7 @@ window.onload = init;
  */
 function init() {
 	video = document.getElementById('v');
+	main_view = document.getElementById('v_main');
 	initVideo();	//in video.js
 	mediaSource.video = video;
 	video.ms = mediaSource;
@@ -202,7 +203,34 @@ function analyzeGeospatialData() {
 	}
 }
 
+function addMarkerUpdates(set_in, tmp_index) {
+	//TODO; I messed it up
+	/* locate and init track */
+	var tmp_track = main_view_tracks[tmp_index];
+
+	/* analyze orientations to cues */
+	/* use as main (a.k.a. reference) view */
+	var tmp_start = set_in.descriptor.startTimeMs;
+	var t_diff = tmp_start - reference_recording_set.descriptor.startTimeMs;
+	if(reference_start_time == 0){
+		reference_start_time = t_diff / 1000;
+		main_view.currentTime = reference_start_time;
 	}
+	var cur_t = set_in.orientSet[0].PresentationTime;
+	for (var i = 0; i < set_in.orientSet.length - 1; i++) {
+		var tmp_orient = set_in.orientSet[i];
+			cur_t = tmp_orient.PresentationTime;
+			//TODO handle cues according to main vid time (not relevant to the take time)
+			tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.Y)));
+	}
+
+	/*
+	var t_start = set_in.descriptor.startTimeMs;
+	for( var i =0; i< set_in.orientSet; i++){
+
+	}
+	*/
+	console.log(tmp_track)
 }
 
 
