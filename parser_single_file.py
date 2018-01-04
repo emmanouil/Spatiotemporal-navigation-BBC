@@ -142,11 +142,11 @@ def get_sensors(file_in):
                     measurement['sensorID'] = kid.text
                 elif (kid.tag == 'time'):
                     measurement['time'] = int(kid.text)
-                elif (kid.tag == 'values'):
+                elif (kid.tag.lower() == 'values'):
                     measurement['values'] = kid.text.split()
                     measurement['values'] = [float(i) for i in measurement['values']]
                 else:
-                    log('unkown entry in sensor file', LOG_LVL_ERROR)
+                    log('unkown entry ' + kid.tag +' in sensor file', LOG_LVL_ERROR)
             if (measurement != {}):
                 measurements.append(measurement)
             else:
