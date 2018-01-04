@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import xml.etree.ElementTree as ET
+import math
 
 #Parameters
 #Paremeters for input files
@@ -167,6 +168,16 @@ def calculate_orientation(item_in):
         orient_obj['Z'] += item_in['values'][2]
         orient_obj['X'] += item_in['values'][0]
         orient_obj['Y'] += item_in['values'][1]
+        orient_obj['LocalTimestamp'] = item_in['time']
+        orient_obj['PresentationTime'] = item_in['time'] - orient_start
+        return orient_obj
+    elif IN_RAD:
+        orient_count += 1
+        if (orient_count == 1):
+            orient_start = item_in['time']
+        orient_obj['Z'] += math.degrees(item_in['values'][2])
+        orient_obj['X'] += math.degrees(item_in['values'][0])
+        orient_obj['Y'] += math.degrees(item_in['values'][1])
         orient_obj['LocalTimestamp'] = item_in['time']
         orient_obj['PresentationTime'] = item_in['time'] - orient_start
         return orient_obj
