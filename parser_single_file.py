@@ -160,7 +160,7 @@ def calculate_orientation(item_in):
     global orient_count
     orient_obj = {'X': 0, 'Y': 0, 'Z': 0, 'LocalTimestamp': 0, 'PresentationTime': 0, 'Type': "ORIENTATION"}
     global orient_start
-    if not (IN_RAD and ((item_in['values'][0] < 1 and item_in['values'][0] > -1) and (item_in['values'][1] < 1 and item_in['values'][1] > -1))):
+    if not IN_RAD and not ((item_in['values'][0] < 1 and item_in['values'][0] > -1) and (item_in['values'][1] < 1 and item_in['values'][1] > -1)):
         orient_count += 1
         if (orient_count == 1):
             orient_start = item_in['time']
@@ -180,6 +180,8 @@ def calculate_orientation(item_in):
         orient_obj['LocalTimestamp'] = item_in['time']
         orient_obj['PresentationTime'] = item_in['time'] - orient_start
         return orient_obj
+    else:
+        log('error in parsing orientation values', LOG_LVL_DEBUG)
 
 
 def calculate_location(item_in):
