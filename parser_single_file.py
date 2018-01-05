@@ -25,6 +25,7 @@ PLAYLIST = 'playlist.txt'  #generated playlist containing formated files
 
 #Parameters for parser
 CLEAR_LOG = True  #When init log - delete previous logfile
+SHOW_DBG_LOGS = False
 
 #Global vars
 orient_count = 0
@@ -76,7 +77,8 @@ def log(msg, lvl):
             print('\033[32m' + '[INFO]\t' + '\033[0m' + msg)
             logfile.write(str_now + '[INFO]\t' + msg)
         elif (lvl == 0):  #dbg
-            print('\033[35m' + '[DEBUG]\t' + '\033[0m' + msg)
+            if SHOW_DBG_LOGS:
+                print('\033[35m' + '[DEBUG]\t' + '\033[0m' + msg)
             logfile.write(str_now + '[DEBUG]\t' + msg)
 
 
