@@ -14,7 +14,7 @@ TIMINIG_XML_SUFFIX = '_EbuCore'
 SENSOR_FILE_EXTENSION = '.xml'
 SENSOR_XML_SUFFIX = '_SENSORDATA'
 VIDEO_FILE_EXTENSION = '.webm'
-ORIENTATION_FIELD = '4'
+ORIENTATION_FIELD = '5'
 IN_RAD = False
 LOCATION_FIELD = '0'
 
@@ -24,9 +24,6 @@ OUTPUTDIR = 'script_out'
 PLAYLIST = 'playlist.txt'  #generated playlist containing formated files
 
 #Parameters for parser
-USE_ORIENTATION_AVERAGE = True  #else use latest orientation
-USE_FULL_FILENAME_IN_PLAYLIST = False  #otherwise use only ID (without the OUT_ and .txt)
-LOG_STATISTICS = True
 CLEAR_LOG = True  #When init log - delete previous logfile
 
 #Global vars
