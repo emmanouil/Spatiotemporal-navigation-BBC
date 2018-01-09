@@ -1,0 +1,13 @@
+
+<ebucore:ebuCoreMain xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ebucore="urn:ebu:metadata-schema:ebuCore_2014" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.4" xsi:schemaLocation="urn:ebu:metadata-schema:ebuCore_2014 http://www.ebu.ch/metadata/schemas/EBUCore/20140318/EBU_CORE_20140318.xsd">
+  <ebucore:coreMetadata>
+    <ebucore:part partName="take">
+      <ebucore:partStartTime>
+        <ebucore:timecode>12:04:02.12000</ebucore:timecode>
+      </ebucore:partStartTime>
+      <ebucore:partDuration>
+        <ebucore:timecode>00:34:14.40000</ebucore:timecode>
+      </ebucore:partDuration>
+    </ebucore:part>
+  </ebucore:coreMetadata>
+</ebucore:ebuCoreMain>

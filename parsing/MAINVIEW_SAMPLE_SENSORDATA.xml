@@ -1,0 +1,31 @@
+
+<sensordata>
+  <header>
+		THIS IS A SAMPLE MAIN VIEW DATA FILE
+  
+        Location, provider: passive
+        SensorID: 0, Latitude (degree), Longitude (degree), Altitude (meters), Accuracy (meters)
+
+        Orientation using MagneticField and Accelerometer
+        SensorID: 4, Azimuth(degree), Pitch (degree), Roll (degree)
+        
+        RoationVector, range: 1.0, resolution: 5.9604645, power: 8.65mA, delay: 5000.0
+        SensorID: 5, Azimuth (degree), Pitch (degree), Roll (degree)
+
+    </header>
+  <segment>
+    <time>1395749565609</time>
+    <sensorID>0</sensorID>
+    <values>53.472521 -2.299342 0.0 0.0</values>
+  </segment>
+  <segment>
+    <time>1395749566341</time>
+    <sensorID>4</sensorID>
+    <values>46.319294 -17.042542 1.1766286</values>
+  </segment>
+  <segment>
+    <time>1395749566423</time>
+    <sensorID>5</sensorID>
+    <values>46.319294 -17.042542 1.1766286 0.0</values>
+  </segment>
+</sensordata>
