@@ -2,7 +2,10 @@
 /parsing/
 
 #folder where the parser-created files are located
-/script_out/
+/script_out/*
+!/script_out/MAINVIEW_SAMPLE_DESCRIPTOR.json
+!/script_out/MAINVIEW_SAMPLE_LOC.json
+!/script_out/MAINVIEW_SAMPLE_ORIENT.json
 
 #test webserver files
 mongoose*
