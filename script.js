@@ -175,9 +175,9 @@ function analyzeGeospatialData() {
 		var s = globalSetIndex[i];
 		if (s.id != reference_recordingID) {
 			addLiveMarker(reference_location[0] + (i + 0.5) * 0.0001, reference_location[1],
-				s.index, s.id, s.orientSet[0].Y, false);
+				s.index, s.id, s.orientSet[0].X, false);
 		} else {
-			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].Y, true);
+			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].X, true);
 		}
 	}
 
@@ -221,7 +221,7 @@ function addMarkerUpdates(set_in, tmp_index) {
 		var tmp_orient = set_in.orientSet[i];
 			cur_t = tmp_orient.PresentationTime;
 			//TODO handle cues according to main vid time (not relevant to the take time)
-			tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.Y)));
+			tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.X)));
 	}
 
 	/*
