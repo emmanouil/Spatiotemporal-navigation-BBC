@@ -17,7 +17,6 @@ VIDEO_FILE_EXTENSION = '.webm'
 ORIENTATION_FIELD = '5'
 IN_RAD = False
 LOCATION_FIELD = '0'
-TEST_WITH_CONTINUOUS_SAMPLES = True #if the arriving orientation sample is delayed more than 1s, consider it a gap and trim time
 
 #Paremeters for output files
 LOGFILE = 'python_script.log'  #logfile
@@ -32,7 +31,6 @@ SHOW_DBG_LOGS = False
 orient_count = 0
 orient_start = 0
 orient_dur_tot = 0
-time_diff = 0   # used for TEST_WITH_CONTINUOUS_SAMPLES
 orientations = []
 locations = []
 
@@ -171,17 +169,8 @@ def calculate_orientation(item_in):
         orient_obj['Z'] += item_in['values'][2]
         orient_obj['X'] += item_in['values'][0]
         orient_obj['Y'] += item_in['values'][1]
-        if not TEST_WITH_CONTINUOUS_SAMPLES:
-            orient_obj['LocalTimestamp'] = item_in['time']
-            orient_obj['PresentationTime'] = item_in['time'] - orient_start
-        else:
-            orient_index = len(orientations) - 1
-            if orient_index>0:
-                orient_obj['PresentationTime'] = item_in['time'] - orient_start - time_diff
-                if orient_obj['PresentationTime'] - orientations[orient_index]['PresentationTime'] > 1000:
-                    time_diff += orient_obj['PresentationTime'] - orientations[orient_index]['PresentationTime'] - 1000
-                    orient_obj['PresentationTime'] = orientations[orient_index]['PresentationTime'] + 1000
-                                #if(tmp_orient['LocalTimestamp'] - len(orientations)
+        orient_obj['LocalTimestamp'] = item_in['time']
+        orient_obj['PresentationTime'] = item_in['time'] - orient_start
         return orient_obj
     elif IN_RAD:
         orient_count += 1
