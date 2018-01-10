@@ -176,7 +176,7 @@ function analyzeGeospatialData() {
 	for (var i = 0; i < globalSetIndex.length; i++) {
 		var s = globalSetIndex[i];
 		if (s.id != reference_recordingID) {
-			addLiveMarker(reference_location[0] + (i + 0.5) * 0.0001, reference_location[1],
+			addLiveMarker(s.coordSet[0].Latitude, s.coordSet[0].Longitude,
 				s.index, s.id, s.orientSet[0].X, false);
 		} else {
 			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].X, true);
