@@ -16,6 +16,9 @@ var HIGHLIGHT_CURRENT_MARKER = false;
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
 
+/* Select whether VTTCues should be wrt the specfic or main view */
+var MARKER_UPDATES_IN_MAIN_VIEW = false;
+
 /**
  * Parameters used mostly by script.js and are experiment-specific
  */

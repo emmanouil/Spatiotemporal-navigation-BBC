@@ -185,7 +185,7 @@ function analyzeGeospatialData() {
 
 
 	/**
-	 * Add initial markers (TODO specify initial loc and orient)
+	 * Add marker updates
 	 */
 	for (var i = 0; i < globalSetIndex.length; i++) {
 		var s = globalSetIndex[i];
