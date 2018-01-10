@@ -15,6 +15,7 @@ SENSOR_FILE_EXTENSION = '.xml'
 SENSOR_XML_SUFFIX = '_SENSORDATA'
 VIDEO_FILE_EXTENSION = '.webm'
 ORIENTATION_FIELD = '4'
+OVERWRITE_LOCATION = False    #checks if there is a location in the output dir and if so skips the generation of it
 IN_RAD = False
 LOCATION_FIELD = '0'
 
@@ -271,7 +272,15 @@ def main():
 
         #write to files
         flush_json_to_file_out(recordingID+'_ORIENT.json', orientations)
-        flush_json_to_file_out(recordingID+'_LOC.json', locations)
+        if OVERWRITE_LOCATION:
+            flush_json_to_file_out(recordingID+'_LOC.json', locations)
+        else:
+            try:
+                file_out_loc = open(os.getcwd()+'/'+OUTPUTDIR+'/'+recordingID+'_LOC.json', 'r')
+            except:
+                log('location file not found - creating location output file', LOG_LVL_INFO)
+                file_out_loc.close()
+                flush_json_to_file_out(recordingID+'_LOC.json', locations)
 
         flush_json_to_file_out(recordingID + '_DESCRIPTOR.json', {
             'recordingID': recording.recordingID,
