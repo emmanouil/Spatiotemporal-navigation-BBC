@@ -112,6 +112,7 @@ function addVideoToIndex(XMLHttpRequest_in) {
 	return loc_obj;
 }
 
+/* Called when "Init Time & Space" btn is clicked and fetches location and orientation sets */
 function loadSpatialData() {
 	for (var i = 0; i < globalSetIndex.length; i++) {
 		fetch(globalSetIndex[i].descriptor.locationFilename, loadCoords, 'json');
@@ -119,6 +120,7 @@ function loadSpatialData() {
 	}
 }
 
+/* Called when "Init Time & Space" btn is clicked and calculates relative time between views */
 function setMainViewStartTime() {
 	var tmp_time = globalSetIndex[0].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
 	for (var i = 1; i < globalSetIndex.length; i++) {
@@ -212,16 +214,16 @@ function addMarkerUpdates(set_in, tmp_index) {
 	/* use as main (a.k.a. reference) view */
 	var tmp_start = set_in.descriptor.startTimeMs;
 	var t_diff = tmp_start - reference_recording_set.descriptor.startTimeMs;
-	if(reference_start_time == 0){
+	if (reference_start_time == 0) {
 		reference_start_time = t_diff / 1000;
 		main_view.currentTime = reference_start_time;
 	}
 	var cur_t = set_in.orientSet[0].PresentationTime;
 	for (var i = 0; i < set_in.orientSet.length - 1; i++) {
 		var tmp_orient = set_in.orientSet[i];
-			cur_t = tmp_orient.PresentationTime;
-			//TODO handle cues according to main vid time (not relevant to the take time)
-			tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.X)));
+		cur_t = tmp_orient.PresentationTime;
+		//TODO handle cues according to main vid time (not relevant to the take time)
+		tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.X)));
 	}
 
 	/*
