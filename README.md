@@ -6,14 +6,16 @@ Start the server on top domain, and navigate to hello-map.html
 Parsers format the data as it is from the dataset, in a form suitable for consumption from the map visualization engine. 
 There are two parsers:
 
-### Input
+### Parser Input
 
 1. `parser_single_file` run with the name _NAMEOFFILE_ as an argument (without extension). For example, for a file ABC123.mp4 in the folder 'parsing', it should be executed as `python3 parser_single_file.py parsing/ABC123`. Each entry should have at least a video file and an associated EbuCore timing file (in xml)
-2. parser.py runing using a playlist [TODO]
+2. ~~parser.py runing using a playlist~~ deprecated
 
-### Output
+### Parser Output
 
-TBD
+1. _NAMEOFFILE_`_DESCRIPTOR.json`, containing information about the recording
+2. _NAMEOFFILE_`_ORIENT.json`, containg the timestamped orientation samples of the recording
+3. _NAMEOFFILE_`_LOC.json`, containg the timestamped location samples of the recording
 
 =====
 
@@ -23,12 +25,12 @@ The following part is still under development
 
 =====
 
-###Input:
-A `playlist.txt` located in a top-level subfolder named `parsing` with names of files.
+### Client Input:
+A `playlist.txt` located in top-level containing names of files.
 
-For each _NAMEOFFILE_ there should exist (in the same folder as `playlist.txt`) a:
+For each _NAMEOFFILE_ there should exist in a subfolder named `parsing` a:
 
-1. `VID_NAMEOFFILE.mp4` video file
+1. `VID_NAMEOFFILE.mp4` (or `VID_NAMEOFFILE.webm`) video file
 2. `OUT_NAMEOFFILE_SENSORDATA.xml` data file, that contains the timed sensors data
 
 

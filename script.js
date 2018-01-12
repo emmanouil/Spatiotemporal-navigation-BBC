@@ -177,9 +177,9 @@ function analyzeGeospatialData() {
 		var s = globalSetIndex[i];
 		if (s.id != reference_recordingID) {
 			addLiveMarker(s.coordSet[0].Latitude, s.coordSet[0].Longitude,
-				s.index, s.id, s.orientSet[0].X, false);
+				s.index, s.id, s.orientSet[0].X, true);
 		} else {
-			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].X, true);
+			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].X, false);
 		}
 	}
 
@@ -199,7 +199,7 @@ function analyzeGeospatialData() {
 				}
 			}
 		} else {
-			logNOTE('main view has to changes in loc/orient, skipping addMarkerUpdates for set')
+			logNOTE('main view has no changes in loc/orient, skipping addMarkerUpdates for set')
 			continue;
 		}
 	}
