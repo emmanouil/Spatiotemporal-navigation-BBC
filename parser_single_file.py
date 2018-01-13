@@ -252,7 +252,7 @@ def main():
         try:
             file_in_sensors = open(filepath + SENSOR_XML_SUFFIX + SENSOR_FILE_EXTENSION, 'r')
         except:
-            log('video file found, but without associated timing file. Aborting', LOG_LVL_ERROR)
+            log('video file found, but without associated sensor recordings file. Aborting', LOG_LVL_ERROR)
             raise
         #get sensor recordings
         sensor_info = get_sensors(file_in_sensors)
