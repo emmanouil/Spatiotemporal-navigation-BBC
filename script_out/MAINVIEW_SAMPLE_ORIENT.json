@@ -1,9 +1,9 @@
 [
     {
-        "X": 46.319294,
+        "X": -140.0,
         "Y": -17.042542,
         "Z": 1.1766286,
-        "LocalTimestamp": 1395749566170,
+        "LocalTimestamp": 1395749566341,
         "PresentationTime": 0,
         "Type": "ORIENTATION"
     }
