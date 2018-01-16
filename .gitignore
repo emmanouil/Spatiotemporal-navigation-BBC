@@ -5,9 +5,8 @@
 
 #folder where the parser-created files are located
 /script_out/*
-!/script_out/MAINVIEW_SAMPLE_DESCRIPTOR.json
-!/script_out/MAINVIEW_SAMPLE_LOC.json
-!/script_out/MAINVIEW_SAMPLE_ORIENT.json
+!/script_out/MAINVIEW_SAMPLE*
+!/script_out/CAMERA1VIEW_SAMPLE*
 
 #test webserver files
 mongoose*

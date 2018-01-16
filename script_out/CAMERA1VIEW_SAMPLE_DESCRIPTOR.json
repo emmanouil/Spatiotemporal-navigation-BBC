@@ -1,0 +1,10 @@
+{
+    "recordingID": "CAMERA1VIEW_SAMPLE",
+    "startTime": "12:12:52.28000",
+    "startTimeMs": 43972280,
+    "duration": "00:03:46.17000",
+    "durationMs": 226170,
+    "videoFilename": "parsing/CAMERA1VIEW_SAMPLE.webm",
+    "orientationFilename": "script_out/CAMERA1VIEW_SAMPLE_ORIENT.json",
+    "locationFilename": "script_out/CAMERA1VIEW_SAMPLE_LOC.json"
+}
