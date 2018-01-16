@@ -179,7 +179,8 @@ function analyzeGeospatialData() {
 			addLiveMarker(s.coordSet[0].Latitude, s.coordSet[0].Longitude,
 				s.index, s.id, s.orientSet[0].X, true);
 		} else {
-			addLiveMarker(reference_location[0], reference_location[1], s.index, s.id, s.orientSet[0].X, false);
+			addLiveMarker(s.coordSet[0].Latitude, s.coordSet[0].Longitude,
+				s.index, s.id, s.orientSet[0].X, false);
 		}
 	}
 

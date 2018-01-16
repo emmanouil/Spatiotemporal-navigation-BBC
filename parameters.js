@@ -22,7 +22,7 @@ var MARKER_UPDATES_IN_MAIN_VIEW = false;
 /**
  * Parameters used mostly by script.js and are experiment-specific
  */
-/* main/reference view location coordinates - not used anymore */
+/* main/reference view location coordinates - only used for map-centering */
 var reference_location = [53.472521, -2.299342]
 /* main/reference view recording ID */
 var reference_recordingID = 'A002C001_140325E3';
