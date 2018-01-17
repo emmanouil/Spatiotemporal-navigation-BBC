@@ -52,9 +52,7 @@ var reference_start_time = 0;
 /**
  *  in video.js
  *
- *  curr_set        (Object)    DURING PLAYBACK Holds the Object from "globalSetIndex" for current video
- *  curr_set_index  (int)       DURING PLAYBACK index of curr_set at current time
- *  curr_timeout, isPlaying
+ *  isPlaying
  **/
 
 /**

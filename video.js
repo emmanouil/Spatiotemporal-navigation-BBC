@@ -1,7 +1,4 @@
-"use strict";
-var curr_set;
-var curr_set_index = 0;
-var curr_timeout;
+"use strict"
 var isPlaying = false;
 
 function initVideo() {
@@ -38,24 +35,6 @@ function initVideo() {
 		 */
 }
 
-function pauseCheckPoint() {
-	//-	console.log('pause')
-	if (video.ended) {
-		resetCheckPoints();
-		return;
-	} else {
-		window.clearTimeout(curr_timeout);
-	}
-}
-
-
-function resetCheckPoints() {
-	curr_set = null;
-	curr_set_index = 0;
-	window.clearTimeout(curr_timeout);
-	isPlaying = false;
-}
-
-function emptyEvent(ev){
+function emptyEvent(ev) {
 	console.log(eve)
 }

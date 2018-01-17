@@ -31,7 +31,6 @@ function activateUI() {
 //arg: selected index
 function selectFile(index_in) {
     var loc;
-    resetCheckPoints();
     video.src = selector[index_in].value;
     active_video_id = selector[index_in].text;
     loc = getSetByVideoId(active_video_id).set[0].Location;
