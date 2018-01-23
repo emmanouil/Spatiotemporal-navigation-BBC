@@ -27,6 +27,7 @@ PLAYLIST = 'playlist.txt'  #generated playlist containing formated files
 #Parameters for parser
 CLEAR_LOG = True  #When init log - delete previous logfile
 SHOW_DBG_LOGS = False
+LOG_TO_FILE = False
 
 #Global vars
 orient_count = 0
@@ -73,20 +74,24 @@ def log(msg, lvl):
             print(msg)
         elif (lvl < 0):  #error
             print('\033[31m' + '[ERROR]\t' + '\033[0m' + msg)
-            logfile.write(str_now + '[ERROR]\t' + msg)
+            if LOG_TO_FILE:
+                logfile.write(str_now + '[ERROR]\t' + msg)
         elif (lvl > 0):  #info
             print('\033[32m' + '[INFO]\t' + '\033[0m' + msg)
-            logfile.write(str_now + '[INFO]\t' + msg)
+            if LOG_TO_FILE:
+                logfile.write(str_now + '[INFO]\t' + msg)
         elif (lvl == 0):  #dbg
             if SHOW_DBG_LOGS:
                 print('\033[35m' + '[DEBUG]\t' + '\033[0m' + msg)
-            logfile.write(str_now + '[DEBUG]\t' + msg)
+            if LOG_TO_FILE:
+                logfile.write(str_now + '[DEBUG]\t' + msg)
 
 
 def log_blankline():
     with open(LOGFILE, 'a') as logfile:
         print('\n')
-        logfile.write('\n')
+        if LOG_TO_FILE:
+            logfile.write('\n')
 
 
 ## Create output file and flush
