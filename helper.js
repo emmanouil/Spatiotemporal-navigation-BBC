@@ -31,6 +31,20 @@ function fetch(what, where, resp_type) {
     req.send();
 }
 
+/**
+ * Returns true if the file was successufully fetched
+ * Return false and prints error message otherwise
+ * @param {*} response 
+ * TODO integrate in rest of fetches
+ */
+function assert_fetch(response) {
+    if (response.target.status != 200) {
+        logERR("could NOT fetch file " + response.target.responseURL + ". Error: " + response.target.status + " " + response.target.statusText);
+        return false;
+    }
+    return true;
+}
+
 function calcBearing(lat1, lng1, lat2, lng2) {
     var y = Math.sin(lat2 - lat1) * Math.cos(lng2);
     var x = Math.cos(lng1) * Math.sin(lng2) -
