@@ -1,6 +1,7 @@
 'use strict'
 /**
- * This file contains function used to fetch and parse mpd containing segments
+ * This file contains functions used to fetch and parse mpd containing segments
+ * Tested with files generated using MP4Box of the GPAC suite (www.gpac.io)
  */
 
 
@@ -12,7 +13,7 @@ function mpd_test() {
 }
 
 /**
- * 
+ * Get an XHR reponse of the mpd file and puts the reference in the `mpd` var
  * @param {XHR response} mpd_resp the XHR response (as returned by fetch)
  * @returns {null} if not found; sets the `mpd` var otherwise
  */
@@ -27,6 +28,12 @@ function mpd_parse(mpd_resp) {
     mpd = oDOM.documentElement;
 }
 
+/**
+ * Find a representation in an MPD using the representation ID
+ * @param {Object} mpd_in mpd document to be scanned for the representation 
+ * @param {number} r_id the representation id
+ * @returns {Object} a Node with the representation
+ */
 function mpd_getRepresentationByID(mpd_in, r_id) {
     var tmp_reps = mpd_in.getElementsByTagName("Representation");
     if (tmp_reps === null || typeof tmp_reps === 'undefined' || tmp_reps.length < 1) {
@@ -43,6 +50,12 @@ function mpd_getRepresentationByID(mpd_in, r_id) {
     }
     return null;
 }
+
+/**
+ * Takes as parameter a MPD Document Element and returns the URL of the (first) initialization segment
+ * @param {Object} mpd_in MPD Document Element
+ * @returns {String} initialization segment URL
+ */
 function mpd_getInitSegURL(mpd_in) {
     var initSegElem = mpd_in.getElementsByTagName("Initialization");
     if (initSegElem.length > 1) {
@@ -53,14 +66,3 @@ function mpd_getInitSegURL(mpd_in) {
     }
     return initSegElem[0].getAttribute("sourceURL");
 }
-
-
-
-/*
-
-var oParser = new DOMParser();
-var oDOM = oParser.parseFromString(sMyString, "text/xml");
-// print the name of the root element or error message
-dump(oDOM.documentElement.nodeName == "parsererror" ? "error while parsing" : oDOM.documentElement.nodeName);
-
-// */
