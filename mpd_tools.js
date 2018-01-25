@@ -51,6 +51,21 @@ function mpd_getRepresentationByID(mpd_in, r_id) {
     return null;
 }
 
+
+/**
+ * Parses the attributes from a representation Node (as returned by mpd_getRepresentationByID) to an Object
+ * @param {Object} rep_in representation Node
+ * @returns {Object} an object containing the representation attributes
+ */
+function mpd_analyzeRepresentation(rep_in) {
+    var tmp_rep = new Object();
+    for (var i = 0; i < rep_in.attributes.length; i++) {
+        tmp_rep[rep_in.attributes[i].name] = rep_in.attributes[i].value
+    }
+    return tmp_rep;
+}
+
+
 /**
  * Takes as parameter a MPD Document Element and returns the URL of the (first) initialization segment
  * @param {Object} mpd_in MPD Document Element
