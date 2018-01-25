@@ -27,6 +27,22 @@ function mpd_parse(mpd_resp) {
     mpd = oDOM.documentElement;
 }
 
+function mpd_getRepresentationByID(mpd_in, r_id) {
+    var tmp_reps = mpd_in.getElementsByTagName("Representation");
+    if (tmp_reps === null || typeof tmp_reps === 'undefined' || tmp_reps.length < 1) {
+        logERR("The mpd does not contain ANY representations - Aborting")
+        return
+    }
+    var tmp_rep;
+    for (var i = 0; i < tmp_reps.length; i++) {
+        tmp_rep = tmp_reps[i];
+        if (tmp_rep.getAttribute("id") === r_id.toString()) {
+            console.log("representation found")
+            return tmp_rep
+        }
+    }
+    return null;
+}
 function mpd_getInitSegURL(mpd_in) {
     var initSegElem = mpd_in.getElementsByTagName("Initialization");
     if (initSegElem.length > 1) {
