@@ -32,6 +32,37 @@ function fetch(what, where, resp_type) {
 }
 
 /**
+ * Like fetch(), but asserts and returns only the response
+ * @param {*} what asset location
+ * @param {*} where function to be called with the result
+ * @param {*} resp_type default: 'no-type'
+ * @param {*} args arguments to be passed to the <where>
+ */
+function fetch_res(what, where, resp_type = 'no-type', args) {
+    logINFO("fetching " + what + "   for " + where.name);
+    if (what.length < 2) {
+        logERR("erroneous request");
+    }
+    var req = new XMLHttpRequest();
+    if (typeof args != 'undefined' && arguments.length > 3) {
+        req.addEventListener("load", function () {
+            assert_fetch(req, where, args);
+        });
+    } else {
+        req.addEventListener("load", function () {
+            assert_fetch(req, where);
+        });
+    }
+
+    req.open("GET", what);
+    if (resp_type != 'no-type') {
+        req.responseType = resp_type;
+    }
+
+    req.send();
+}
+
+/**
  * Returns true if the file was successufully fetched
  * Return false and prints error message otherwise
  * @param {*} response 
