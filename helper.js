@@ -37,10 +37,17 @@ function fetch(what, where, resp_type) {
  * @param {*} response 
  * TODO integrate in rest of fetches
  */
-function assert_fetch(response) {
-    if (response.target.status != 200) {
-        logERR("could NOT fetch file " + response.target.responseURL + ". Error: " + response.target.status + " " + response.target.statusText);
+function assert_fetch(response, target, args = 'no-args') {
+    if (response.status != 200) {
+        logERR("could NOT fetch file " + response.responseURL + " for " + where + "   . Error: " + response.status + " " + response.statusText);
         return false;
+    }else{
+        logINFO("fetched " + response.responseURL + " of type " + ", for function " + target.name)
+    }
+    if (args === 'no-args') {
+        target(response.response);
+    } else {
+        target(response.response, args);
     }
     return true;
 }
