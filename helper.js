@@ -15,16 +15,24 @@ function logINFO(msg) {
 
 /**
  * Content loading function
+ * TODO: replace with fetch_res
  */
-function fetch(what, where, resp_type) {
+function fetch(what, where, resp_type = 'no-type', args) {
     logINFO("fetching " + what + "   for " + where.name);
     if (what.length < 2) {
         logERR("erroneous request");
     }
     var req = new XMLHttpRequest();
-    req.addEventListener("load", where);
+    if (typeof args != 'undefined' && arguments.length > 3) {
+        req.addEventListener("load", function () {
+            where(req.response, args);
+        });
+    } else {
+        req.addEventListener("load", where);
+    }
+
     req.open("GET", what);
-    if (typeof (resp_type) != 'undefined') {
+    if (resp_type != 'no-type') {
         req.responseType = resp_type;
     }
     logINFO("fetched " + what + " of type " + resp_type + ", for function " + where.name)
