@@ -2,6 +2,7 @@
 
 Start the server on top domain, and navigate to hello-map.html
 
+
 ## Parsers
 Parsers format the data as it is from the dataset, in a form suitable for consumption from the map visualization engine. 
 There are two parsers:
@@ -16,6 +17,26 @@ There are two parsers:
 1. _NAMEOFFILE_`_DESCRIPTOR.json`, containing information about the recording
 2. _NAMEOFFILE_`_ORIENT.json`, containg the timestamped orientation samples of the recording
 3. _NAMEOFFILE_`_LOC.json`, containg the timestamped location samples of the recording
+
+
+## Client
+The client is a modified version of the client used for the _"Extended Video Streams for Spatiotemporal Video Navigation"_, presented at The Graphical Web 2016, part of the project _"Streaming And Presentation Architectures for Extended Video Streams"_ presented at the TVX '17.
+
+## Architecture flow of the client
+When the client is launched it does the following, in the corresponding order:
+1. Load items from the _playlist.txt_, containing the <NAMEOFFILE> of relevant recordings. And then, for each <NAMEOFFILE> entry:
+    1. Construct `globalSetIndex` where all the information/data on the recordings is placed
+    2. Fetch the corresponding <NAMEOFFILE>_DESCRIPTOR.json file, containing information on the recordings about its timing, location of its video / location / orientation files.
+    3. Fetch the corresponding <NAMEOFFILE>_dash.mpd file
+2. Fetch <NAMEOFFILE>_LOC.json containing the location data (placed in the `globalSetIndex`)
+3. Fetch <NAMEOFFILE>_ORIENT.json containing the orientation data (placed in the `globalSetIndex`)
+4. With the acquired timed location/orientation pairs
+    1. Place the markers on the map from the location/orientation pairs
+    2. Add the cues for updating the markers
+5. Fetch <NAMEOFFILE>_dash.mpd with the information on the segmented files (placed in the `globalSetIndex`)
+6. Adjust MSE accordingly
+
+
 
 =====
 
