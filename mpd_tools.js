@@ -2,6 +2,8 @@
 /**
  * This file contains functions used to fetch and parse mpd containing segments
  * Tested with files generated using MP4Box of the GPAC suite (www.gpac.io)
+ * 
+ * 
  */
 
 //Example MPD Object
@@ -28,28 +30,48 @@ MPD.prototype = {
     }
 };
 
+//STARTOF TESTS
 
 //this var holds the MPD Document Element, as set by mpd_parse //TODO remove it
 var mpd;
 
-function mpd_test() {
-    fetch("segmented/20140325_121238_dash.mpd", mpd_parse);
+function mpd_test_fetch() {
+
+    //vars used for testing
+    var t_initURL, t_rep, t_repAn;
+
+
+    fetch_promise("segmented/20140325_121238_dash.mpd", 'no-type').then(function (response, mpd) {
+        //create MPD Object
+        mpd = new MPD("segmented/20140325_121238_dash.mpd");
+        //set mpd full text - as fetched
+        mpd.fullDocument = mpd_parse(response);
+        //get initialization segment url for the first representation
+        mpd.initSegment = mpd_getInitSegURL(mpd.fullDocument);
+        //get Node for the first representation
+        t_rep = mpd_getRepresentationNodeByID(mpd.fullDocument, 1);
+        //analyze Node to get representation Attributes
+        mpd.representations.push(mpd_getRepresentationByNode(t_rep));
+        return (mpd);
+    }).then(function (responce) {
+        mpd = responce;
+        console.log('thiss ' + mpd);
+    }).catch(console.log.bind(console));;
+
 }
 
+
+//ENDOF TESTS
+
 /**
- * Get an XHR reponse of the mpd file and puts the reference in the `mpd` var
- * @param {XHR response} mpd_resp the XHR response (as returned by fetch)
+ * Get a String of an mpd file (e.g. from the XHR reponse of fetch_promise(url)) and returns the reference
+ * @param {String} mpd_string
  * @returns {null} if not found; sets the `mpd` var otherwise
  */
-function mpd_parse(mpd_resp) {
-    if (!assert_fetch(mpd_resp)) {
-        return;
-    }
-    var mpd_string = mpd_resp.target.response;
+function mpd_parse(mpd_string) {
     var oParser = new DOMParser();
     var oDOM = oParser.parseFromString(mpd_string, "text/xml");
-
-    mpd = oDOM.documentElement;
+    return oDOM.documentElement;
 }
 
 /**
@@ -58,7 +80,7 @@ function mpd_parse(mpd_resp) {
  * @param {number} r_id the representation id
  * @returns {Object} a Node with the representation
  */
-function mpd_getRepresentationByID(mpd_in, r_id) {
+function mpd_getRepresentationNodeByID(mpd_in, r_id) {
     var tmp_reps = mpd_in.getElementsByTagName("Representation");
     if (tmp_reps === null || typeof tmp_reps === 'undefined' || tmp_reps.length < 1) {
         logERR("The mpd does not contain ANY representations - Aborting")
@@ -77,11 +99,11 @@ function mpd_getRepresentationByID(mpd_in, r_id) {
 
 
 /**
- * Parses the attributes and segment info/urls from a representation Node (as returned by mpd_getRepresentationByID) to an Object
- * @param {Object} rep_in representation Node
+ * Parses the attributes and segment info/urls from a representation Node to an Object
+ * @param {Object} rep_in representation Node (as returned by mpd_getRepresentationNodeByID)
  * @returns {Object} an object containing the representation attributes
  */
-function mpd_analyzeRepresentation(rep_in) {
+function mpd_getRepresentationByNode(rep_in) {
     var tmp_rep = new Object();
     //get representation properties
     for (var i = 0; i < rep_in.attributes.length; i++) {
@@ -95,8 +117,9 @@ function mpd_analyzeRepresentation(rep_in) {
         tmp_rep['SegmentList'][tmp_seg.attributes[i].name] = tmp_seg.attributes[i].value;
     }
 
+    //TODO: this is always the init seg for the first representation
     //get initialization segment URL
-    tmp_rep['SegmentList']['InitializationSegmentURL'] = mpd_getInitSegURL(mpd);
+    //tmp_rep['SegmentList']['InitializationSegmentURL'] = mpd_getInitSegURL(rep_in.mpd.fullDocument);
 
     //get segment list
     var tmp_segs = rep_in.getElementsByTagName("SegmentURL")
