@@ -4,6 +4,30 @@
  * Tested with files generated using MP4Box of the GPAC suite (www.gpac.io)
  */
 
+//Example MPD Object
+function MPD(sourceURL) {
+    this.sourceURL = sourceURL;
+    this.representations = [];
+}
+MPD.prototype = {
+    get fullDocument() {
+        return this.document;
+    },
+    set fullDocument(document) {
+        console.log(document);
+        this.document = document;
+    },
+    get initSegment() {
+        return this.init_seg;
+    },
+    set initSegment(init_seg) {
+        this.init_seg = init_seg;
+    },
+    get representationCount() {
+        return this.representations.length;
+    }
+};
+
 
 //this var holds the MPD Document Element, as set by mpd_parse //TODO remove it
 var mpd;
