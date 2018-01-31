@@ -71,6 +71,41 @@ function fetch_res(what, where, resp_type = 'no-type', args) {
 }
 
 /**
+ * Promise implementation of fetch()
+ * @param {*} what asset location
+ * @param {*} resp_type default: 'no-type'
+ */
+function fetch_promise(what, resp_type = 'no-type') {
+
+    return new Promise(function (resolve, reject) {
+        if (what.length < 2) {
+            logERR("erroneous request");
+        }
+        var req = new XMLHttpRequest();
+
+        req.onload = function () {
+            var resp;
+            if (req.status === 200) {
+                resolve(req.response);
+            } else {
+                reject(Error('Request for ' + what + ' failed. Error: ' + req.statusText));
+            }
+        };
+        req.onerror = function () {
+            reject(Error('Request for ' + what + ' failed. Netowork error: ' + req.statusText));
+        };
+
+
+        req.open("GET", what);
+        if (resp_type != 'no-type') {
+            req.responseType = resp_type;
+        }
+
+        req.send();
+    });
+}
+
+/**
  * Returns true if the file was successufully fetched
  * Return false and prints error message otherwise
  * @param {*} response 
@@ -80,7 +115,7 @@ function assert_fetch(response, target, args = 'no-args') {
     if (response.status != 200) {
         logERR("could NOT fetch file " + response.responseURL + " for " + where + "   . Error: " + response.status + " " + response.statusText);
         return false;
-    }else{
+    } else {
         logINFO("fetched " + response.responseURL + " of type " + ", for function " + target.name)
     }
     if (args === 'no-args') {
