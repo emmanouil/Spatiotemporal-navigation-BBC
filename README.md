@@ -24,16 +24,16 @@ The client is a modified version of the client used for the _"Extended Video Str
 
 ## Architecture flow of the client
 When the client is launched it does the following, in the corresponding order:
-1. Load items from the _playlist.txt_, containing the <NAMEOFFILE> of relevant recordings. And then, for each <NAMEOFFILE> entry:
+1. Load items from the _playlist.txt_, containing the _NAMEOFFILE_ of relevant recordings. And then, for each _NAMEOFFILE_ entry:
     1. Construct `globalSetIndex` where all the information/data on the recordings is placed
-    2. Fetch the corresponding <NAMEOFFILE>_DESCRIPTOR.json file, containing information on the recordings about its timing, location of its video / location / orientation files.
-    3. Fetch the corresponding <NAMEOFFILE>_dash.mpd file
-2. Fetch <NAMEOFFILE>_LOC.json containing the location data (placed in the `globalSetIndex`)
-3. Fetch <NAMEOFFILE>_ORIENT.json containing the orientation data (placed in the `globalSetIndex`)
+    2. Fetch the corresponding _NAMEOFFILE_`_DESCRIPTOR.json` file, containing information on the recordings about its timing, location of its video / location / orientation files.
+    3. Fetch the corresponding _NAMEOFFILE_`_dash.mpd` file
+2. Fetch _NAMEOFFILE_`_LOC.json` containing the location data (placed in the `globalSetIndex`)
+3. Fetch _NAMEOFFILE_`_ORIENT.json` containing the orientation data (placed in the `globalSetIndex`)
 4. With the acquired timed location/orientation pairs
     1. Place the markers on the map from the location/orientation pairs
     2. Add the cues for updating the markers
-5. Fetch <NAMEOFFILE>_dash.mpd with the information on the segmented files (placed in the `globalSetIndex`)
+5. Fetch _NAMEOFFILE_`_dash.mpd` with the information on the segmented files (placed in the `globalSetIndex`)
 6. Adjust MSE accordingly
 
 
