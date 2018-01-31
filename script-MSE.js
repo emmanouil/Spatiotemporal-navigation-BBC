@@ -164,21 +164,6 @@ function appendNextMediaSegment(frag_resp) {
 		console.log("...added")
 }
 
-//Content-loading functions
-function fetch(what, where, resp_type) {
-	console.log(v.currentTime + " fetching " + what);
-	if (what.length < 2) {
-		console.log("erroneous request");
-	}
-	var req = new XMLHttpRequest();
-	req.addEventListener("load", where);
-	req.open("GET", what);
-	if (typeof (resp_type) != 'undefined') {
-		req.responseType = resp_type;
-	}
-	req.send();
-}
-
 function fetch_pl() {
 	fetch(playlist_dir, parse_playlist);
 }
