@@ -79,9 +79,10 @@ function fetch_res(what, where, resp_type = 'no-type', args) {
 /**
  * Promise implementation of fetch()
  * @param {*} what asset location
- * @param {*} resp_type default: 'no-type'
+ * @param {String} resp_type default: 'no-type'
+ * @param {Boolean} full_request default: false, send the request (with the response), regardless of success
  */
-function fetch_promise(what, resp_type = 'no-type') {
+function fetch_promise(what, resp_type = 'no-type', full_request = false) {
 
     return new Promise(function (resolve, reject) {
         if (what.length < 2) {
@@ -91,7 +92,9 @@ function fetch_promise(what, resp_type = 'no-type') {
 
         req.onload = function () {
             var resp;
-            if (req.status === 200) {
+            if (full_request) {
+                resolve(req);
+            } else if (req.status === 200) {
                 resolve(req.response);
             } else {
                 reject(Error('Request for ' + what + ' failed. Error: ' + req.statusText));
