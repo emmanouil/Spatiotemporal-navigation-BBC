@@ -1,12 +1,18 @@
 "use strict";
 var globalSetIndex = [];
+const SHOW_DEBUG = true;
 
 function logERR(msg) {
-    console.log("[ERROR] " + msg);
+    console.error("[ERROR] " + msg);
 }
 
-function logNOTE(msg) {
-    console.log("[NOTE] " + msg);
+function logWARN(msg) {
+    console.warn("[WARNING] " + msg)
+}
+
+function logDEBUG(msg) {
+    if (SHOW_DEBUG)
+        console.log("[DEBUG] " + msg)
 }
 
 function logINFO(msg) {
