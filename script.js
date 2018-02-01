@@ -50,8 +50,8 @@ function parse_playlist() {
 	playlist = this.responseText.split(/\r\n|\r|\n/); //split on break-line
 	var req_status = this.status;
 	if (req_status == 200 && playlist.length > 0) {
-		logNOTE("Fetching " + PLAYLIST_FILE + " OK  - total received elements: " + playlist.length);
-		logNOTE("Fetching playlist elements...")
+		logINFO("Fetching " + PLAYLIST_FILE + " OK  - total received elements: " + playlist.length);
+		logINFO("Fetching playlist elements...")
 		for (var i = 0; i < playlist.length; i++) {
 			fetch(PARSER_DIR + '/' + playlist[i] + PL_DESCRIPTOR_SUFFIX + '.json', parse_pl_descriptor, 'json');
 			//fetch(input_dir + '/' + pl_element_prefix + playlist[i] + pl_element_extension, parse_pl_element, 'json');	//Original - using json generated from the parser
@@ -65,9 +65,9 @@ function parse_playlist() {
 			*/
 		}
 	} else if (req_status == 200) {
-		logNOTE("Fetching " + PLAYLIST_FILE + " returned with an empty file");
+		logINFO("Fetching " + PLAYLIST_FILE + " returned with an empty file");
 	} else {
-		logNOTE("Fetching " + PLAYLIST_FILE + " unsuccessful");
+		logINFO("Fetching " + PLAYLIST_FILE + " unsuccessful");
 	}
 }
 
@@ -200,7 +200,7 @@ function analyzeGeospatialData() {
 				}
 			}
 		} else {
-			logNOTE('main view has no changes in loc/orient, skipping addMarkerUpdates for set')
+			logINFO('main view has no changes in loc/orient, skipping addMarkerUpdates for set')
 			continue;
 		}
 	}

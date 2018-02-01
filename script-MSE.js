@@ -11,19 +11,17 @@
  */
 
 //options
-const WITH_COORDS_IN_PL = true;	//backwards compatibility - to be removed
 const FULL_LOGS = false;
 const PLAYLIST_UPDATE_RATE = 500;	//in ms
 var port = '8000';
 var playlist_dir = '../out/playlist.m3u8';
 var seg_url = 'http://localhost:' + port + '/x64/Debug/out/';
-const DISABLE_AUDIO = true;
 
 //vars
 var mime_codec = 'video/mp4; codecs="avc1.42c01e"';
 var mediaSource = new MediaSource();
 var sourceBuffer;
-var video, playlist, textTrack, cues;
+var video, playlist;
 var playlistArray, playlistPosition = 0;
 var req_status = -10;
 var pl_timer_ID;

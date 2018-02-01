@@ -3,7 +3,6 @@
 
 <head>
 	<title>Simple Map</title>
-	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="assets/style.css">
 </head>
@@ -20,8 +19,8 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap" async
 	 defer></script>
 	<script src="helper.js"></script>
-	<script src="script.js"></script>
 	<script src="video.js"></script>
+	<script src="script.js"></script>
 	<script src="events.js"></script>
 	<!-- For synchronous load (blocking) -->
 	<!--     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"></script> -->
@@ -34,8 +33,8 @@
 			Select File:
 			<select name="select" onchange="selectFile(this.selectedIndex)">
 			</select>
-			<br/>
-			Set Time: <input type="text" id="start_time_input"></input>
+			<br/> Set Time:
+			<input type="text" id="start_time_input"></input>
 			<br/>
 			<label>
 				<input name="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);" />Reset to Default Zoom on playback</label>

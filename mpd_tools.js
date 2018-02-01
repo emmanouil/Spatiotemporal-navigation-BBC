@@ -55,8 +55,7 @@ function mpd_test_fetch() {
         return (mpd);
     }).then(function (responce) {
         mpd = responce;
-        console.log('thiss ' + mpd);
-    }).catch(console.log.bind(console));;
+    }).catch(function (err) { console.log(err); });
 
 }
 
@@ -125,8 +124,6 @@ function mpd_getRepresentationByNode(rep_in) {
     var tmp_segs = rep_in.getElementsByTagName("SegmentURL")
     tmp_rep['SegmentList']['Segments'] = new Array();
     for (var i = 0; i < tmp_segs.length; i++) {
-        console.log(tmp_segs[i])
-        console.log(tmp_segs[i].getAttribute("media"))
         tmp_rep['SegmentList']['Segments'][i] = tmp_segs[i].getAttribute("media");
     }
 
