@@ -1,5 +1,5 @@
 "use strict";
-var selector, toggleZoom, zoomLvl, tmpZoom, initiated = false;
+var toggleZoom, zoomLvl, tmpZoom, initiated = false;
 
 function activateMapEvents() {
 
@@ -29,16 +29,19 @@ function activateUI() {
 
 //called when file is selected from the dropdown
 //arg: selected index
+//TODO: update commented out section to match changes
 function selectFile(index_in) {
     var loc;
     video.src = selector[index_in].value;
     active_video_id = selector[index_in].text;
+    /*
     loc = getSetByVideoId(active_video_id).set[0].Location;
     if (loc) {
         centerMap(loc.Latitude, loc.Longitude);
     } else {
         logERR(selector.selectedIndex + "  not found");
     }
+    */
 }
 
 function toggleDefaultZoom(e) {
@@ -50,8 +53,9 @@ function setDefaultZoom(e) {
 }
 
 //called when a marker is clicked
+//TODO fix without breaking API (currently only sets video)
 function goToVideoAndTime(i_in, time_in) {
-    console.error('[ERROR] called depricated function goToVideoAndTime with args ' + i_in + ',  ' + time_in);
+    console.log('[WARNING] called depricated function goToVideoAndTime with args ' + i_in + ',  ' + time_in);
     console.log("video with index: " + i_in + " seeking to time " + time_in + "ms");
     selector.selectedIndex = i_in;
     selectFile(i_in);

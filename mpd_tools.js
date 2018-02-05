@@ -53,8 +53,8 @@ function mpd_test_fetch() {
         //analyze Node to get representation Attributes
         mpd.representations.push(mpd_getRepresentationByNode(t_rep));
         return (mpd);
-    }).then(function (responce) {
-        mpd = responce;
+    }).then(function (response) {
+        mpd = response;
     }).catch(function (err) { console.log(err); });
 
 }
