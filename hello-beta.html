@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Map w. MediaSource Extensions</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+</head>
+
+<body>
+    <svg id="user-svg">
+        <circle cx="32" cy="32" r="30" stroke="black" stroke-width="3" fill="red" fill-opacity="0.4" />
+    </svg>
+    <br/>
+    <div id="map">
+    </div>
+    <script src="parameters.js"></script>
+    <script src="maps.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap" async
+        defer></script>
+    <script src="helper.js"></script>
+    <script src="mpd_tools.js"></script>
+    <script src="events.js"></script>
+    <script src="video.js"></script>
+    <script src="main.js"></script>
+    <!-- For synchronous load (blocking) -->
+    <!--     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"></script> -->
+    <div id="container">
+        <div id="video_container">
+            <video src="blob" id="v" controls muted=true width="320" height="240"></video>
+            <video src="blob" id="v_main" controls muted=true width="320" height="240"></video>
+        </div>
+        <div id="menu">
+            Select File:
+            <select name="select" onchange="selectFile(this.selectedIndex)">
+            </select>
+            <br/> Set Time:
+            <input type="text" id="start_time_input"></input>
+            <br/>
+            <label>
+                <input name="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);" />Reset to Default Zoom on playback</label>
+            <br/>
+            <button id="set_zoom_btn" onclick="setDefaultZoom(this);">Set Current Zoom to Default</button>
+            <button id="init_ts_btn" onclick="initTimeAndSpace(this);">Init Time & Space</button>
+            <button id="init_mk_btn" onclick="initMarkers(this);" disabled="true">Init Markers</button>
+            <button id="play_btn" onclick="goToAndPlay(this);" disabled="true">Go To And Play</button>
+            <br/>
+            <!-- <label>0<input name ="zoomLevel" type='range' onchange="setDefaultZoom();" min="0" max="21" step="1"/>21 Set value of Default Zoom level</label> -->
+        </div>
+    </div>
+
+    <p>The demo plays a segmented mp4 file (generated using MP4Box of
+        <a href="http://www.gpac.io" target="_blank">GPAC</a>). The entire movie is 'streamed' to a video element by appending each segment using the
+        <a href="https://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html" target="_blank">MediaSource API</a>.
+    </p>
+
+    <p id="data">MediaSource readyState: open
+        <br>
+        <br>
+    </p>
+</body>
+
+</html>
