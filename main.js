@@ -77,7 +77,8 @@ function init() {
 										globalSetIndex[j].mpd = new MPD(values[i].responseURL);
 										globalSetIndex[j].mpd.fullDocument = mpd_parse(values[i].response);
 										globalSetIndex[j].mpd.initSegment = mpd_getInitSegURL(globalSetIndex[j].mpd.fullDocument);
-										globalSetIndex[j].mpd.representations.push(mpd_getRepresentationNodeByID(globalSetIndex[j].mpd.fullDocument, 1));
+										var t_rep = mpd_getRepresentationNodeByID(globalSetIndex[j].mpd.fullDocument, 1);
+										globalSetIndex[j].mpd.representations.push(mpd_getRepresentationByNode(t_rep));
 										break;
 									}
 								}
