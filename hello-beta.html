@@ -27,8 +27,9 @@
     <!--     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB90QIExwNn50gJayF-NozhHWvhjhO0A88&callback=initMap"></script> -->
     <div id="container">
         <div id="video_container">
-            <video src="blob" id="v" controls muted=true width="320" height="240"></video>
-            <video src="blob" id="v_main" controls muted=true width="320" height="240"></video>
+            <video src="blob" id="v" hidden=true controls muted=true width="320" height="240"></video>
+            <video src="blob" id="v_main" hidden=true controls muted=true width="320" height="240"></video>
+            <video src="blob" id="video_mse" controls muted=true width="320" height="240"></video>
         </div>
         <div id="menu">
             Select File:
@@ -41,9 +42,9 @@
                 <input name="toggleZoom" type='checkbox' onchange="toggleDefaultZoom(this);" />Reset to Default Zoom on playback</label>
             <br/>
             <button id="set_zoom_btn" onclick="setDefaultZoom(this);">Set Current Zoom to Default</button>
-            <button id="init_ts_btn" onclick="initTimeAndSpace(this);">Init Time & Space</button>
-            <button id="init_mk_btn" onclick="initMarkers(this);" disabled="true">Init Markers</button>
-            <button id="play_btn" onclick="goToAndPlay(this);" disabled="true">Go To And Play</button>
+            <button id="init_ts_btn" onclick="initTimeAndSpace(this);" disabled=true>Init Time & Space</button>
+            <button id="init_mk_btn" onclick="initMarkers(this);" disabled=true>Init Markers</button>
+            <button id="play_btn" onclick="goToAndPlay(this);" disabled=true>Go To And Play</button>
             <br/>
             <!-- <label>0<input name ="zoomLevel" type='range' onchange="setDefaultZoom();" min="0" max="21" step="1"/>21 Set value of Default Zoom level</label> -->
         </div>

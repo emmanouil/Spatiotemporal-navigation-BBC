@@ -28,9 +28,9 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
  * Script Parameters & Objs
  */
 var active_video_id = null;
-var mediaSource = new MediaSource();	//Not used for now
+var mediaSource = new MediaSource();
 //var skeleton_worker = new Worker( 'parser.js' );
-var selector, video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
+var selector, video, main_view, video_mse, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
 
 /**
  * Entry point
@@ -45,6 +45,9 @@ function init() {
 
 	video = document.getElementById('v');
 	main_view = document.getElementById('v_main');
+	video_mse = document.getElementById('video_mse');
+	video_mse.ms = mediaSource;
+	mediaSource.video = video_mse;
 
 	//fetch playlist and parse elements (IDs) in 'playlist' array
 	fetch_promise('/' + PLAYLIST_FILE, 'no-type', true).
@@ -89,6 +92,7 @@ function init() {
 						logINFO('done parsing mpds')
 					}).then(function () {
 						logINFO('TODO create and start managing MSE and SourceBuffers')
+						document.getElementById('init_ts_btn').disabled = false;
 					}).catch(function (err) { logERR(err); });
 				}).catch(function (err) { logERR(err); });
 		}).then(function () {
@@ -96,15 +100,6 @@ function init() {
 		}).then(function (response) {
 			//mpd = response;
 		}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
-
-	/*    
-		video = document.getElementById('v');
-		main_view = document.getElementById('v_main');
-		initVideo();	//in video.js
-		mediaSource.video = video;
-		video.ms = mediaSource;
-		fetch('/' + PLAYLIST_FILE, parse_playlist);
-		//*/
 }
 
 function parse_playlist(request) {
