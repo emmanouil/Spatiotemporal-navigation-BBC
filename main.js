@@ -49,10 +49,11 @@ function init() {
 	video_mse = document.getElementById('video_mse');
 	video_mse.ms = mediaSource;
 	mediaSource.video = video_mse;
+	video_mse.src = window.URL.createObjectURL(mediaSource);
 
 	//fetch playlist and parse elements (IDs) in 'playlist' array
-	fetch_promise('/' + PLAYLIST_FILE, 'no-type', true).
-		then(
+	fetch_promise('/' + PLAYLIST_FILE, 'no-type', true)
+		.then(
 		//then fetch the descriptor jsons and build the globalSetIndex[]
 		function (response, mpd) {
 			parse_playlist(response);
@@ -72,34 +73,42 @@ function init() {
 					for (var i = 0; i < playlist.length; i++) {
 						promises.push(fetch_promise(DASH_DIR + '/' + globalSetIndex[i].id + DASH_MPD_SUFFIX + '.mpd', 'no-type', true));
 					}
-					Promise.all(promises).then(function (values) {
-						console.log(values);
-						for (var i = 0; i < values.length; i++) {
-							if (values[i].status === 200) {
-								for (var j = 0; j < globalSetIndex.length; j++) {
-									if (values[i].responseURL.search(globalSetIndex[j].id) > -1) {
-										globalSetIndex[j].mpd = new MPD(values[i].responseURL);
-										globalSetIndex[j].mpd.fullDocument = mpd_parse(values[i].response);
-										globalSetIndex[j].mpd.initSegment = mpd_getInitSegURL(globalSetIndex[j].mpd.fullDocument);
-										var t_rep = mpd_getRepresentationNodeByID(globalSetIndex[j].mpd.fullDocument, 1);
-										globalSetIndex[j].mpd.representations.push(mpd_getRepresentationByNode(t_rep));
-										break;
+					Promise.all(promises)
+						.then(function (values) {
+							console.log(values);
+							for (var i = 0; i < values.length; i++) {
+								if (values[i].status === 200) {
+									for (var j = 0; j < globalSetIndex.length; j++) {
+										if (values[i].responseURL.search(globalSetIndex[j].id) > -1) {
+											globalSetIndex[j].mpd = new MPD(values[i].responseURL);
+											globalSetIndex[j].mpd.fullDocument = mpd_parse(values[i].response);
+											globalSetIndex[j].mpd.initSegment = mpd_getInitSegURL(globalSetIndex[j].mpd.fullDocument);
+											var t_rep = mpd_getRepresentationNodeByID(globalSetIndex[j].mpd.fullDocument, 1);
+											globalSetIndex[j].mpd.representations.push(mpd_getRepresentationByNode(t_rep));
+											break;
+										}
 									}
+								} else {
+									logERR('request for ' + values[i].responseURL + ' failed');
 								}
-							} else {
-								logERR('request for ' + values[i].responseURL + ' failed');
 							}
-						}
-						logINFO('done parsing mpds')
-					}).then(function () {
-						logINFO('TODO create and start managing MSE and SourceBuffers')
-						document.getElementById('init_ts_btn').disabled = false;
-					}).catch(function (err) { logERR(err); });
+							logINFO('done parsing mpds')
+						}).then(function () {
+							var mimeCodec = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].mimeType + '; codecs=\"' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs + '\"';
+							//setup MSE
+							if (mediaSource.readyState == "open") {
+								onSourceOpen(mimeCodec);
+							} else {
+								mediaSource.addEventListener("sourceopen", function () { onSourceOpen(mimeCodec); }, { passive: true });
+							}
+
+							logINFO('TODO create and start managing MSE and SourceBuffers')
+							document.getElementById('init_ts_btn').disabled = false;
+						}).catch(function (err) { logERR(err); });
 				}).catch(function (err) { logERR(err); });
-		}).then(function () {
-			console.log('parley')
 		}).then(function (response) {
-			//mpd = response;
+			//we currently do not do anything after parsing playlist, prior to mpds
+			//TODO delete this block if not needed
 		}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
 }
 
