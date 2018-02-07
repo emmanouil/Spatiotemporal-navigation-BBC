@@ -7,6 +7,7 @@
  */
 //Files and folders
 const PLAYLIST_FILE = 'playlist.txt'; //holds the base names of the recordings
+const PLAYLIST_MAIN_VIEW_INDEX = 0;	//the position in the playlist txt of the recording considered as reference (starting from 0)
 const INPUT_DIR = 'parsing';	//holds the video and original files
 const PARSER_DIR = 'script_out';	//holds the parser output (location, orientation, descriptor) jsons
 const DASH_DIR = 'segmented';	//contains the segments, inits and mpd init of the video files
@@ -168,7 +169,7 @@ function loadSpatialData() {
 
 /* Called when "Init Time & Space" btn is clicked and calculates relative time between views */
 function setMainViewStartTime() {
-	var tmp_time = globalSetIndex[0].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
+	var tmp_time = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
 	for (var i = 1; i < globalSetIndex.length; i++) {
 		if (globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs > tmp_time && globalSetIndex[i].id != reference_recordingID) {
 			tmp_time = globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
