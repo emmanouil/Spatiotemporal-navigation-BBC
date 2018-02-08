@@ -23,4 +23,17 @@ function onSourceOpen(mime_codec) {
 
 	//we assume the first playlist element is the location of the init segment
 	//sourceBuffer.addEventListener('updateend', fetch(playlist[0], addSegment, "arraybuffer"));
+
+//Append the initialization segment.
+function addSegment(seg_arrayBuffer) {
+    if (seg_arrayBuffer == null) {
+        // Error fetching the initialization segment. Signal end of stream with an error.
+        console.log("[ERROR] endofstream?")
+        mediaSource.endOfStream("network");
+        return;
+    }
+
+    sourceBuffer.appendBuffer(seg_arrayBuffer);
+    //    playlistPosition++;
+    //    sourceBuffer.addEventListener('updateend', handleNextPlElement, { once: false });
 }
