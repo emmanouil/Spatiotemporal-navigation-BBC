@@ -94,14 +94,16 @@ function init() {
 							}
 							logINFO('done parsing mpds')
 						}).then(function () {
-							var mimeCodec = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].mimeType + '; codecs=\"' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs + '\"';
+							var mimeCodec = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].mimeType;
+							if (typeof globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs != "undefined") {
+								mimeCodec = '; codecs=\"' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs + '\"';
+							}
 							//setup MSE
 							if (mediaSource.readyState == "open") {
 								onSourceOpen(mimeCodec);
 							} else {
-								mediaSource.addEventListener("sourceopen", function () { onSourceOpen(mimeCodec); }, { passive: true });
+								mediaSource.addEventListener("sourceopen", function () { onSourceOpen(mimeCodec); }, { once: true });
 							}
-
 							logINFO('TODO create and start managing MSE and SourceBuffers')
 							document.getElementById('init_ts_btn').disabled = false;
 						}).catch(function (err) { logERR(err); });
