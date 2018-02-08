@@ -9,20 +9,25 @@ var sourceBuffer;
 //Adds a sourceBuffer when the mediaSource is ready for the first time
 function onSourceOpen(mime_codec) {
 
-    if(mediaSource.video.canPlayType(mime_codec) == ""){
-        logERR('Mime codec '+mime_codec+' is not supported. SourceBuffer will not be added to MSE');
+    if (mediaSource.video.canPlayType(mime_codec) == "") {
+        logERR('Mime codec ' + mime_codec + ' is not supported. SourceBuffer will not be added to MSE');
     }
 
-	if (mediaSource.sourceBuffers.length > 0){
+    if (mediaSource.sourceBuffers.length > 0) {
         logWARN('onSourceOpen called with mediaSource.sourceBuffers.length > 0');
         return;
     }
 
-	sourceBuffer = mediaSource.addSourceBuffer(mime_codec);
-	sourceBuffer.ms = mediaSource;
+    sourceBuffer = mediaSource.addSourceBuffer(mime_codec);
+    sourceBuffer.ms = mediaSource;
 
-	//we assume the first playlist element is the location of the init segment
-	//sourceBuffer.addEventListener('updateend', fetch(playlist[0], addSegment, "arraybuffer"));
+    //We also add the init element
+    if (sourceBuffer.updating) {
+        sourceBuffer.addEventListener('updateend', function () { fetch_res(DASH_DIR + '/' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.init_seg, addSegment, "arraybuffer"); }, { once: true });
+    } else {
+        fetch_res(DASH_DIR + '/' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.init_seg, addSegment, "arraybuffer")
+    }
+}
 
 //Append the initialization segment.
 function addSegment(seg_arrayBuffer) {
