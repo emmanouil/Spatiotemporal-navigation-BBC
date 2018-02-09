@@ -30,15 +30,26 @@ function onSourceOpen(mime_codec) {
 }
 
 //Append the initialization segment.
-function addSegment(seg_arrayBuffer) {
-    if (seg_arrayBuffer == null) {
+function addSegment(seg_in) {
+    if (seg_in == null) {
         // Error fetching the initialization segment. Signal end of stream with an error.
         console.log("[ERROR] endofstream?")
         mediaSource.endOfStream("network");
         return;
     }
 
-    sourceBuffer.appendBuffer(seg_arrayBuffer);
+    sourceBuffer.appendBuffer(seg_in);
     //    playlistPosition++;
     //    sourceBuffer.addEventListener('updateend', handleNextPlElement, { once: false });
+}
+
+//Return the end time (in sec) of the SourceBuffer contents
+function getSourceBufferEnd() {
+    if (sourceBuffer.buffered.length == 0) {
+        logWARN("SourceBuffer is empty (contains no TimeRanges");
+        return -1;
+    } else if (sourceBuffer.buffered.length > 1) {
+        logWARN("SourceBuffer contains multiple TimeRanges - returning the end of the first one");
+    }
+    return sourceBuffer.buffered.end(0);
 }
