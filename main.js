@@ -31,7 +31,7 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 var active_video_id = null;
 var mediaSource = new MediaSource();
 //var skeleton_worker = new Worker( 'parser.js' );
-var selector, video, main_view, video_mse, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
+var selector, video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
 
 /**
  * Entry point
@@ -46,10 +46,9 @@ function init() {
 
 	video = document.getElementById('v');
 	main_view = document.getElementById('v_main');
-	video_mse = document.getElementById('video_mse');
-	video_mse.ms = mediaSource;
-	mediaSource.video = video_mse;
-	video_mse.src = window.URL.createObjectURL(mediaSource);
+	main_view.ms = mediaSource;
+	mediaSource.video = main_view;
+	main_view.src = window.URL.createObjectURL(mediaSource);
 
 	//fetch playlist and parse elements (IDs) in 'playlist' array
 	fetch_promise('/' + PLAYLIST_FILE, 'no-type', true)
@@ -186,7 +185,16 @@ function setMainViewStartTime() {
 			tmp_time = globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
 		}
 	}
-	main_view.currentTime = main_view_startTime = (tmp_time / 1000);	//in seconds
+
+	let index = mpd_getSegmentIndexAtTime(globalSetIndex[0].mpd.representations[0], (tmp_time / 1000));
+	fetch_promise(DASH_DIR + '/' + globalSetIndex[0].mpd.representations[0].SegmentList.Segments[index], "arraybuffer", false)
+	.then(function(response){
+		addSegment(response);
+		console.log(main_view.ms.readyState);
+		main_view.currentTime = main_view_startTime = (tmp_time / 1000);	//in seconds
+	}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+
+
 }
 
 function loadCoords(XMLHttpRequest_in) {
@@ -225,8 +233,6 @@ function loadAssets(type, Xreq_target) {
 function analyzeGeospatialData() {
 	/* Setup main view */
 	centerMap(reference_location[0], reference_location[1], 20)
-	main_view.src = INPUT_DIR + '/' + reference_recording_set.videoFile;
-	main_view.id = reference_recording_set.id;
 
 	/**
 	 * Add initial markers (TODO specify initial loc and orient)
