@@ -146,3 +146,18 @@ function mpd_getInitSegURL(node_in) {
     }
     return initSegElem[0].getAttribute("sourceURL");
 }
+
+/**
+ * Returns segment numbers (starting counting at 1 )corresponding to the specified time (in s)
+ */
+function mpd_getSegmentNumAtTime(representation_in, t_sec) {
+    let time_factor = representation_in.SegmentList.duration / representation_in.SegmentList.timescale;
+    return Math.ceil(t_sec / time_factor);
+}
+
+/**
+ * Returns segment index (starting counting at 0 )corresponding to the specified time (in s)
+ */
+function mpd_getSegmentIndexAtTime(representation_in, t_sec) {
+    return mpd_getSegmentNumAtTime(representation_in, t_sec) - 1;
+}
