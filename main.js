@@ -226,7 +226,6 @@ function loadAssets(type, Xreq_target) {
 }
 
 /**
- * TODO replace addMarker with proper coordinate handling
  * NOTE: It adds INITIAL markers (not all markers - TODO)
  */
 function analyzeGeospatialData() {
@@ -305,25 +304,6 @@ function switchToStream(index, recordingID) {
 	//called when marker is clicked
 	//TODO
 }
-
-/**
- * Original version of the function for adding video and sensor files - using the generated jsons
- * @param {*Object} XMLHttpRequest_in 
- */
-/*
-//returns loc_obj
-function addToIndex(XMLHttpRequest_in) {
-    var loc_obj = new Object();
-    loc_obj.index = globalSetIndex.length;
-    loc_obj.textFileURL = XMLHttpRequest_in.responseURL;
-    loc_obj.id = loc_obj.textFileURL.slice(loc_obj.textFileURL.indexOf(pl_element_prefix) + pl_element_prefix.length, loc_obj.textFileURL.indexOf(pl_element_extension));
-    loc_obj.textFile = pl_element_prefix + loc_obj.id + pl_element_extension;
-    loc_obj.videoFile = pl_video_prefix + loc_obj.id + pl_video_extension;
-    loc_obj.set = XMLHttpRequest_in.response;
-    globalSetIndex.push(loc_obj);
-    return loc_obj;
-}
-*/
 
 function addOption(value, file_id) {
 	var option = document.createElement("option");
