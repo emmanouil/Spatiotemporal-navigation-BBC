@@ -117,8 +117,6 @@ function fetch_promise(what, resp_type = 'no-type', full_request = false) {
 /**
  * Returns true if the file was successufully fetched
  * Return false and prints error message otherwise
- * @param {*} response 
- * TODO integrate in rest of fetches
  */
 function assert_fetch(response, target, args = 'no-args') {
     if (response.status != 200) {

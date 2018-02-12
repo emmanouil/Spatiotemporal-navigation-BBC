@@ -116,10 +116,6 @@ function mpd_getRepresentationByNode(rep_in) {
         tmp_rep['SegmentList'][tmp_seg.attributes[i].name] = tmp_seg.attributes[i].value;
     }
 
-    //TODO: this is always the init seg for the first representation
-    //get initialization segment URL
-    //tmp_rep['SegmentList']['InitializationSegmentURL'] = mpd_getInitSegURL(rep_in.mpd.fullDocument);
-
     //get segment list
     var tmp_segs = rep_in.getElementsByTagName("SegmentURL")
     tmp_rep['SegmentList']['Segments'] = new Array();

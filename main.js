@@ -188,12 +188,11 @@ function setMainViewStartTime() {
 
 	let index = mpd_getSegmentIndexAtTime(globalSetIndex[0].mpd.representations[0], (tmp_time / 1000));
 	fetch_promise(DASH_DIR + '/' + globalSetIndex[0].mpd.representations[0].SegmentList.Segments[index], "arraybuffer", false)
-	.then(function(response){
-		addSegment(response);
-		console.log(main_view.ms.readyState);
-		main_view.currentTime = main_view_startTime = (tmp_time / 1000);	//in seconds
-	}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
-
+		.then(function (response) {
+			addSegment(response);
+			console.log(main_view.ms.readyState);
+			main_view.currentTime = main_view_startTime = reference_start_time = (tmp_time / 1000);	//in seconds
+		}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
 
 }
 
@@ -231,14 +230,11 @@ function loadAssets(type, Xreq_target) {
  * NOTE: It adds INITIAL markers (not all markers - TODO)
  */
 function analyzeGeospatialData() {
-	/* Setup main view */
-	centerMap(reference_location[0], reference_location[1], 20)
-
 	/**
 	 * Add initial markers (TODO specify initial loc and orient)
 	 */
-	for (var i = 0; i < globalSetIndex.length; i++) {
-		var s = globalSetIndex[i];
+	for (let i = 0; i < globalSetIndex.length; i++) {
+		let s = globalSetIndex[i];
 		if (s.id != reference_recordingID) {
 			addLiveMarker(s.coordSet[0].Latitude, s.coordSet[0].Longitude,
 				s.index, s.id, s.orientSet[0].X, true);
@@ -252,14 +248,14 @@ function analyzeGeospatialData() {
 	/**
 	 * Add marker updates
 	 */
-	for (var i = 0; i < globalSetIndex.length; i++) {
-		var s = globalSetIndex[i];
+	for (let i = 0; i < globalSetIndex.length; i++) {
+		let s = globalSetIndex[i];
 		if (s.id != reference_recordingID) {
-			var tmp_index = main_view_tracks.push(main_view.addTextTrack("metadata", s.id))
+			let tmp_index = main_view_tracks.push(main_view.addTextTrack("metadata", s.id))
 			addMarkerUpdates(s, tmp_index - 1);
 			globalSetIndex[i].main_view_tracks_no = tmp_index - 1;
 			main_view_tracks[tmp_index - 1].oncuechange = function () {
-				for (var i = 0; i < this.activeCues.length; i++) {
+				for (let i = 0; i < this.activeCues.length; i++) {
 					updateMarkerByLabel(this.activeCues[i].track.label, Number(this.activeCues[i].text));
 				}
 			}
@@ -300,9 +296,8 @@ function addMarkerUpdates(set_in, tmp_index) {
 	console.log(tmp_track)
 }
 
-
+//called when the play button is pressed
 function startPlayback() {
-	//called when the play button is pressed
 	//TODO
 }
 

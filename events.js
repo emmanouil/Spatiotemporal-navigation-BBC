@@ -10,13 +10,6 @@ function activateMapEvents() {
         }
     });
 
-    /*
-      map.addListener('rightclick', function(e) {
-        console.log(e)
-      });
-    */
-
-
 }
 
 function activateUI() {
@@ -84,6 +77,8 @@ function initMarkers(e) {
     document.getElementById('play_btn').innerText = 'Go To ' + main_view_startTime + ', and Play';
     logINFO('Initializing markers for reference start time (ms): ' + main_view_startTime);
     document.getElementById('start_time_input').value = main_view_startTime;
+    /* Setup main view */
+	centerMap(reference_location[0], reference_location[1], 20)
     analyzeGeospatialData();
 }
 
