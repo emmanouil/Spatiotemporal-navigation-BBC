@@ -82,7 +82,7 @@ function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
 	/*
 	 * if no bearing information, use default markers
 	 */
-	if (typeof bearing === 'undefined' && USE_NO_BEARING_MARKERS) {
+	if (USE_DEFAULT_MARKERS || (typeof bearing === 'undefined' && USE_NO_BEARING_MARKERS)) {
 		var marker1 = new google.maps.Marker({
 			position: new google.maps.LatLng(lat, lng),
 			title: label
@@ -105,18 +105,6 @@ function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
 			position: new google.maps.LatLng(lat, lng),
 			title: label,
 			icon: local_icon
-		});
-	}
-
-	if (USE_DEFAULT_MARKERS) {
-		var marker1 = new google.maps.Marker({
-			position: new google.maps.LatLng(lat, lng),
-			title: label
-		});
-		marker1.setMap(map);
-		marker1.addListener('click', function () {
-			console.error("ERROR: not updated marker type");
-			goToVideoAndTime(index, timestamp);
 		});
 	}
 

@@ -31,7 +31,7 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 var active_video_id = null;
 var mediaSource = new MediaSource();
 //var skeleton_worker = new Worker( 'parser.js' );
-var selector, video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
+var video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
 
 /**
  * Entry point
@@ -130,12 +130,11 @@ function parse_playlist(request) {
 
 function parse_pl_descriptor(req) {
 	if (req.status == 200) {
-		var tmp_obj = addVideoToIndex(req);	//add to globalSetIndex
-		if (tmp_obj.id != reference_recordingID) {
-			addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
-		} else {
+		let tmp_obj = addVideoToIndex(req);	//add to globalSetIndex
+		if (tmp_obj.id == reference_recordingID) {
 			logINFO('We got our main view with ID ' + tmp_obj.id + ', skipping dropdown');
 		}
+		addOption(INPUT_DIR + '/' + tmp_obj.videoFile, tmp_obj.id);	//add option to the dropdown
 	}
 	logINFO(req)
 	items_fetched++;	//count playlist entries fetched

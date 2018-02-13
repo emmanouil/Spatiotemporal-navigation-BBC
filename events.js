@@ -1,5 +1,6 @@
 "use strict";
 var toggleZoom, zoomLvl, tmpZoom, initiated = false;
+var selector;
 
 function activateMapEvents() {
 
@@ -21,20 +22,9 @@ function activateUI() {
 }
 
 //called when file is selected from the dropdown
-//arg: selected index
-//TODO: update commented out section to match changes
 function selectFile(index_in) {
-    var loc;
-    video.src = selector[index_in].value;
-    active_video_id = selector[index_in].text;
-    /*
-    loc = getSetByVideoId(active_video_id).set[0].Location;
-    if (loc) {
-        centerMap(loc.Latitude, loc.Longitude);
-    } else {
-        logERR(selector.selectedIndex + "  not found");
-    }
-    */
+    logINFO("selectFile is deactivated. it was used with index: " + index_in);
+    //active_video_id = selector[index_in].text;
 }
 
 function toggleDefaultZoom(e) {
@@ -78,7 +68,7 @@ function initMarkers(e) {
     logINFO('Initializing markers for reference start time (ms): ' + main_view_startTime);
     document.getElementById('start_time_input').value = main_view_startTime;
     /* Setup main view */
-	centerMap(reference_location[0], reference_location[1], 20)
+    centerMap(reference_location[0], reference_location[1], 20)
     analyzeGeospatialData();
 }
 
