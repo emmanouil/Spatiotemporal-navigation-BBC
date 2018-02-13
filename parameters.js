@@ -66,6 +66,7 @@ var reference_start_time = 0;
  *  in script.js
  *
  *  active_video_id (String)    The id of selected file
+ *  active_video_index (int)    Index (in globalSetIndex) of the selected file
  *  mediaSource                 Not used for now
  *  playlist        (Array of Strings)  Holds IDs
  *  video           (Element)   The video

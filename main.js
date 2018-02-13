@@ -29,6 +29,7 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
  * Script Parameters & Objs
  */
 var active_video_id = null;
+var active_video_index = null;
 var mediaSource = new MediaSource();
 //var skeleton_worker = new Worker( 'parser.js' );
 var video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
