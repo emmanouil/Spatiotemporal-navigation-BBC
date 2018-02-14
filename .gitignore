@@ -10,7 +10,6 @@
 
 #folder containing fragmented files used for testing MSE fuctions
 /out/*
-/segmented/*
 
 #test webserver files
 mongoose*
