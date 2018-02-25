@@ -148,7 +148,8 @@ function mpd_getInitSegURL(node_in) {
  */
 function mpd_getSegmentNumAtTime(representation_in, t_sec) {
     let time_factor = representation_in.SegmentList.duration / representation_in.SegmentList.timescale;
-    return Math.ceil(t_sec / time_factor);
+    console.log('t '+t_sec/time_factor);
+    return Math.round(t_sec / time_factor);
 }
 
 /**
