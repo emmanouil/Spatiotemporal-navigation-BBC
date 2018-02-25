@@ -115,7 +115,7 @@ function init() {
 								logINFO('active_video_id set to ' + active_video_id);
 								document.getElementById('init_ts_btn').disabled = false;
 							}).catch(function (err) { logERR(err); });
-					}).catch(function (err) { logERR(err); });
+						}).catch(function (err) { logERR('Error parsing playlist - check file ' + PLAYLIST_FILE); });
 			}).then(function (response) {
 				//we currently do not do anything after parsing playlist, prior to mpds
 				//TODO delete this block if not needed

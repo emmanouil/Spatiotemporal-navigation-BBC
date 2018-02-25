@@ -1,12 +1,8 @@
 #folder for putting files to be parsed
 /parsing/*
-!/parsing/MAINVIEW_SAMPLE_EbuCore.xml
-!/parsing/MAINVIEW_SAMPLE_SENSORDATA.xml
 
 #folder where the parser-created files are located
 /script_out/*
-!/script_out/MAINVIEW_SAMPLE*
-!/script_out/CAMERA1VIEW_SAMPLE*
 
 #folder containing fragmented files used for testing MSE fuctions
 /out/*

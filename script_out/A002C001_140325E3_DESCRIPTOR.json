@@ -1,0 +1,10 @@
+{
+    "recordingID": "A002C001_140325E3",
+    "startTime": "12:04:02.12000",
+    "startTimeMs": 43442120,
+    "duration": "00:34:14.40000",
+    "durationMs": 2054400,
+    "videoFilename": "parsing/A002C001_140325E3.webm",
+    "orientationFilename": "script_out/A002C001_140325E3_ORIENT.json",
+    "locationFilename": "script_out/A002C001_140325E3_LOC.json"
+}

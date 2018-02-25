@@ -1,0 +1,10 @@
+{
+    "recordingID": "20140325_121238",
+    "startTime": "12:12:39.40000",
+    "startTimeMs": 43959400,
+    "duration": "00:03:58.52000",
+    "durationMs": 238520,
+    "videoFilename": "parsing/20140325_121238.webm",
+    "orientationFilename": "script_out/20140325_121238_ORIENT.json",
+    "locationFilename": "script_out/20140325_121238_LOC.json"
+}

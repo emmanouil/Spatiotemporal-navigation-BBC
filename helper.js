@@ -3,7 +3,11 @@ var globalSetIndex = [];
 const SHOW_DEBUG = true;
 
 function logERR(msg) {
-    console.error("[ERROR] " + msg);
+    if (typeof msg === 'string') {//we have an error message string
+        console.error("[ERROR] " + msg);
+    } else {//we have an Error
+        console.error(msg);
+    }
 }
 
 function logWARN(msg) {
