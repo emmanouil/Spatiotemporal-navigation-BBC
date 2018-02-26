@@ -1,6 +1,7 @@
 "use strict"
 var isPlaying = false;
 
+//TODO depricated - not used currently
 function initVideo() {
 	video.muted = true;
 	// Capture the play event

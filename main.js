@@ -40,8 +40,7 @@ const MARKER_LIMIT_BEHAVIOUR = 'discard';	//'discard' or 'average' - not impleme
 var active_video_id = null;
 var active_video_index = null;
 var mediaSource = new MediaSource();
-//var skeleton_worker = new Worker( 'parser.js' );
-var video, main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
+var main_view, main_view_tracks = [], main_view_startTime, playlist, items_fetched = 0;
 
 /**
  * Entry point
@@ -54,7 +53,6 @@ window.onload = init;
  */
 function init() {
 
-	video = document.getElementById('v');
 	main_view = document.getElementById('v_main');
 	main_view.ms = mediaSource;
 	mediaSource.video = main_view;
@@ -123,7 +121,8 @@ function init() {
 				//we currently do not do anything after parsing playlist, prior to mpds
 				//TODO delete this block if not needed
 			}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
-	interval_id = setInterval(check_status, INTERVAL_MS);
+
+	main_view.addEventListener("playing", function () { interval_id = setInterval(check_status, INTERVAL_MS); }, { once: true } );
 }
 
 function parse_playlist(request) {
@@ -152,7 +151,7 @@ function parse_pl_descriptor(req) {
 	logINFO(req)
 	items_fetched++;	//count playlist entries fetched
 	if (items_fetched == playlist.length) {	//when everything's loaded go to first video
-		goToVideoAndTime(0, 0);
+		goToVideo(0);
 	}
 }
 
@@ -174,8 +173,7 @@ function check_status() {
 	let end_time = getSourceBufferEnd();
 	console.log('end time' + end_time)
 	//is there "enough" video in the buffer?
-	if (end_time - main_view.currentTime > UPDATE_S) {
-		console.log('no update amigo')
+	if (end_time - main_view.currentTime > UPDATE_S || getSourceBufferTimeRangeNumber == 0) {
 		return;
 	}
 
@@ -385,13 +383,13 @@ function addOption(value, file_id) {
 	selector.add(option);
 }
 
-function mse_initAndAdd(i_stream, i_in) {
-	console.log("CLICKED BETA FUNCTION + " + i_in);
-	fetch_promise(DASH_DIR + '/' + globalSetIndex[i_stream].mpd.init_seg, "arraybuffer", false)
+function mse_initAndAdd(stream_index, segment_n) {
+	console.log("CLICKED BETA FUNCTION + " + segment_n);
+	fetch_promise(DASH_DIR + '/' + globalSetIndex[stream_index].mpd.init_seg, "arraybuffer", false)
 		.then(function (response) {
 			addSegment(response);
 			sourceBuffer.addEventListener('updateend', function () {
-				fetch_promise(DASH_DIR + '/' + globalSetIndex[i_stream].mpd.representations[0].SegmentList.Segments[i_in], "arraybuffer", false)
+				fetch_promise(DASH_DIR + '/' + globalSetIndex[stream_index].mpd.representations[0].SegmentList.Segments[segment_n], "arraybuffer", false)
 					.then(function (response) {
 						addSegment(response);
 					})

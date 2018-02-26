@@ -24,13 +24,10 @@ function selectFile(index_in) {
 }
 
 //called when a marker is clicked
-//TODO fix without breaking API (currently only sets video)
-function goToVideoAndTime(i_in, time_in) {
-    console.log('[WARNING] called depricated function goToVideoAndTime with args ' + i_in + ',  ' + time_in);
-    console.log("video with index: " + i_in + " seeking to time " + time_in + "ms");
+function goToVideo(i_in) {
+    logINFO("called goToVideo with index: " + i_in);
     selector.selectedIndex = i_in;
     selectFile(i_in);
-    video.currentTime = time_in / 1000;
 }
 
 /**
