@@ -29,6 +29,9 @@ var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 const INTERVAL_MS = 900;	//check interval (in ms)
 var interval_id = -1;	//timeout id
 const UPDATE_S = 1;	//condition (in s) to fetch next segment, relative to the current video time and end of the sourceBuffer
+const MARKER_UPDATE_LIMIT_ON = true;	//enable cue timespan limit
+const MARKER_UPDATE_LIMIT = 900;	// (in ms) limit the timespan between two updates for the same marker (i.e. number of cues)
+const MARKER_LIMIT_BEHAVIOUR = 'discard';	//'discard' or 'average' - not implemented TODO
 
 
 /**
@@ -115,7 +118,7 @@ function init() {
 								logINFO('active_video_id set to ' + active_video_id);
 								document.getElementById('init_ts_btn').disabled = false;
 							}).catch(function (err) { logERR(err); });
-						}).catch(function (err) { logERR('Error parsing playlist - check file ' + PLAYLIST_FILE); });
+					}).catch(function (err) { logERR('Error parsing playlist - check file ' + PLAYLIST_FILE); });
 			}).then(function (response) {
 				//we currently do not do anything after parsing playlist, prior to mpds
 				//TODO delete this block if not needed
@@ -324,6 +327,12 @@ function addMarkerUpdates(set_in, tmp_index) {
 	var cur_t = set_in.orientSet[0].PresentationTime;
 	for (var i = 0; i < set_in.orientSet.length - 1; i++) {
 		var tmp_orient = set_in.orientSet[i];
+		//check if we have set a min timespan between marker updates
+		if (MARKER_UPDATE_LIMIT_ON) {
+			if (tmp_orient.PresentationTime - cur_t < MARKER_UPDATE_LIMIT) {
+				continue;
+			}
+		}
 		cur_t = tmp_orient.PresentationTime;
 		//TODO handle cues according to main vid time (not relevant to the take time)
 		tmp_track.addCue(new VTTCue((t_diff + cur_t) / 1000, (t_diff + set_in.orientSet[i + 1].PresentationTime) / 1000, String(tmp_orient.X)));

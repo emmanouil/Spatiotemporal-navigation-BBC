@@ -1,21 +1,17 @@
 "use strict";
+/**
+ * Parameters related to map/display; some are obsolete (used in Spatiotemporal navigation)
+ */
 /* Display Default Google Maps Marker for each Location Point */
 var USE_DEFAULT_MARKERS = false;
-
 /* Display Default Google Maps Marker for each Location Point that does not have bearing information*/
 var USE_NO_BEARING_MARKERS = true;
-
 /* Zoom Level [0,20] when viewing videos */
 var DEFAULT_ZOOM = 20;
-
 /* Reset zoom level to default when viewing a video */
 var LOCK_ZOOM = true;
-
-var HIGHLIGHT_CURRENT_MARKER = false;
-
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
-
 /* Select whether VTTCues should be wrt the specfic or main view */
 var MARKER_UPDATES_IN_MAIN_VIEW = false;
 
