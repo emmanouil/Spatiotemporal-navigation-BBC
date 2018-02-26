@@ -23,7 +23,9 @@ function onSourceOpen(mime_codec) {
 
     //We also add the init element
     if (sourceBuffer.updating) {
-        sourceBuffer.addEventListener('updateend', function () { fetch_res(DASH_DIR + '/' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.init_seg, addSegment, "arraybuffer"); }, { once: true });
+        sourceBuffer.addEventListener('updateend', function () {
+            fetch_res(DASH_DIR + '/' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.init_seg, addSegment, "arraybuffer");
+        }, { once: true });
     } else {
         fetch_res(DASH_DIR + '/' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.init_seg, addSegment, "arraybuffer")
     }
@@ -52,4 +54,12 @@ function getSourceBufferEnd() {
         logWARN("SourceBuffer contains multiple TimeRanges - returning the end of the first one");
     }
     return sourceBuffer.buffered.end(0);
+}
+
+//Get/set timestamp offset for sourcebuffer
+function getTimeStampOffset(){
+    return sourceBuffer.timestampOffset;
+}
+function setTimeStampOffset(t_in){
+    sourceBuffer.timestampOffset = t_in;
 }

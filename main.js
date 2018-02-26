@@ -25,6 +25,12 @@ var PL_DESCRIPTOR_SUFFIX = '_DESCRIPTOR';
 var PORT = '8000'
 var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 
+//pseudo-simulation parameters
+const INTERVAL_MS = 900;	//check interval (in ms)
+var interval_id = -1;	//timeout id
+const UPDATE_S = 1;	//condition (in s) to fetch next segment, relative to the current video time and end of the sourceBuffer
+
+
 /**
  * Script Parameters & Objs
  */
@@ -104,7 +110,9 @@ function init() {
 								} else {
 									mediaSource.addEventListener("sourceopen", function () { onSourceOpen(mimeCodec); }, { once: true });
 								}
-								logINFO('TODO create and start managing MSE and SourceBuffers')
+								active_video_id = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].id;
+								active_video_index = PLAYLIST_MAIN_VIEW_INDEX;
+								logINFO('active_video_id set to ' + active_video_id);
 								document.getElementById('init_ts_btn').disabled = false;
 							}).catch(function (err) { logERR(err); });
 					}).catch(function (err) { logERR('Error parsing playlist - check file ' + PLAYLIST_FILE); });
@@ -112,6 +120,7 @@ function init() {
 				//we currently do not do anything after parsing playlist, prior to mpds
 				//TODO delete this block if not needed
 			}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+	interval_id = setInterval(check_status, INTERVAL_MS);
 }
 
 function parse_playlist(request) {
@@ -142,6 +151,36 @@ function parse_pl_descriptor(req) {
 	if (items_fetched == playlist.length) {	//when everything's loaded go to first video
 		goToVideoAndTime(0, 0);
 	}
+}
+
+//called at regular intervals to check if the stream has changed, or if we have buffer starvation
+function check_status() {
+
+	//first we check if the video is rolling //TODO later, add support for updating buffer *and* switching videos at paused state
+	if (main_view.paused) {
+		console.log('main view paused')
+		return;
+	}
+
+	//we check if the media source is available
+	if (sourceBuffer.updating || mediaSource.readyState != "open") {
+		logWARN("MSE or sourceBuffer not available");
+		return;
+	}
+
+	let end_time = getSourceBufferEnd();
+	console.log('end time' + end_time)
+	//is there "enough" video in the buffer?
+	if (end_time - main_view.currentTime > UPDATE_S) {
+		console.log('no update amigo')
+		return;
+	}
+
+	let seg_n = mpd_getSegmentIndexAtTime(globalSetIndex[active_video_index].mpd.representations[0], end_time - globalSetIndex[active_video_index].descriptor.tDiffwReferenceMs / 1000);
+	seg_n++;	//in this case we need the next segment
+
+	fetch_res(DASH_DIR + '/' + globalSetIndex[active_video_index].mpd.representations[0].SegmentList.Segments[seg_n], addSegment, "arraybuffer");
+
 }
 
 /**
@@ -179,14 +218,18 @@ function loadSpatialData() {
 
 /* Called when "Init Time & Space" btn is clicked and calculates relative time between views */
 function setMainViewStartTime() {
-	var tmp_time = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
-	for (var i = 1; i < globalSetIndex.length; i++) {
-		if (globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs > tmp_time && globalSetIndex[i].id != reference_recordingID) {
+	let tmp_time = globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
+	if (tmp_time) {//should be 0
+		logWARN('timing on PLAYLIST_MAIN_VIEW_INDEX and reference_recording_set does NOT match');
+	}
+	for (let i = 0; i < globalSetIndex.length; i++) {
+		globalSetIndex[i].descriptor.tDiffwReferenceMs = globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
+		if (globalSetIndex[i].descriptor.tDiffwReferenceMs > tmp_time && globalSetIndex[i].id != reference_recordingID) {
 			tmp_time = globalSetIndex[i].descriptor.startTimeMs - reference_recording_set.descriptor.startTimeMs;
 		}
 	}
 
-	let index = mpd_getSegmentIndexAtTime(globalSetIndex[0].mpd.representations[0], (tmp_time / 1000));
+	let index = mpd_getSegmentIndexAtTime(globalSetIndex[0].mpd.representations[0], (tmp_time / 1000)) + 1;
 	fetch_promise(DASH_DIR + '/' + globalSetIndex[0].mpd.representations[0].SegmentList.Segments[index], "arraybuffer", false)
 		.then(function (response) {
 			addSegment(response);
@@ -300,9 +343,26 @@ function startPlayback() {
 	//TODO
 }
 
-function switchToStream(index, recordingID) {
-	//called when marker is clicked
-	//TODO
+//called when marker is clicked
+function switchToStream(set_index, recordingID) {
+	if (active_video_id === recordingID) {
+		logINFO("currently active stream selected - ignoring switch");
+		return;
+	} else {
+		logINFO("switching to stream with ID: " + recordingID);
+	}
+
+	let new_set = getSetByVideoId(recordingID);
+	let old_set = getSetByVideoId(active_video_id);
+	let end_time = getSourceBufferEnd();
+
+	active_video_id = recordingID;
+	active_video_index = set_index;
+
+	setTimeStampOffset(globalSetIndex[set_index].descriptor.tDiffwReferenceMs / 1000);
+	let seg_n = mpd_getSegmentIndexAtTime(globalSetIndex[set_index].mpd.representations[0], end_time - globalSetIndex[set_index].descriptor.tDiffwReferenceMs / 1000);
+
+	mse_initAndAdd(set_index, seg_n);
 }
 
 function addOption(value, file_id) {
@@ -314,4 +374,37 @@ function addOption(value, file_id) {
 	}
 	option.value = value;
 	selector.add(option);
+}
+
+function mse_initAndAdd(i_stream, i_in) {
+	console.log("CLICKED BETA FUNCTION + " + i_in);
+	fetch_promise(DASH_DIR + '/' + globalSetIndex[i_stream].mpd.init_seg, "arraybuffer", false)
+		.then(function (response) {
+			addSegment(response);
+			sourceBuffer.addEventListener('updateend', function () {
+				fetch_promise(DASH_DIR + '/' + globalSetIndex[i_stream].mpd.representations[0].SegmentList.Segments[i_in], "arraybuffer", false)
+					.then(function (response) {
+						addSegment(response);
+					})
+					.catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+			}, { once: true });
+		}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+}
+
+function killInterval() {
+	clearInterval(interval_id);
+	interval_id = -1;
+}
+
+function startInterval() {
+	if (interval_id == -1) {
+		logINFO('interval already running');
+		return;
+	}
+	interval_id = setInterval(check_status, INTERVAL_MS);
+}
+
+function resetInterval() {
+	startInterval();
+	killInterval();
 }
