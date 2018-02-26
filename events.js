@@ -1,5 +1,5 @@
 "use strict";
-var toggleZoom, zoomLvl, tmpZoom, initiated = false;
+var zoomLvl, tmpZoom, initiated = false;
 var selector;
 
 function activateMapEvents() {
@@ -14,25 +14,13 @@ function activateMapEvents() {
 }
 
 function activateUI() {
-    toggleZoom = document.getElementsByName('toggleZoom')[0];
     selector = document.getElementsByName('select')[0];
-
-    toggleZoom.checked = LOCK_ZOOM;
-
 }
 
 //called when file is selected from the dropdown
 function selectFile(index_in) {
     logINFO("selectFile is deactivated. it was used with index: " + index_in);
     //active_video_id = selector[index_in].text;
-}
-
-function toggleDefaultZoom(e) {
-    LOCK_ZOOM = e.checked;
-}
-
-function setDefaultZoom(e) {
-    DEFAULT_ZOOM = current_zoom = tmpZoom;
 }
 
 //called when a marker is clicked

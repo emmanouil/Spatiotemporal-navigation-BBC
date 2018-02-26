@@ -9,7 +9,7 @@ var USE_NO_BEARING_MARKERS = true;
 /* Zoom Level [0,20] when viewing videos */
 var DEFAULT_ZOOM = 20;
 /* Reset zoom level to default when viewing a video */
-var LOCK_ZOOM = true;
+var LOCK_ZOOM = false;
 /* Show/Hide Highlight for current Location */
 var ENABLE_HIGHLIGHTER = false;
 /* Select whether VTTCues should be wrt the specfic or main view */
@@ -55,7 +55,6 @@ var reference_start_time = 0;
  *  in events.j
  *
  *  selector        (Element)   The "Select File"
- *  toggleZoom      (Element)   
  **/
 
 /**
