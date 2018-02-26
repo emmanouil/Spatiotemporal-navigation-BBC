@@ -123,7 +123,6 @@ function addLiveMarker(lat, lng, index, recording_id, bearing, active = false) {
 function updateMarkerByLabel(marker_label, orientation) {
 	for (var m in markers) {
 		if (markers[m].title.split(' ')[1] == marker_label.split(' ')[0]) {
-			console.log(orientation)
 			markers[m].icon.rotation = orientation;
 			markers[m].setMap(map);
 			return;
