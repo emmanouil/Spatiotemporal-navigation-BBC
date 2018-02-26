@@ -45,6 +45,11 @@ function addSegment(seg_in) {
     //    sourceBuffer.addEventListener('updateend', handleNextPlElement, { once: false });
 }
 
+//Returns the number of TimeRage objects of the SourceBuffer
+function getSourceBufferTimeRangeNumber(){
+    return sourceBuffer.buffered.length;
+}
+
 //Return the end time (in sec) of the SourceBuffer contents
 function getSourceBufferEnd() {
     if (sourceBuffer.buffered.length == 0) {

@@ -406,7 +406,7 @@ function killInterval() {
 }
 
 function startInterval() {
-	if (interval_id == -1) {
+	if (interval_id != -1) {
 		logINFO('interval already running');
 		return;
 	}
@@ -414,6 +414,6 @@ function startInterval() {
 }
 
 function resetInterval() {
-	startInterval();
 	killInterval();
+	startInterval();
 }
