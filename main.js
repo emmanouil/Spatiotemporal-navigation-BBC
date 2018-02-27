@@ -105,6 +105,19 @@ function init() {
 								if (typeof globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs != "undefined") {
 									mimeCodec = '; codecs=\"' + globalSetIndex[PLAYLIST_MAIN_VIEW_INDEX].mpd.representations[0].codecs + '\"';
 								}
+
+								if (MediaSource.isTypeSupported(mimeCodec)) {
+									logDEBUG("mimeCodec :" + mimeCodec + " (from .mpd) is supported")
+								} else if (MediaSource.isTypeSupported("video/mp4")) {
+									logINFO("default mimeCodec was not supported, using genering \"video/mp4\" instead");
+									mimeCodec = "video/mp4";
+								} else if (navigator.userAgent.indexOf("Chrome") != -1) {
+									mimeCodec = "video/mp4; codecs=\"avc1.640028, mp4a.40.2\"";
+									logWARN("Possible mimeCodec issue (occuring with Chrome) - using default mimeCodec " + mimeCodec);
+								} else {
+									logWARN("No codec support indication by the browser. playback might not work");
+								}
+
 								//setup MSE
 								if (mediaSource.readyState == "open") {
 									onSourceOpen(mimeCodec);
@@ -121,7 +134,6 @@ function init() {
 				//we currently do not do anything after parsing playlist, prior to mpds
 				//TODO delete this block if not needed
 			}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
-
 	main_view.addEventListener("playing", function () { interval_id = setInterval(check_status, INTERVAL_MS); }, { once: true });
 }
 
