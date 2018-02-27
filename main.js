@@ -26,11 +26,11 @@ var PORT = '8000'
 var BASE_URL = '';	//set when parse_playlist is called (e.g. 192.0.0.1:8000)
 
 //pseudo-simulation parameters
-const INTERVAL_MS = 900;	//check interval (in ms)
+const INTERVAL_MS = 1200;	//check interval (in ms)
 var interval_id = -1;	//timeout id
 const UPDATE_S = 1;	//condition (in s) to fetch next segment, relative to the current video time and end of the sourceBuffer
 const MARKER_UPDATE_LIMIT_ON = true;	//enable cue timespan limit
-const MARKER_UPDATE_LIMIT = 900;	// (in ms) limit the timespan between two updates for the same marker (i.e. number of cues)
+const MARKER_UPDATE_LIMIT = 500;	// (in ms) limit the timespan between two updates for the same marker (i.e. number of cues)
 const MARKER_LIMIT_BEHAVIOUR = 'discard';	//'discard' or 'average' - not implemented TODO
 
 
@@ -122,7 +122,7 @@ function init() {
 				//TODO delete this block if not needed
 			}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
 
-	main_view.addEventListener("playing", function () { interval_id = setInterval(check_status, INTERVAL_MS); }, { once: true } );
+	main_view.addEventListener("playing", function () { interval_id = setInterval(check_status, INTERVAL_MS); }, { once: true });
 }
 
 function parse_playlist(request) {
@@ -171,7 +171,7 @@ function check_status() {
 	}
 
 	let end_time = getSourceBufferEnd();
-	console.log('end time' + end_time)
+
 	//is there "enough" video in the buffer?
 	if (end_time - main_view.currentTime > UPDATE_S || getSourceBufferTimeRangeNumber == 0) {
 		return;
@@ -347,7 +347,7 @@ function addMarkerUpdates(set_in, tmp_index) {
 
 //called when the play button is pressed
 function startPlayback() {
-	//TODO
+	main_view.play();
 }
 
 //called when marker is clicked
@@ -367,9 +367,34 @@ function switchToStream(set_index, recordingID) {
 	active_video_index = set_index;
 
 	setTimeStampOffset(globalSetIndex[set_index].descriptor.tDiffwReferenceMs / 1000);
+
 	let seg_n = mpd_getSegmentIndexAtTime(globalSetIndex[set_index].mpd.representations[0], end_time - globalSetIndex[set_index].descriptor.tDiffwReferenceMs / 1000);
 
 	mse_initAndAdd(set_index, seg_n);
+}
+
+function resetSourceBuffer() {
+	logINFO('resetting sourceBuffer');
+	killInterval();
+	for (let i = sourceBuffer.buffered.length - 1; i >= 0; i--) {
+		if (sourceBuffer.updating) {
+			sourceBuffer.addEventListener('updateend', function () {
+				resetSourceBuffer();
+			}, { once: true });
+			logINFO('sourceBuffer is updating, reset will commence when the update is over');
+			return;
+		}
+		sourceBuffer.remove(sourceBuffer.buffered.start(i), sourceBuffer.buffered.end(i));
+	}
+	let seg_n = mpd_getSegmentIndexAtTime(globalSetIndex[active_video_index].mpd.representations[0], main_view.currentTime - (globalSetIndex[active_video_index].descriptor.tDiffwReferenceMs / 1000));
+	if (sourceBuffer.updating) {
+		sourceBuffer.addEventListener('updateend', function () {
+			mse_initAndAdd(active_video_index, seg_n);
+		}, { once: true });
+	} else {
+		mse_initAndAdd(active_video_index, seg_n);
+	}
+	startInterval();
 }
 
 function addOption(value, file_id) {
@@ -393,9 +418,9 @@ function mse_initAndAdd(stream_index, segment_n) {
 					.then(function (response) {
 						addSegment(response);
 					})
-					.catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+					.catch(function (err) { logWARN('Failed promise - Error log: '); logERR(err); });
 			}, { once: true });
-		}).catch(function (err) { logWARN('Failed promise - Error log: '); console.log(err); });
+		}).catch(function (err) { logWARN('Failed promise - Error log: '); logERR(err); });
 }
 
 function killInterval() {
