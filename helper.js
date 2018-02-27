@@ -1,8 +1,10 @@
 "use strict";
 var globalSetIndex = [];
 const SHOW_DEBUG = true;
+const LOG_LVL = 4; //0: all, 1: INFO, 2: WARN, 3: ERR, 4: NONE
 
 function logERR(msg) {
+    if (LOG_LVL > 3) return;
     if (typeof msg === 'string') {//we have an error message string
         console.error("[ERROR] " + msg);
     } else {//we have an Error
@@ -11,16 +13,19 @@ function logERR(msg) {
 }
 
 function logWARN(msg) {
+    if (LOG_LVL > 2) return;
     console.warn("[WARNING] " + msg)
 }
 
-function logDEBUG(msg) {
-    if (SHOW_DEBUG)
-        console.log("[DEBUG] " + msg)
+function logINFO(msg) {
+    if (LOG_LVL > 1) return;
+    console.log("[INFO] " + msg);
 }
 
-function logINFO(msg) {
-    console.log("[INFO] " + msg);
+function logDEBUG(msg) {
+    if (LOG_LVL > 0) return;
+    if (SHOW_DEBUG)
+        console.log("[DEBUG] " + msg)
 }
 
 /**

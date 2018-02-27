@@ -48,13 +48,13 @@ function initTimeAndSpace(e) {
  */
 function initMarkers(e) {
     document.getElementById('init_mk_btn').disabled = true;
-    //document.getElementById('play_btn').disabled = false;
     //document.getElementById('play_btn').innerText = 'Go To ' + main_view_startTime + ', and Play';
     logINFO('Initializing markers for reference start time (ms): ' + main_view_startTime);
     //document.getElementById('start_time_input').value = main_view_startTime;
     /* Setup main view */
     centerMap(reference_location[0], reference_location[1], 20)
     analyzeGeospatialData();
+    document.getElementById('play_btn').disabled = false;
 }
 
 /**
